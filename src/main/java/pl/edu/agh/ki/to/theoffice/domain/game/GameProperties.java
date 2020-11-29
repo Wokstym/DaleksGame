@@ -2,6 +2,7 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy.Type;

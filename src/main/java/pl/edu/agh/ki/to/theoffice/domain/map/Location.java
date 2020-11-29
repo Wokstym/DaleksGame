@@ -4,8 +4,10 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import pl.edu.agh.ki.to.theoffice.common.formatter.UnityFormatter;
 
 import java.util.Random;
+import java.util.stream.Stream;
 
 @Getter
 @EqualsAndHashCode
@@ -46,6 +48,16 @@ public class Location {
 
         private final int dx;
         private final int dy;
+
+        public static Direction fromCoordinatesChange(int dx, int dy) {
+            final int uDx = UnityFormatter.format(dx);
+            final int uDy = UnityFormatter.format(dy);
+
+            return Stream.of(values())
+                    .filter(d -> d.dx == uDx && d.dy == uDy)
+                    .findAny()
+                    .orElseThrow(IllegalStateException::new);
+        }
 
     }
 
