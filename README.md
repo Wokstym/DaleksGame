@@ -32,7 +32,11 @@ To run app, first build the project using Maven and then:
 
 ![Alt text](diagrams/Diagramv1.png?raw=true "Title")
 
-    
+## Changelog:
+
+Changelog can be found [here](https://docs.google.com/document/d/1rmfYHm8JFct24NW3hj8J_BrBJKJ0DGZ0rRZJjOyJvv0/edit?usp=sharing ).
+
+
     
     
     
