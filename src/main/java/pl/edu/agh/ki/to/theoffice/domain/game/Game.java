@@ -3,6 +3,7 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Game {
 
