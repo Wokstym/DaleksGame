@@ -21,7 +21,7 @@
 
         <!-- dependencies -->
         <javafx.version>15.0.1</javafx.version>
-        <lombok.version>1.18.16</lombok.version>
+        <lombok.version>1.18.10</lombok.version>
 
         <!-- tests -->
         <skipITs>false</skipITs>

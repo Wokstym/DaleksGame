@@ -4,6 +4,15 @@ public enum EntityType {
 
     PLAYER,
     ENEMY,
-    ENEMY_SCRAP;
+    ENEMY_SCRAP,
+    DEAD_PLAYER;
+
+    public boolean isPlayerRelated() {
+        return this == PLAYER || this == DEAD_PLAYER;
+    }
+
+    public boolean isEnemyRelated() {
+        return this == ENEMY || this == ENEMY_SCRAP;
+    }
 
 }

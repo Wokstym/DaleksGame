@@ -2,7 +2,7 @@ package pl.edu.agh.ki.to.theoffice.domain.map.move;
 
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
-class BoundedMapMoveStrategy extends BaseGameMapMoveStrategy {
+class BoundedMapMoveStrategy extends MapMoveStrategy {
 
     BoundedMapMoveStrategy(int mapWidth, int mapHeight) {
         super(mapWidth, mapHeight);
@@ -17,7 +17,10 @@ class BoundedMapMoveStrategy extends BaseGameMapMoveStrategy {
 
     @Override
     public Location.Direction getDirectionToApproachTarget(Location source, Location target) {
-        return null;
+        final int dx = target.getX() - source.getX();
+        final int dy = target.getY() - source.getY();
+
+        return Location.Direction.fromCoordinatesChange(dx, dy);
     }
 
     private boolean isWithinBounds(Location loc) {
