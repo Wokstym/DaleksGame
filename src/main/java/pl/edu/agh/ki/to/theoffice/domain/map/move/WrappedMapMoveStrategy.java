@@ -10,4 +10,9 @@ class WrappedMapMoveStrategy implements MapMoveStrategy {
         return null;
     }
 
+    @Override
+    public Location.Direction getDirectionToApproachTarget(Location source, Location target) {
+        return null;
+    }
+
 }
