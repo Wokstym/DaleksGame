@@ -30,7 +30,7 @@ To run app, first build the project using Maven and then:
 
 ## UML:
 
-![Alt text](diagrams/Diagramv1.png?raw=true "Title")
+![Alt text](diagrams/Diagramv1.png?raw=true)
 
 ## Changelog:
 
