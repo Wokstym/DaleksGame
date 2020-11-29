@@ -19,13 +19,13 @@ public class JavaFXApplication extends Application {
         final String[] args = getParameters().getRaw().toArray(new String[0]);
 
         final ApplicationContextInitializer<GenericApplicationContext> initializer = ac -> {
-            ac.registerBean(Application.class, () -> JavaFXApplication.this);
+            ac.registerBean("contextApplication", Application.class, () -> JavaFXApplication.this);
             ac.registerBean(Parameters.class, this::getParameters);
             ac.registerBean(HostServices.class, this::getHostServices);
         };
 
         this.context = new SpringApplicationBuilder()
-                .sources(pl.edu.agh.ki.to.theoffice.ContextApplication.class)
+                .sources(pl.edu.agh.ki.to.theoffice.Application.class)
                 .initializers(initializer)
                 .run(args);
     }
