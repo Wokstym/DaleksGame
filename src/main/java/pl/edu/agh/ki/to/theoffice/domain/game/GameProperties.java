@@ -8,9 +8,9 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy.Type;
 
 @Getter
 @Builder
-@RequiredArgsConstructor
 public class GameProperties {
 
+    @Builder.Default
     private GameMapProperties mapProperties = new GameMapProperties(20, 20, Type.BOUNDED);
     private int enemies;
 
