@@ -28,6 +28,10 @@ To run app, first build the project using Maven and then:
 3. from File Manager:
     - double click file `target/Dalek-BETA-1.0.jar`
 
+## UML:
+
+![Alt text](diagrams/Diagramv1.png?raw=true "Title")
+
     
     
     
