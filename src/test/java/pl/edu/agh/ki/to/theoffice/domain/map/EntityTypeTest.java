@@ -19,7 +19,27 @@ public class EntityTypeTest {
     }
 
     @Test
+    public void testIsPlayerRelatedWhenDead() {
+        // given
+        EntityType entityType = EntityType.DEAD_PLAYER;
+
+        // when then
+        assertTrue(entityType.isPlayerRelated());
+        assertFalse(entityType.isEnemyRelated());
+    }
+
+    @Test
     public void testisEnemyRelated() {
+        // given
+        EntityType entityType = EntityType.ENEMY;
+
+        // when then
+        assertTrue(entityType.isEnemyRelated());
+        assertFalse(entityType.isPlayerRelated());
+    }
+
+    @Test
+    public void testisEnemyRelatedWhenScrap() {
         // given
         EntityType entityType = EntityType.ENEMY_SCRAP;
 
