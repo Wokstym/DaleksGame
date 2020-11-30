@@ -3,7 +3,9 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
@@ -14,12 +16,13 @@ import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategyFactory;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Game {
 
@@ -108,7 +111,7 @@ public class Game {
         oldMap.clear();
         oldMap.addAll(newMap);
 
-        newMap.add(playerLocation, EntityType.PLAYER);
+        oldMap.add(playerLocation, EntityType.PLAYER);
     }
 
     private void solveEnemyCollisions() {
@@ -126,8 +129,7 @@ public class Game {
             boolean playerColliedWithEnemy = (players > 0 && (enemies + scraps > 0));
             boolean enemiesCollided = (enemies + scraps > 1);
 
-            var oldEntities = new ArrayList<EntityType>();
-            Collections.copy(oldEntities, entities);
+            var oldEntities = new ArrayList<EntityType>(entities);
 
             entities.clear();
             entities.addAll(oldEntities
