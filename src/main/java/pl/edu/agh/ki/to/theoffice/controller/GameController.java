@@ -81,17 +81,13 @@ public class GameController {
             game.movePlayer(direction);
         });
 
-        game.getPlayerLocation().addListener((observableValue, locationBefore, locationAfter) -> {
-            if (game.getGameState().get() == GameState.LOST) {
-                ImageView imageAtChangedPosition = images.get(locationAfter);
-                imageAtChangedPosition.setImage(IconProvider.DEAD_PLAYER.getImage()); // TODO change so collisions also trigger listeners
-            }
-        });
-
         game.getGameState().addListener((observableValue, stateBefore, stateAfter) -> {
             if (stateAfter == GameState.LOST) {
                 game.getEntities().removeListener(mapChangeListener);
                 controlsPane.removeArrowListeners();
+
+                ImageView imageAtChangedPosition = images.get(game.getPlayerLocation().get());
+                imageAtChangedPosition.setImage(IconProvider.DEAD_PLAYER.getImage()); // TODO change so collisions also trigger listeners
             }
         });
     }
