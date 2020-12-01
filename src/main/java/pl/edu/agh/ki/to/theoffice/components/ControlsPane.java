@@ -14,15 +14,15 @@ import static pl.edu.agh.ki.to.theoffice.components.ComponentsUtils.setSquareSiz
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction.*;
 
 
-public class ControlsPane {
+public class ControlsPane extends TilePane {
 
     private static final int arrowSize = 20;
 
-    private final List<ImageView> controlArrows;
+    private List<ImageView> controlArrows;
 
-    public ControlsPane(TilePane controls) {
+    public void initArrows() {
 
-        this.controlArrows = controls.getChildren().stream()
+        this.controlArrows = this.getChildren().stream()
                 .map(node -> (TilePane) node)
                 .map(Pane::getChildren)
                 .flatMap(Collection::stream)

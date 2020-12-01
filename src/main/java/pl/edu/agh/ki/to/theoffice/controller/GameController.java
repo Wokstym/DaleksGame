@@ -4,9 +4,8 @@ import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.TilePane;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
+import pl.edu.agh.ki.to.theoffice.components.BoardPane;
 import pl.edu.agh.ki.to.theoffice.components.ControlsPane;
 import pl.edu.agh.ki.to.theoffice.components.IconProvider;
 import pl.edu.agh.ki.to.theoffice.domain.game.Game;
@@ -15,24 +14,18 @@ import pl.edu.agh.ki.to.theoffice.domain.game.GameState;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
-import java.util.HashMap;
 import java.util.List;
-
-import static pl.edu.agh.ki.to.theoffice.components.ComponentsUtils.prepareImageView;
 
 @Component
 public class GameController {
 
-    private static final int ELEMENT_SIZE = 40;
 
     @FXML
-    public TilePane controls;
+    public ControlsPane controls;
     @FXML
-    private TilePane stageTile;
+    private BoardPane board;
 
     private Game game;
-    private HashMap<Location, ImageView> images;
-    private ControlsPane controlsPane;
 
     @FXML
     public void initialize() {
@@ -42,51 +35,29 @@ public class GameController {
                 .build();
         game = Game.fromProperties(properties);
 
-        controlsPane = new ControlsPane(controls);
-
         int rowsNr = properties.getMapProperties().getHeight();
         int columnsNr = properties.getMapProperties().getWidth();
 
-        setBoardSize(columnsNr, rowsNr);
+        controls.initArrows();
 
-        images = new HashMap<>();
-        for (Location location : Location.generateLocationsWithinBoundsWithRespectOfLeftBottomCorner(0, columnsNr, 0, rowsNr)) {
-            List<EntityType> entityTypes = game.getEntities().get(location);
-
-            Image image = CollectionUtils.isEmpty(entityTypes) ? IconProvider.EMPTY.getImage() : IconProvider.imageOf(entityTypes.get(0));
-            ImageView element = prepareImageView(image, ELEMENT_SIZE);
-
-            stageTile.getChildren().add(element);
-            images.put(location, element);
-        }
+        board.setBoardSize(columnsNr, rowsNr);
+        board.populateBoard(game.getEntities());
 
         setupListeners();
-    }
-
-    private void setBoardSize(int columnsNr, int rowsNr) {
-        int pixelWidth = columnsNr * ELEMENT_SIZE;
-        int pixelHeight = rowsNr * ELEMENT_SIZE;
-
-        stageTile.setMaxWidth(pixelWidth);
-        stageTile.setMaxHeight(pixelHeight);
-        stageTile.setMinWidth(pixelWidth);
-        stageTile.setMinHeight(pixelHeight);
     }
 
     private void setupListeners() {
         var mapChangeListener = getMapChangeListener();
         game.getEntities().addListener(mapChangeListener);
 
-        controlsPane.setArrowListeners(direction -> {
-            game.movePlayer(direction);
-        });
+        controls.setArrowListeners(direction -> game.movePlayer(direction));
 
         game.getGameState().addListener((observableValue, stateBefore, stateAfter) -> {
             if (stateAfter == GameState.LOST) {
                 game.getEntities().removeListener(mapChangeListener);
-                controlsPane.removeArrowListeners();
+                controls.removeArrowListeners();
 
-                ImageView imageAtChangedPosition = images.get(game.getPlayerLocation().get());
+                ImageView imageAtChangedPosition = board.getImageViewAt(game.getPlayerLocation().get());
                 imageAtChangedPosition.setImage(IconProvider.DEAD_PLAYER.getImage()); // TODO change so collisions also trigger listeners
             }
         });
@@ -95,7 +66,7 @@ public class GameController {
     private MapChangeListener<Location, List<EntityType>> getMapChangeListener() {
         return change -> {
 
-            ImageView imageAtChangedPosition = images.get(change.getKey());
+            ImageView imageAtChangedPosition = board.getImageViewAt(change.getKey());
 
             if (change.wasRemoved()) {
                 Image image = IconProvider.EMPTY.getImage();
