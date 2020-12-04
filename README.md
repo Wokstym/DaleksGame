@@ -35,7 +35,7 @@ Changelog can be found [here](https://docs.google.com/document/d/1rmfYHm8JFct24N
 
 ## Class diagram:
 
-![Alt text](diagrams/Diagramv1.png?raw=true)
+![Alt text](diagrams/ClassDiagram.png?raw=true)
 
     
     
