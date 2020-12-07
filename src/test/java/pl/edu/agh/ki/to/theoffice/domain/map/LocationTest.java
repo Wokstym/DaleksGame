@@ -3,7 +3,9 @@ package pl.edu.agh.ki.to.theoffice.domain.map;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class LocationTest {
@@ -157,6 +159,49 @@ public class LocationTest {
         // then
         assertTrue(location.getX() <= maxX);
         assertTrue(location.getY() <= maxY);
+    }
+
+    @Test
+    public void testLocationGeneration() {
+        // given
+        int fromX = 0;
+        int toX = 20;
+        int fromY = 0;
+        int toY = 20;
+
+        // when
+        var locations = Location.generateLocationsWithinBoundsWithRespectOfLeftBottomCorner(fromX, toX, fromY, toY);
+
+        // then
+        assertThat(locations).isNotNull();
+        assertThat(locations.size()).isEqualTo(400);
+        assertThat(locations).contains(new Location(0, 0));
+        assertThat(locations).doesNotContain(new Location(20, 20));
+        assertThat(locations.get(0)).isEqualTo(new Location(0, 19));
+    }
+
+    @Test
+    public void testGenerationOfNeighbouringPositions() {
+        // given
+        Location location = new Location(2, 2);
+        Location[] expectedNeighbours = {
+                new Location(3, 2),
+                new Location(3, 3),
+                new Location(2, 3),
+                new Location(1, 3),
+                new Location(1, 2),
+                new Location(1, 1),
+                new Location(2, 1),
+                new Location(3, 1)
+        };
+
+        // when
+        var result = Location.generateNeighbouringLocations(location);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(8);
+        assertThat(result).containsExactlyInAnyOrder(expectedNeighbours);
     }
 
 }

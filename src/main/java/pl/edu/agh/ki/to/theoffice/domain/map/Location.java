@@ -1,15 +1,17 @@
 package pl.edu.agh.ki.to.theoffice.domain.map;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import pl.edu.agh.ki.to.theoffice.common.formatter.UnityFormatter;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Getter
+@ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
 public class Location {
@@ -32,6 +34,22 @@ public class Location {
                 r.nextInt(maxX),
                 r.nextInt(maxY)
         );
+    }
+
+    public static List<Location> generateNeighbouringLocations(Location location){
+        return Stream.of(Direction.values())
+                .map(location::add)
+                .collect(Collectors.toList());
+    }
+
+    public static List<Location> generateLocationsWithinBoundsWithRespectOfLeftBottomCorner(int fromX, int toX, int fromY, int toY) {
+        return IntStream.range(fromY, toY)
+                .map(i -> toY - i + fromY - 1)
+                .mapToObj(y -> IntStream.range(fromX, toX)
+                        .mapToObj(x -> new Location(x, y))
+                        .collect(Collectors.toList()))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

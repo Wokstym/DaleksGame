@@ -25,6 +25,7 @@
 
         <!-- tests -->
         <skipITs>false</skipITs>
+        <assertj-core.version>3.17.2</assertj-core.version>
     </properties>
 
     <dependencies>
@@ -69,6 +70,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

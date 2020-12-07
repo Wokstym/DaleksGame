@@ -38,7 +38,7 @@ public class StageListener implements ApplicationListener<JavaFXApplication.Stag
         loader.setControllerFactory(context::getBean);
 
         Parent root = loader.load();
-        Scene scene = new Scene(root, 600, 600);
+        Scene scene = new Scene(root, 800, 880);
         stage.setScene(scene);
         stage.setTitle(appTitle);
 

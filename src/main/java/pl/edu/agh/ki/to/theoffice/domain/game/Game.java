@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
+import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.PlayerMoveResponse;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategyFactory;
@@ -26,15 +26,17 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Game {
 
-    private ObjectProperty<MultiValueMap<Location, EntityType>> entities;
+    private ObservableLinkedMultiValueMap<Location, EntityType> entities;
     private ObjectProperty<Location> playerLocation;
     private MapMoveStrategy mapMoveStrategy;
+    private ObjectProperty<GameState> gameState;
 
-    static Game fromProperties(GameProperties properties) {
+    public static Game fromProperties(GameProperties properties) {
         final var mapProperties = properties.getMapProperties();
 
         Game game = new Game();
         game.mapMoveStrategy = MapMoveStrategyFactory.fromProperties(mapProperties);
+        game.gameState = new SimpleObjectProperty<>(GameState.IN_PROGRESS);
 
         final var entities = new LinkedMultiValueMap<Location, EntityType>();
         while (entities.size() < properties.getEnemies()) {
@@ -53,30 +55,31 @@ public class Game {
 
         entities.add(playerLocation, EntityType.PLAYER);
 
-        game.entities = new SimpleObjectProperty<>(entities);
+        game.entities = new ObservableLinkedMultiValueMap<>(entities);
         game.playerLocation = new SimpleObjectProperty<>(playerLocation);
 
         return game;
     }
 
     public PlayerMoveResponse movePlayer(Location.Direction direction) {
-        final var entities = this.entities.getValue();
         final Location oldLocation = this.playerLocation.getValue();
         final Location newLocation = this.mapMoveStrategy.move(oldLocation, direction);
 
         this.playerLocation.setValue(newLocation);
 
-        entities.remove(oldLocation);
-        entities.add(newLocation, EntityType.PLAYER);
+        this.entities.remove(oldLocation);
+        this.entities.add(newLocation, EntityType.PLAYER);
 
         this.moveEnemies();
         this.solveEnemyCollisions();
 
-        if(entities.get(newLocation).contains(EntityType.DEAD_PLAYER)) {
+        if (this.entities.get(newLocation).contains(EntityType.DEAD_PLAYER)) {
+            gameState.setValue(GameState.LOST);
             return PlayerMoveResponse.PLAYER_COLLIDED_WITH_ENEMY;
         }
 
-        if(newLocation.equals(oldLocation)) {
+
+        if (newLocation.equals(oldLocation)) {
             return PlayerMoveResponse.PLAYER_NOT_MOVED;
         }
 
@@ -87,9 +90,8 @@ public class Game {
         final Location playerLocation = this.playerLocation.getValue();
 
         final var newMap = new LinkedMultiValueMap<Location, EntityType>();
-        final var oldMap = this.entities.getValue();
 
-        oldMap.entrySet()
+        this.entities.entrySet()
                 .stream()
                 .flatMap(e -> e.getValue()
                         .stream()
@@ -108,16 +110,16 @@ public class Game {
                 .filter(e -> e.getValue() != EntityType.PLAYER)
                 .forEach(e -> newMap.add(e.getKey(), e.getValue()));
 
-        oldMap.clear();
-        oldMap.addAll(newMap);
+        this.entities.clear();
+        this.entities.addAll(newMap);
 
-        oldMap.add(playerLocation, EntityType.PLAYER);
+        this.entities.add(playerLocation, EntityType.PLAYER);
     }
 
+    // TODO change so collisions also trigger listeners
     private void solveEnemyCollisions() {
-        final var map = this.entities.getValue();
 
-        for (var entities : map.values()) {
+        for (var entities : this.entities.values()) {
             Map<EntityType, Long> entitiesCount = entities
                     .stream()
                     .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
@@ -129,7 +131,7 @@ public class Game {
             boolean playerColliedWithEnemy = (players > 0 && (enemies + scraps > 0));
             boolean enemiesCollided = (enemies + scraps > 1);
 
-            var oldEntities = new ArrayList<EntityType>(entities);
+            var oldEntities = new ArrayList<>(entities);
 
             entities.clear();
             entities.addAll(oldEntities
