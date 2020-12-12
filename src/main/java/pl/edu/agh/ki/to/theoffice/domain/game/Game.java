@@ -15,10 +15,7 @@ import pl.edu.agh.ki.to.theoffice.domain.map.PlayerMoveResponse;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategyFactory;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
@@ -29,10 +26,11 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Game {
 
+    private GameProperties gameProperties;
+
     private ObservableLinkedMultiValueMap<Location, EntityType> entities;
     private ObjectProperty<Location> playerLocation;
     private MapMoveStrategy mapMoveStrategy;
-    private GameProperties gameProperties;
     private ObjectProperty<GameState> gameState;
 
     public static Game fromProperties(GameProperties properties) {
@@ -66,7 +64,7 @@ public class Game {
         return game;
     }
 
-    public PlayerMoveResponse movePlayer(Location.Direction direction) {
+    public void movePlayer(Location.Direction direction) {
         final Location oldLocation = this.playerLocation.getValue();
         final Location newLocation = this.mapMoveStrategy.move(oldLocation, direction);
 
@@ -80,15 +78,11 @@ public class Game {
 
         if (this.entities.get(newLocation).contains(EntityType.DEAD_PLAYER)) {
             gameState.setValue(GameState.LOST);
-            return PlayerMoveResponse.PLAYER_COLLIDED_WITH_ENEMY;
         }
 
-
-        if (newLocation.equals(oldLocation)) {
-            return PlayerMoveResponse.PLAYER_NOT_MOVED;
+        if(getEnemiesCount() == 0) {
+            gameState.setValue(GameState.WON);
         }
-
-        return PlayerMoveResponse.PLAYER_MOVED;
     }
 
     private void moveEnemies() {
@@ -122,7 +116,6 @@ public class Game {
         this.entities.add(playerLocation, EntityType.PLAYER);
     }
 
-    // TODO change so collisions also trigger listeners
     private void solveEnemyCollisions() {
         for (var entry : this.entities.entrySet()) {
             final var location = entry.getKey();
@@ -155,6 +148,14 @@ public class Game {
             entities.addAll(newEntities);
             this.entities.put(location, entities);
         }
+    }
+
+    private long getEnemiesCount() {
+        return this.entities.values()
+                .stream()
+                .flatMap(List::stream)
+                .filter(e -> e == EntityType.ENEMY)
+                .count();
     }
 
 }
