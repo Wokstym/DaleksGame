@@ -2,9 +2,6 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.MapChangeListener;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
@@ -143,31 +140,38 @@ public class Game {
                 .count();
     }
 
-    void addListener(PropertyChangeListener listener) {
-        entities.addListener(listener::onMapChanged);
-        playerLocation.addListener(listener::onPlayerLocationChanged);
-        gameState.addListener(listener::onGameStateChanged);
+    private static class GameFactoryUtils {
 
-        gamePlayer.getPowerups().addListener(listener::onPlayerPowerupsChanged);
-        gamePlayer.getLives().addListener(listener::onPlayerLivesChanged);
-    }
+        private static MapResults fromGameProperties(GameProperties properties) {
+            final var mapProperties = properties.getMapProperties();
 
-    void removeListener(PropertyChangeListener listener) {
-        entities.removeListener(listener::onMapChanged);
-        playerLocation.removeListener(listener::onPlayerLocationChanged);
-        gameState.removeListener(listener::onGameStateChanged);
+            final var entities = new LinkedMultiValueMap<Location, EntityType>();
+            while (entities.size() < properties.getEnemies()) {
+                entities.addIfAbsent(
+                        Location.randomLocation(
+                                mapProperties.getWidth(),
+                                mapProperties.getHeight()
+                        ),
+                        EntityType.ENEMY);
+            }
 
-        gamePlayer.getPowerups().removeListener(listener::onPlayerPowerupsChanged);
-        gamePlayer.getLives().removeListener(listener::onPlayerLivesChanged);
-    }
+            Location playerLocation;
+            do {
+                playerLocation = Location.randomLocation(mapProperties.getWidth(), mapProperties.getHeight());
+            } while (entities.containsKey(playerLocation));
 
-    interface PropertyChangeListener {
+            entities.add(playerLocation, EntityType.PLAYER);
 
-        void onMapChanged(MapChangeListener.Change<? extends Location, ? extends List<EntityType>> change);
-        void onGameStateChanged(ObservableValue<? extends GameState> val, GameState stateBefore, GameState stateAfter);
-        void onPlayerLocationChanged(ObservableValue<? extends Location> val, Location stateBefore, Location stateAfter);
-        void onPlayerLivesChanged(ObservableValue<? extends Number> val, Number stateBefore, Number stateAfter);
-        void onPlayerPowerupsChanged(MapChangeListener.Change<? extends GamePowerup, ? extends Integer> change);
+            return new MapResults(entities, playerLocation);
+        }
+
+        @RequiredArgsConstructor
+        private static class MapResults {
+
+            public final LinkedMultiValueMap<Location, EntityType> entities;
+            public final Location playerLocation;
+
+        }
 
     }
 

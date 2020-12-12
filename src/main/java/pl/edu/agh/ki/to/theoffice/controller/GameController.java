@@ -2,15 +2,15 @@ package pl.edu.agh.ki.to.theoffice.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent;
+import pl.edu.agh.ki.to.theoffice.domain.game.Game;
+import pl.edu.agh.ki.to.theoffice.domain.game.GameFactory;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameProperties;
-import pl.edu.agh.ki.to.theoffice.domain.game.GameStorage;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
@@ -19,13 +19,7 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 @FxmlView("/view/game/game.fxml")
 public class GameController {
 
-    private final GameStorage gameStorage;
-
-    @Autowired
-    public GameController(GameStorage gameStorage) {
-        this.gameStorage = gameStorage;
-        log.debug("GameController init");
-    }
+    private Game game;
 
     @FXML
     public GameControlsComponent controls;
@@ -39,7 +33,10 @@ public class GameController {
                 .enemies(1)
                 .build();
 
-        gameStorage.createNewGame(properties);
+        game = GameFactory.fromProperties(properties);
+
+        var mapProperties = game.getGameProperties().getMapProperties();
+        map.initMap(mapProperties.getWidth(), mapProperties.getHeight(), game.getEntities());
 
         controls.initArrows();
 
@@ -50,19 +47,12 @@ public class GameController {
     public void handleOnKeyPressed(KeyEvent keyEvent) {
         log.debug("Handled key: {}", keyEvent.getCode().name());
         Direction.fromKeyCode(keyEvent.getCode())
-                .ifPresent(gameStorage::movePlayer);
+                .ifPresent(game::movePlayer);
     }
 
     private void setupListeners() {
-//        game.addListener(this);
-//        game.addListener(map);
-        controls.setArrowListeners(gameStorage::movePlayer);
+        game.getEntities().addListener(map);
+        controls.setArrowListeners(game::movePlayer);
     }
 
-//    public void onGameStateChanged(Change<GameState> change) {
-//        if (change.getStateAfter() == GameState.LOST) {
-//            game.removeListener(map);
-//            controls.removeArrowListeners();
-//        }
-//    }
 }

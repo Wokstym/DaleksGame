@@ -6,7 +6,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
-import pl.edu.agh.ki.to.theoffice.domain.game.GameChangeListener;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
 import java.util.Collection;
@@ -17,7 +16,7 @@ import static pl.edu.agh.ki.to.theoffice.common.component.ImageUtils.setSquareSi
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction.*;
 
 @Component
-public class GameControlsComponent extends TilePane implements FXMLComponent, GameChangeListener {
+public class GameControlsComponent extends TilePane implements FXMLComponent {
 
     private static final int arrowSize = 45;
 
