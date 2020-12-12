@@ -2,16 +2,15 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.MapChangeListener;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
-import pl.edu.agh.ki.to.theoffice.domain.map.PlayerMoveResponse;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategyFactory;
 
@@ -26,43 +25,30 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Game {
 
-    private GameProperties gameProperties;
-
-    private ObservableLinkedMultiValueMap<Location, EntityType> entities;
-    private ObjectProperty<Location> playerLocation;
-    private MapMoveStrategy mapMoveStrategy;
-    private ObjectProperty<GameState> gameState;
-
     public static Game fromProperties(GameProperties properties) {
         final var mapProperties = properties.getMapProperties();
 
         Game game = new Game();
         game.gameProperties = properties;
         game.mapMoveStrategy = MapMoveStrategyFactory.fromProperties(mapProperties);
+
         game.gameState = new SimpleObjectProperty<>(GameState.IN_PROGRESS);
+        game.gamePlayer = GamePlayer.fromProperties(properties.getPlayerProperties());
 
-        final var entities = new LinkedMultiValueMap<Location, EntityType>();
-        while (entities.size() < properties.getEnemies()) {
-            entities.addIfAbsent(
-                    Location.randomLocation(
-                            mapProperties.getWidth(),
-                            mapProperties.getHeight()
-                    ),
-                    EntityType.ENEMY);
-        }
-
-        Location playerLocation;
-        do {
-            playerLocation = Location.randomLocation(mapProperties.getWidth(), mapProperties.getHeight());
-        } while (entities.containsKey(playerLocation));
-
-        entities.add(playerLocation, EntityType.PLAYER);
-
-        game.entities = new ObservableLinkedMultiValueMap<>(entities);
-        game.playerLocation = new SimpleObjectProperty<>(playerLocation);
+        final var mapResults = GameFactoryUtils.fromGameProperties(properties);
+        game.entities = new ObservableLinkedMultiValueMap<>(mapResults.entities);
+        game.playerLocation = new SimpleObjectProperty<>(mapResults.playerLocation);
 
         return game;
     }
+
+    private GameProperties gameProperties;
+    private MapMoveStrategy mapMoveStrategy;
+
+    private ObservableLinkedMultiValueMap<Location, EntityType> entities;
+    private ObjectProperty<Location> playerLocation;
+    private ObjectProperty<GameState> gameState;
+    private GamePlayer gamePlayer;
 
     public void movePlayer(Location.Direction direction) {
         final Location oldLocation = this.playerLocation.getValue();
@@ -86,10 +72,9 @@ public class Game {
     }
 
     private void moveEnemies() {
-        final Location playerLocation = this.playerLocation.getValue();
-
         final var newMap = new LinkedMultiValueMap<Location, EntityType>();
 
+        final Location playerLocation = this.playerLocation.getValue();
         this.entities.entrySet()
                 .stream()
                 .flatMap(e -> e.getValue()
@@ -156,6 +141,34 @@ public class Game {
                 .flatMap(List::stream)
                 .filter(e -> e == EntityType.ENEMY)
                 .count();
+    }
+
+    void addListener(PropertyChangeListener listener) {
+        entities.addListener(listener::onMapChanged);
+        playerLocation.addListener(listener::onPlayerLocationChanged);
+        gameState.addListener(listener::onGameStateChanged);
+
+        gamePlayer.getPowerups().addListener(listener::onPlayerPowerupsChanged);
+        gamePlayer.getLives().addListener(listener::onPlayerLivesChanged);
+    }
+
+    void removeListener(PropertyChangeListener listener) {
+        entities.removeListener(listener::onMapChanged);
+        playerLocation.removeListener(listener::onPlayerLocationChanged);
+        gameState.removeListener(listener::onGameStateChanged);
+
+        gamePlayer.getPowerups().removeListener(listener::onPlayerPowerupsChanged);
+        gamePlayer.getLives().removeListener(listener::onPlayerLivesChanged);
+    }
+
+    interface PropertyChangeListener {
+
+        void onMapChanged(MapChangeListener.Change<? extends Location, ? extends List<EntityType>> change);
+        void onGameStateChanged(ObservableValue<? extends GameState> val, GameState stateBefore, GameState stateAfter);
+        void onPlayerLocationChanged(ObservableValue<? extends Location> val, Location stateBefore, Location stateAfter);
+        void onPlayerLivesChanged(ObservableValue<? extends Number> val, Number stateBefore, Number stateAfter);
+        void onPlayerPowerupsChanged(MapChangeListener.Change<? extends GamePowerup, ? extends Integer> change);
+
     }
 
 }

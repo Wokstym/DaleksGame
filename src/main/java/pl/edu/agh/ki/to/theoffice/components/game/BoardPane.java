@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.common.component.IconProvider;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;

@@ -1,9 +1,12 @@
 package pl.edu.agh.ki.to.theoffice.components.game;
 
 import javafx.scene.layout.VBox;
+import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
+import pl.edu.agh.ki.to.theoffice.domain.game.GameChangeListener;
 
-public class GameInfoComponent extends VBox implements FXMLComponent {
+@Component
+public class GameInfoComponent extends VBox implements FXMLComponent, GameChangeListener {
 
     public GameInfoComponent() {
         FXMLUtils.loadFXML(this);
