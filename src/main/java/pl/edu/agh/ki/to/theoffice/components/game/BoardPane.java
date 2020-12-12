@@ -4,6 +4,7 @@ import javafx.collections.MapChangeListener;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import pl.edu.agh.ki.to.theoffice.common.component.IconProvider;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static pl.edu.agh.ki.to.theoffice.common.component.ImageUtils.prepareImageView;
 
+@Slf4j
 public class BoardPane extends TilePane implements MapChangeListener<Location, List<EntityType>> {
 
     private static final double MAP_SIZE = 750.0D;
@@ -62,7 +64,7 @@ public class BoardPane extends TilePane implements MapChangeListener<Location, L
     }
 
     @Override
-    public void onChanged(Change<? extends Location, ? extends List<EntityType>> change) {
+    public void onChanged(MapChangeListener.Change<? extends Location, ? extends List<EntityType>> change) {
         ImageView imageAtChangedPosition = images.get(change.getKey());
 
         if (change.wasRemoved()) {
@@ -71,6 +73,7 @@ public class BoardPane extends TilePane implements MapChangeListener<Location, L
         }
 
         if (change.wasAdded()) {
+            log.debug("Entity added: {}", change.getValueAdded().get(0).name());
             Image image = IconProvider.imageOf(change.getValueAdded().get(0));
             imageAtChangedPosition.setImage(image);
         }

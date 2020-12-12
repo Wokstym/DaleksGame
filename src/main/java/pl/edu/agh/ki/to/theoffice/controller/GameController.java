@@ -23,7 +23,7 @@ public class GameController {
     public void initialize() {
 
         GameProperties properties = GameProperties.builder()
-                .enemies(10)
+                .enemies(1)
                 .build();
         game = Game.fromProperties(properties);
 
@@ -45,9 +45,6 @@ public class GameController {
             if (stateAfter == GameState.LOST) {
                 game.getEntities().removeListener(map);
                 controls.removeArrowListeners();
-
-//                ImageView imageAtChangedPosition = board.getImageViewAt(game.getPlayerLocation().get());
-//                imageAtChangedPosition.setImage(IconProvider.DEAD_PLAYER.getImage()); // TODO change so collisions also trigger listeners
             }
         });
     }

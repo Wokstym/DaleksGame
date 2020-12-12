@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
@@ -16,11 +17,13 @@ import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategyFactory;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
+@Slf4j
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -113,6 +116,7 @@ public class Game {
                 .forEach(e -> newMap.add(e.getKey(), e.getValue()));
 
         this.entities.clear();
+        log.debug("Moved entities");
         this.entities.addAll(newMap);
 
         this.entities.add(playerLocation, EntityType.PLAYER);
@@ -120,8 +124,10 @@ public class Game {
 
     // TODO change so collisions also trigger listeners
     private void solveEnemyCollisions() {
+        for (var entry : this.entities.entrySet()) {
+            final var location = entry.getKey();
+            final var entities = entry.getValue();
 
-        for (var entities : this.entities.values()) {
             Map<EntityType, Long> entitiesCount = entities
                     .stream()
                     .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
@@ -136,14 +142,18 @@ public class Game {
             var oldEntities = new ArrayList<>(entities);
 
             entities.clear();
-            entities.addAll(oldEntities
+            var newEntities = oldEntities
                     .stream()
                     .map(e -> switch (e) {
                         case PLAYER, DEAD_PLAYER -> playerColliedWithEnemy ? EntityType.DEAD_PLAYER : e;
                         case ENEMY, ENEMY_SCRAP -> enemiesCollided ? EntityType.ENEMY_SCRAP : e;
                     })
-                    .collect(Collectors.toList())
-            );
+                    .sorted(Comparator.comparing(EntityType::getMapPriority))
+                    .collect(Collectors.toList());
+
+            log.debug("New entites: {}", newEntities);
+            entities.addAll(newEntities);
+            this.entities.put(location, entities);
         }
     }
 

@@ -24,6 +24,13 @@ public class ObservableLinkedMultiValueMap<K, V> extends ObservableMapWrapper<K,
         this.callObservers(new SimpleChange(key, null, Collections.singletonList(value), true, false));
     }
 
+    public List<V> put(K key, @Nullable List<V> value) {
+        backingMap.put(key, value);
+        this.callObservers(new SimpleChange(key, null, Collections.unmodifiableList(value), true, false));
+
+        return value;
+    }
+
     public void addAll(MultiValueMap<K, V> values) {
         backingMap.addAll(values);
 

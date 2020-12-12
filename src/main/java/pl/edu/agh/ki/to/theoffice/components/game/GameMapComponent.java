@@ -1,10 +1,12 @@
 package pl.edu.agh.ki.to.theoffice.components.game;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
 import pl.edu.agh.ki.to.theoffice.domain.game.Game;
+import pl.edu.agh.ki.to.theoffice.domain.game.GameState;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
