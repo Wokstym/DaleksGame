@@ -1,6 +1,8 @@
 package pl.edu.agh.ki.to.theoffice.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent;
@@ -8,6 +10,9 @@ import pl.edu.agh.ki.to.theoffice.domain.game.Game;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameProperties;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameState;
 
+import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
+
+@Slf4j
 @Component
 public class GameController {
 
@@ -30,10 +35,14 @@ public class GameController {
         controls.initArrows();
         map.initBoard(game);
 
-//        board.setBoardSize(columnsNr, rowsNr);
-//        board.populateBoard(game.getEntities());
-
         setupListeners();
+    }
+
+    @FXML
+    public void handleOnKeyPressed(KeyEvent keyEvent) {
+        log.debug("Handled key: {}", keyEvent.getCode().name());
+        Direction.fromKeyCode(keyEvent.getCode())
+                .ifPresent(direction -> game.movePlayer(direction));
     }
 
     private void setupListeners() {
@@ -47,6 +56,8 @@ public class GameController {
                 controls.removeArrowListeners();
             }
         });
+
+
     }
 
 }

@@ -4,8 +4,15 @@
 <?import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent?>
 <?import pl.edu.agh.ki.to.theoffice.components.game.GameInfoComponent?>
 <?import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-          prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+<GridPane maxHeight="-Infinity"
+          maxWidth="-Infinity"
+          minHeight="-Infinity"
+          minWidth="-Infinity"
+          prefHeight="800.0"
+          prefWidth="1000.0"
+          xmlns="http://javafx.com/javafx/11.0.1"
+          xmlns:fx="http://javafx.com/fxml/1"
+          onKeyPressed="#handleOnKeyPressed"
 
           fx:controller="pl.edu.agh.ki.to.theoffice.controller.GameController">
 

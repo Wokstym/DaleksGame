@@ -43,6 +43,8 @@ public class StageListener implements ApplicationListener<JavaFXApplication.Stag
         stage.setTitle(appTitle);
         stage.setResizable(false);
 
+        root.requestFocus();
+
         stage.show();
     }
 
