@@ -1,9 +1,9 @@
-package pl.edu.agh.ki.to.theoffice.components;
+package pl.edu.agh.ki.to.theoffice.common.component;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class ComponentsUtils {
+public class ImageUtils {
 
     public static ImageView prepareImageView(Image image, int size) {
         ImageView element = new ImageView(image);

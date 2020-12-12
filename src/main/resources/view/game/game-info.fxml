@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<fx:root type="javafx.scene.layout.VBox"
+         xmlns:fx="http://javafx.com/fxml"
+         fx:controller="pl.edu.agh.ki.to.theoffice.components.game.GameInfoComponent"
+         prefHeight="600.0" prefWidth="200.0">
+
+</fx:root>

@@ -1,24 +1,34 @@
-package pl.edu.agh.ki.to.theoffice.components;
+package pl.edu.agh.ki.to.theoffice.components.game;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static pl.edu.agh.ki.to.theoffice.components.ComponentsUtils.setSquareSize;
+import static pl.edu.agh.ki.to.theoffice.common.component.ImageUtils.setSquareSize;
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction.*;
 
 
-public class ControlsPane extends TilePane {
+public class GameControlsComponent extends TilePane implements FXMLComponent {
 
-    private static final int arrowSize = 20;
+    private static final int arrowSize = 45;
 
     private List<ImageView> controlArrows;
+
+    public GameControlsComponent() {
+        FXMLUtils.loadFXML(this);
+    }
+
+    @Override
+    public String getFxmlResourceFile() {
+        return "/view/game/game-controls.fxml";
+    }
 
     public void initArrows() {
 

@@ -21,7 +21,7 @@ public class StageListener implements ApplicationListener<JavaFXApplication.Stag
     private final ApplicationContext context;
 
     public StageListener(@Value("${spring.application.ui.title}") String appTitle,
-                         @Value("classpath:view/game.fxml") Resource resource,
+                         @Value("classpath:view/game/game.fxml") Resource resource,
                          ApplicationContext context) {
         this.appTitle = appTitle;
         this.resource = resource;
@@ -38,9 +38,10 @@ public class StageListener implements ApplicationListener<JavaFXApplication.Stag
         loader.setControllerFactory(context::getBean);
 
         Parent root = loader.load();
-        Scene scene = new Scene(root, 800, 880);
+        Scene scene = new Scene(root, 1000, 800);
         stage.setScene(scene);
         stage.setTitle(appTitle);
+        stage.setResizable(false);
 
         stage.show();
     }

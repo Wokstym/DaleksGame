@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.TilePane?>
+<fx:root type="javafx.scene.layout.TilePane"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent"
+          prefHeight="200.0" prefWidth="200.0">
+
+    <TilePane alignment="CENTER">
+
+        <ImageView rotate="225">
+            <Image url="@/icons/arrow.png"/>
+        </ImageView>
+        <ImageView rotate="270">
+            <Image url="@/icons/arrow.png"/>
+        </ImageView>
+        <ImageView rotate="315">
+            <Image url="@/icons/arrow.png"/>
+        </ImageView>
+    </TilePane>
+
+    <TilePane alignment="CENTER">
+        <ImageView rotate="180">
+            <Image url="@/icons/arrow.png"/>
+        </ImageView>
+        <ImageView rotate="-1">
+            <Image url="@/icons/empty.png"/>
+        </ImageView>
+        <ImageView>
+            <Image url="@/icons/arrow.png"/>
+        </ImageView>
+    </TilePane>
+
+    <TilePane alignment="CENTER">
+        <ImageView rotate="135">
+            <Image url="@/icons/arrow.png"/>
+        </ImageView>
+        <ImageView rotate="90">
+            <Image url="@/icons/arrow.png"/>
+        </ImageView>
+        <ImageView rotate="45">
+            <Image url="@/icons/arrow.png"/>
+        </ImageView>
+    </TilePane>
+
+</fx:root>

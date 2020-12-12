@@ -178,6 +178,8 @@ public class LocationTest {
         assertThat(locations).contains(new Location(0, 0));
         assertThat(locations).doesNotContain(new Location(20, 20));
         assertThat(locations.get(0)).isEqualTo(new Location(0, 19));
+        assertThat(locations).doesNotContain(new Location(21,0));
+        assertThat(locations).doesNotContain(new Location(0,21));
     }
 
     @Test

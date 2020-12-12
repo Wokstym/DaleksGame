@@ -1,4 +1,4 @@
-package pl.edu.agh.ki.to.theoffice.components;
+package pl.edu.agh.ki.to.theoffice.common.component;
 
 import javafx.scene.image.Image;
 import lombok.Getter;
@@ -16,6 +16,7 @@ public enum IconProvider {
     TELEPORT("teleport.png"),
     DOT("dot.png"),
     ARROW("arrow.png"),
+    FRAME("frame.png"),
     EMPTY("empty.png");
 
     private static final String ICON_PATH = "/icons/";

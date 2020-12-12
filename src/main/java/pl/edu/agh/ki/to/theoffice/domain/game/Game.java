@@ -29,12 +29,14 @@ public class Game {
     private ObservableLinkedMultiValueMap<Location, EntityType> entities;
     private ObjectProperty<Location> playerLocation;
     private MapMoveStrategy mapMoveStrategy;
+    private GameProperties gameProperties;
     private ObjectProperty<GameState> gameState;
 
     public static Game fromProperties(GameProperties properties) {
         final var mapProperties = properties.getMapProperties();
 
         Game game = new Game();
+        game.gameProperties = properties;
         game.mapMoveStrategy = MapMoveStrategyFactory.fromProperties(mapProperties);
         game.gameState = new SimpleObjectProperty<>(GameState.IN_PROGRESS);
 
