@@ -64,7 +64,8 @@ public class Location {
         NORTH_EAST(1, 1, KeyCode.NUMPAD9),
         NORTH_WEST(-1, 1, KeyCode.NUMPAD7),
         SOUTH_EAST(1, -1, KeyCode.NUMPAD3),
-        SOUTH_WEST(-1, -1, KeyCode.NUMPAD1);
+        SOUTH_WEST(-1, -1, KeyCode.NUMPAD1),
+        NONE(0, 0, KeyCode.NUMPAD5);
 
         private final int dx;
         private final int dy;

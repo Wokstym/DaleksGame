@@ -4,6 +4,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 import static pl.edu.agh.ki.to.theoffice.common.component.ImageUtils.setSquareSize;
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction.*;
 
-@Component
+@Slf4j
 public class GameControlsComponent extends TilePane implements FXMLComponent {
 
     private static final int arrowSize = 45;
@@ -44,7 +45,6 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
 
     public void setArrowListeners(ArrowClicked lambda) {
         controlArrows.stream()
-                .filter(imageView -> imageView.getRotate() >= 0)
                 .forEach(action -> action.setOnMouseClicked(mouseEvent -> {
                     Direction direction = getAngleDependentOnDirection((int) action.getRotate());
                     lambda.arrowClicked(direction);
@@ -56,6 +56,7 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
     }
 
     private Direction getAngleDependentOnDirection(int rotation) {
+        log.debug("rotation: {}", rotation);
         return switch (rotation) {
             case 225 -> NORTH_WEST;
             case 270 -> NORTH;
@@ -65,6 +66,7 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
             case 135 -> SOUTH_WEST;
             case 90 -> SOUTH;
             case 45 -> SOUTH_EAST;
+            case -1 -> NONE;
             default -> throw new IllegalStateException("Unexpected value: " + rotation);
         };
     }

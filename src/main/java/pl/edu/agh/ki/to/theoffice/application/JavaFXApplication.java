@@ -33,6 +33,8 @@ public class JavaFXApplication extends Application {
         Parent root = fxWeaver.loadView(GameController.class);
         Scene scene = new Scene(root);
         stage.setScene(scene);
+
+        root.requestFocus();
         stage.show();
     }
 

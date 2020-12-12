@@ -11,6 +11,7 @@ import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent;
 import pl.edu.agh.ki.to.theoffice.domain.game.Game;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameFactory;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameProperties;
+import pl.edu.agh.ki.to.theoffice.domain.game.GameState;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
@@ -46,6 +47,10 @@ public class GameController {
     @FXML
     public void handleOnKeyPressed(KeyEvent keyEvent) {
         log.debug("Handled key: {}", keyEvent.getCode().name());
+        if(game.getGameState().getValue() != GameState.IN_PROGRESS) {
+            return;
+        }
+
         Direction.fromKeyCode(keyEvent.getCode())
                 .ifPresent(game::movePlayer);
     }
@@ -53,6 +58,12 @@ public class GameController {
     private void setupListeners() {
         game.getEntities().addListener(map);
         controls.setArrowListeners(game::movePlayer);
+
+        game.getGameState().addListener((val, oldState, newState) -> {
+            if(newState == GameState.LOST) {
+                controls.removeArrowListeners();
+            }
+        });
     }
 
 }

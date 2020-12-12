@@ -25,7 +25,7 @@
             <Image url="@/icons/arrow.png"/>
         </ImageView>
         <ImageView rotate="-1">
-            <Image url="@/icons/empty.png"/>
+            <Image url="@/icons/dot.png"/>
         </ImageView>
         <ImageView>
             <Image url="@/icons/arrow.png"/>
