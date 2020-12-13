@@ -1,11 +1,13 @@
 package pl.edu.agh.ki.to.theoffice.domain.map;
 
+import javafx.scene.input.KeyCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class LocationTest {
@@ -148,6 +150,20 @@ public class LocationTest {
     }
 
     @Test
+    public void testFromCoordinatesChangeNone() {
+        // given
+        int dx = 0;
+        int dy = 0;
+
+        // when
+        Location.Direction direction = Location.Direction.fromCoordinatesChange(dx, dy);
+
+        // then
+        assertEquals(Location.Direction.NONE, direction);
+
+    }
+
+    @Test
     public void testRandomLocationInBoundaries() {
         // given
         int maxX = 5;
@@ -183,7 +199,7 @@ public class LocationTest {
     }
 
     @Test
-    public void testGenerationOfNeighbouringPositions() {
+    public void testGenerationOfNeighbouringLocations() {
         // given
         Location location = new Location(2, 2);
         Location[] expectedNeighbours = {
@@ -194,7 +210,8 @@ public class LocationTest {
                 new Location(1, 2),
                 new Location(1, 1),
                 new Location(2, 1),
-                new Location(3, 1)
+                new Location(3, 1),
+                new Location(2, 2)
         };
 
         // when
@@ -202,8 +219,128 @@ public class LocationTest {
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.size()).isEqualTo(8);
+        assertThat(result.size()).isEqualTo(9);
         assertThat(result).containsExactlyInAnyOrder(expectedNeighbours);
+    }
+
+    @Test
+    public void testFromKeyCodeNorth(){
+        // given
+        KeyCode keyCode = KeyCode.NUMPAD8;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Location.Direction.NORTH, direction.get());
+    }
+
+    @Test
+    public void testFromKeyCodeSouth(){
+        // given
+        KeyCode keyCode = KeyCode.NUMPAD2;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Location.Direction.SOUTH, direction.get());
+    }
+
+    @Test
+    public void testFromKeyCodeWest(){
+        // given
+        KeyCode keyCode = KeyCode.NUMPAD4;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Location.Direction.WEST, direction.get());
+    }
+
+    @Test
+    public void testFromKeyCodeEast(){
+        // given
+        KeyCode keyCode = KeyCode.NUMPAD6;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Location.Direction.EAST, direction.get());
+    }
+
+    @Test
+    public void testFromKeyCodeNorthEast(){
+        // given
+        KeyCode keyCode = KeyCode.NUMPAD9;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Location.Direction.NORTH_EAST, direction.get());
+    }
+
+    @Test
+    public void testFromKeyCodeNorthWest(){
+        // given
+        KeyCode keyCode = KeyCode.NUMPAD7;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Location.Direction.NORTH_WEST, direction.get());
+    }
+
+    @Test
+    public void testFromKeyCodeSouthEast(){
+        // given
+        KeyCode keyCode = KeyCode.NUMPAD3;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Location.Direction.SOUTH_EAST, direction.get());
+    }
+
+    @Test
+    public void testFromKeyCodeSouthWest(){
+        // given
+        KeyCode keyCode = KeyCode.NUMPAD1;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Location.Direction.SOUTH_WEST, direction.get());
+    }
+
+    @Test
+    public void testFromKeyCodeNone(){
+        // given
+        KeyCode keyCode = KeyCode.NUMPAD5;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Location.Direction.NONE, direction.get());
+    }
+
+    @Test
+    public void testFromKeyCodeWhenIllegal(){
+        // given
+        KeyCode keyCode = KeyCode.BACK_SPACE;
+
+        // when
+        Optional<Location.Direction> direction = Location.Direction.fromKeyCode(keyCode);
+
+        // then
+        assertEquals(Optional.empty(), direction);
     }
 
 }

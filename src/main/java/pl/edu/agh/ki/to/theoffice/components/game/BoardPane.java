@@ -4,6 +4,7 @@ import javafx.collections.MapChangeListener;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,6 +19,7 @@ import java.util.List;
 import static pl.edu.agh.ki.to.theoffice.common.component.ImageUtils.prepareImageView;
 
 @Slf4j
+@Getter
 public class BoardPane extends TilePane implements MapChangeListener<Location, List<EntityType>> {
 
     private static final double MAP_SIZE = 750.0D;
