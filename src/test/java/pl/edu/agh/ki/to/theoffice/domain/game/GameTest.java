@@ -3,26 +3,24 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 import javafx.beans.property.SimpleObjectProperty;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpringBootTest
 public class GameTest {
 
     @Test
     public void testFromProperties() {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(20, 20, MapMoveStrategy.Type.BOUNDED);
-        Map<GamePowerup, Integer> powerups = new HashMap<>();
-        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
         GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 10);
 
         // when
@@ -46,8 +44,7 @@ public class GameTest {
     public void testPlayerNotMoved() {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(100, 1, MapMoveStrategy.Type.BOUNDED);
-        Map<GamePowerup, Integer> powerups = new HashMap<>();
-        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
         GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
         Game game = Game.fromProperties(gameProperties);
         Location.Direction direction = Location.Direction.SOUTH;
@@ -64,8 +61,7 @@ public class GameTest {
     public void testPlayerMoved() {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
-        Map<GamePowerup, Integer> powerups = new HashMap<>();
-        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
         GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
         Game game = Game.fromProperties(gameProperties);
 
@@ -87,8 +83,7 @@ public class GameTest {
     public void testPlayerCollidedWithEnemiesAndLost() {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
-        Map<GamePowerup, Integer> powerups = new HashMap<>();
-        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
         GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
         Game game = Game.fromProperties(gameProperties);
 
@@ -111,8 +106,7 @@ public class GameTest {
     public void testPlayerWon() {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
-        Map<GamePowerup, Integer> powerups = new HashMap<>();
-        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
         GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
         Game game = Game.fromProperties(gameProperties);
 

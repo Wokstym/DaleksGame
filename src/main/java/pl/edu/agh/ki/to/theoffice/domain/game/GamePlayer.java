@@ -35,11 +35,11 @@ public class GamePlayer {
     }
 
     public void addLife() {
-        this.lives.add(1);
+        this.lives.setValue(this.lives.get() + 1);
     }
 
     public void removeLife() {
-        this.lives.subtract(1);
+        this.lives.setValue(this.lives.get() - 1);
     }
 
 }
