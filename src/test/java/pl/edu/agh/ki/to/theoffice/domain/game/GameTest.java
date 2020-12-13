@@ -1,100 +1,135 @@
 package pl.edu.agh.ki.to.theoffice.domain.game;
 
-import org.junit.jupiter.api.Disabled;
+import javafx.beans.property.SimpleObjectProperty;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
+import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GameTest {
 
     @Test
-    @Disabled
-    // todo: refactor test
-    public void testFromPropertiesNumberOfEntities() {
+    public void testFromProperties() {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(20, 20, MapMoveStrategy.Type.BOUNDED);
-//        GameProperties gameProperties = new GameProperties(gameMapProperties, 10);
+        Map<GamePowerup, Integer> powerups = new HashMap<>();
+        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 10);
 
         // when
-//        Game game = Game.fromProperties(gameProperties);
+        Game game = Game.fromProperties(gameProperties);
 
         // then
-//        assertEquals(10 + 1, game
-//                .getEntities()
-//                .size());
-//
-//        assertTrue(game
-//                .getEntities()
-//                .toSingleValueMap()
-//                .containsValue(EntityType.PLAYER));
+        assertEquals(10 + 1, game
+                .getEntities()
+                .size());
+
+        assertTrue(game
+                .getEntities()
+                .toSingleValueMap()
+                .containsValue(EntityType.PLAYER));
+
+        assertEquals(GameState.IN_PROGRESS, game.getGameState().getValue());
+
     }
 
     @Test
-    @Disabled
-    // todo: refactor test
     public void testPlayerNotMoved() {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(100, 1, MapMoveStrategy.Type.BOUNDED);
-//        GameProperties gameProperties = new GameProperties(gameMapProperties, 1);
-//        Game game = Game.fromProperties(gameProperties);
+        Map<GamePowerup, Integer> powerups = new HashMap<>();
+        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
+        Game game = Game.fromProperties(gameProperties);
         Location.Direction direction = Location.Direction.SOUTH;
+        Location playerOldLocation = game.getPlayerLocation().getValue();
 
         // when
-//        PlayerMoveResponse playerMoveResponse = game.movePlayer(direction);
+        game.movePlayer(direction);
 
         // then
-        // assertEquals(PlayerMoveResponse.PLAYER_NOT_MOVED, playerMoveResponse);
+         assertEquals(playerOldLocation, game.getPlayerLocation().getValue());
     }
 
     @Test
-    @Disabled
-    // todo: refactor test
     public void testPlayerMoved() {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
-//        GameProperties gameProperties = new GameProperties(gameMapProperties, 0);
-//        Game game = Game.fromProperties(gameProperties);
+        Map<GamePowerup, Integer> powerups = new HashMap<>();
+        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
+        Game game = Game.fromProperties(gameProperties);
 
         LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<Location, EntityType>();
         Location playerLocation = new Location(2, 2);
         entities.add(playerLocation, EntityType.PLAYER);
-//        game.setEntities(new ObservableLinkedMultiValueMap(entities));
-//        game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
+        game.setEntities(new ObservableLinkedMultiValueMap(entities));
+        game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
         Location.Direction direction = Location.Direction.SOUTH;
 
         // when
-//        PlayerMoveResponse playerMoveResponse = game.movePlayer(direction);
-//
+        game.movePlayer(direction);
+
         // then
-//        assertEquals(PlayerMoveResponse.PLAYER_MOVED, playerMoveResponse);
+        assertEquals(playerLocation.add(direction), game.getPlayerLocation().getValue());
     }
 
     @Test
-    @Disabled
-    // todo: refactor test
-    public void testPlayerCollidedWithEnemies() {
+    public void testPlayerCollidedWithEnemiesAndLost() {
         // given
-//        GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
-//        GameProperties gameProperties = new GameProperties(gameMapProperties, 0);
-//        Game game = Game.fromProperties(gameProperties);
-//
-//        LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<Location, EntityType>();
-//        Location playerLocation = new Location(2, 2);
-//        entities.add(playerLocation, EntityType.PLAYER);
-//        entities.add(new Location(3, 2), EntityType.ENEMY);
-//        entities.add(new Location(1, 2), EntityType.ENEMY);
-//        game.setEntities(new ObservableLinkedMultiValueMap(entities));
-//        game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
-//        Location.Direction direction = Location.Direction.NORTH;
+        GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
+        Map<GamePowerup, Integer> powerups = new HashMap<>();
+        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
+        Game game = Game.fromProperties(gameProperties);
+
+        LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<>();
+        Location playerLocation = new Location(2, 2);
+        entities.add(playerLocation, EntityType.PLAYER);
+        entities.add(new Location(1, 2), EntityType.ENEMY);
+        game.setEntities(new ObservableLinkedMultiValueMap(entities));
+        game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
+        Location.Direction direction = Location.Direction.NONE;
 
         // when
-//        PlayerMoveResponse playerMoveResponse = game.movePlayer(direction);
+        game.movePlayer(direction);
 
         // then
-//        assertEquals(PlayerMoveResponse.PLAYER_COLLIDED_WITH_ENEMY, playerMoveResponse);
+        assertEquals(GameState.LOST, game.getGameState().getValue());
+    }
+
+    @Test
+    public void testPlayerWon() {
+        // given
+        GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
+        Map<GamePowerup, Integer> powerups = new HashMap<>();
+        GameProperties.GamePlayerProperties gamePlayerProperties = new GameProperties.GamePlayerProperties(powerups, 1);
+        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
+        Game game = Game.fromProperties(gameProperties);
+
+        LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<>();
+        Location playerLocation = new Location(2, 2);
+        entities.add(playerLocation, EntityType.PLAYER);
+        entities.add(new Location(1, 3), EntityType.ENEMY);
+        entities.add(new Location(3, 3), EntityType.ENEMY);
+        game.setEntities(new ObservableLinkedMultiValueMap(entities));
+        game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
+        Location.Direction direction = Location.Direction.NORTH;
+
+        // when
+        game.movePlayer(direction);
+
+        // then
+        assertEquals(GameState.WON, game.getGameState().getValue());
     }
 
 }

@@ -116,6 +116,19 @@ public class BoundedMapMoveStrategyTest {
     }
 
     @Test
+    public void testDirectionToApproachTargetNone() {
+        // given
+        Location source = new Location(10, 3);
+        Location target = new Location(10, 3);
+
+        // when
+        Location.Direction direction = boundedMapMoveStrategy.getDirectionToApproachTarget(source, target);
+
+        // then
+        assertEquals(Location.Direction.NONE, direction);
+    }
+
+    @Test
     public void testMoveToAllowedPosition() {
         // given
         Location location = new Location(2, 2);
