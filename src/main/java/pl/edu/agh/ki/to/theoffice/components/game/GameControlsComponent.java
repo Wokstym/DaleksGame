@@ -21,19 +21,10 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
 
     private static final int arrowSize = 45;
 
-    private List<ImageView> controlArrows;
+    private final List<ImageView> controlArrows;
 
     public GameControlsComponent() {
         FXMLUtils.loadFXML(this);
-    }
-
-    @Override
-    public String getFxmlResourceFile() {
-        return "/view/game/game-controls.fxml";
-    }
-
-    public void initArrows() {
-
         this.controlArrows = this.getChildren().stream()
                 .map(node -> (TilePane) node)
                 .map(Pane::getChildren)
@@ -43,10 +34,15 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public String getFxmlResourceFile() {
+        return "/view/game/game-controls.fxml";
+    }
+
     public void setArrowListeners(ArrowClicked lambda) {
-        controlArrows.stream()
-                .forEach(action -> action.setOnMouseClicked(mouseEvent -> {
+        controlArrows.forEach(action -> action.setOnMouseClicked(mouseEvent -> {
                     Direction direction = getAngleDependentOnDirection((int) action.getRotate());
+                    log.debug("Direction: {}", direction);
                     lambda.arrowClicked(direction);
                 }));
     }
@@ -56,7 +52,6 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
     }
 
     private Direction getAngleDependentOnDirection(int rotation) {
-        log.debug("rotation: {}", rotation);
         return switch (rotation) {
             case 225 -> NORTH_WEST;
             case 270 -> NORTH;

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.common.component.IconProvider;
+import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
 import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
@@ -20,7 +21,7 @@ import static pl.edu.agh.ki.to.theoffice.common.component.ImageUtils.prepareImag
 
 @Slf4j
 @Getter
-public class BoardPane extends TilePane implements MapChangeListener<Location, List<EntityType>> {
+public class BoardPane extends TilePane implements MapChangeListener<Location, List<Entity>> {
 
     private static final double MAP_SIZE = 750.0D;
 
@@ -53,10 +54,10 @@ public class BoardPane extends TilePane implements MapChangeListener<Location, L
         setBackground(new Background(bgImg));
     }
 
-    public void populateBoard(ObservableLinkedMultiValueMap<Location, EntityType> entities) {
+    public void populateBoard(ObservableLinkedMultiValueMap<Location, Entity> entities) {
 
         for (Location location : Location.generateLocationsWithinBoundsWithRespectOfLeftBottomCorner(0, columnsNr, 0, rowsNr)) {
-            List<EntityType> entityTypes = entities.get(location);
+            List<Entity> entityTypes = entities.get(location);
 
             Image image = CollectionUtils.isEmpty(entityTypes) ? IconProvider.EMPTY.getImage() : IconProvider.imageOf(entityTypes.get(0));
             ImageView element = prepareImageView(image, this.elementSize);
@@ -67,7 +68,7 @@ public class BoardPane extends TilePane implements MapChangeListener<Location, L
     }
 
     @Override
-    public void onChanged(MapChangeListener.Change<? extends Location, ? extends List<EntityType>> change) {
+    public void onChanged(MapChangeListener.Change<? extends Location, ? extends List<Entity>> change) {
         ImageView imageAtChangedPosition = images.get(change.getKey());
 
         if (change.wasRemoved()) {
@@ -76,7 +77,7 @@ public class BoardPane extends TilePane implements MapChangeListener<Location, L
         }
 
         if (change.wasAdded()) {
-            log.debug("Entity added: {}", change.getValueAdded().get(0).name());
+            log.debug("Entity added: {}", change.getValueAdded().get(0).getType());
             Image image = IconProvider.imageOf(change.getValueAdded().get(0));
             imageAtChangedPosition.setImage(image);
         }

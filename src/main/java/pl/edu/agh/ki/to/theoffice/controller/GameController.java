@@ -4,14 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent;
+import pl.edu.agh.ki.to.theoffice.components.game.GameInfoComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent;
-import pl.edu.agh.ki.to.theoffice.domain.game.Game;
-import pl.edu.agh.ki.to.theoffice.domain.game.GameFactory;
-import pl.edu.agh.ki.to.theoffice.domain.game.GameProperties;
-import pl.edu.agh.ki.to.theoffice.domain.game.GameState;
+import pl.edu.agh.ki.to.theoffice.domain.game.*;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
@@ -23,6 +20,9 @@ public class GameController {
     private Game game;
 
     @FXML
+    public GameInfoComponent info;
+
+    @FXML
     public GameControlsComponent controls;
 
     @FXML
@@ -32,14 +32,16 @@ public class GameController {
     public void initialize() {
         GameProperties properties = GameProperties.builder()
                 .enemies(1)
+                .playerProperties(GameProperties.GamePlayerProperties.builder()
+                        .powerup(GamePowerup.BOMB, 1)
+                        .powerup(GamePowerup.TELEPORT, 1)
+                        .build())
                 .build();
 
         game = GameFactory.fromProperties(properties);
 
         var mapProperties = game.getGameProperties().getMapProperties();
         map.initMap(mapProperties.getWidth(), mapProperties.getHeight(), game.getEntities());
-
-        controls.initArrows();
 
         setupListeners();
     }

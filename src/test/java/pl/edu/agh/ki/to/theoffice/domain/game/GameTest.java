@@ -9,6 +9,7 @@ import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
+import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategyFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,7 +22,7 @@ public class GameTest {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(20, 20, MapMoveStrategy.Type.BOUNDED);
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 10);
+        GameProperties gameProperties = new GameProperties(gameMapProperties, MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 10);
 
         // when
         Game game = Game.fromProperties(gameProperties);
@@ -45,7 +46,7 @@ public class GameTest {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(100, 1, MapMoveStrategy.Type.BOUNDED);
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
+        GameProperties gameProperties = new GameProperties(gameMapProperties,MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 0);
         Game game = Game.fromProperties(gameProperties);
         Location.Direction direction = Location.Direction.SOUTH;
         Location playerOldLocation = game.getPlayerLocation().getValue();
@@ -62,7 +63,7 @@ public class GameTest {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
+        GameProperties gameProperties = new GameProperties(gameMapProperties,MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 0);
         Game game = Game.fromProperties(gameProperties);
 
         LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<Location, EntityType>();
@@ -84,7 +85,7 @@ public class GameTest {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
+        GameProperties gameProperties = new GameProperties(gameMapProperties,MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 0);
         Game game = Game.fromProperties(gameProperties);
 
         LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<>();
@@ -107,7 +108,7 @@ public class GameTest {
         // given
         GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties, gamePlayerProperties, 0);
+        GameProperties gameProperties = new GameProperties(gameMapProperties,MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 0);
         Game game = Game.fromProperties(gameProperties);
 
         LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<>();
