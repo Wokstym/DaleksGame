@@ -2,15 +2,17 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
-import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
+import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.MovableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntity;
-import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
@@ -35,6 +37,7 @@ public class Game {
         game.entities = new ObservableLinkedMultiValueMap<>(mapResults.entities);
         game.playerEntity = mapResults.playerEntity;
         game.playerLocation = new SimpleObjectProperty<>(game.playerEntity.getLocation());
+        game.powerupsOnMap = mapResults.powerupsOnMap;
 
         return game;
     }
@@ -43,7 +46,7 @@ public class Game {
     private MapMoveStrategy mapMoveStrategy;
 
     private ObservableLinkedMultiValueMap<Location, Entity> entities;
-    private HashMap<Location, PickableEntity> powerupsOnMap;
+    private Map<Location, PickableEntity> powerupsOnMap;
     private ObjectProperty<Location> playerLocation;
     private ObjectProperty<GameState> gameState;
     private PlayerEntity playerEntity;
@@ -56,6 +59,7 @@ public class Game {
 
         this.moveEntities();
         this.solveEnemyCollisions();
+        this.pickupPowerup();
 
         if (playerEntity.getState() == MovableEntity.MovableEntityState.DEAD) {
             gameState.setValue(GameState.LOST);
@@ -86,6 +90,7 @@ public class Game {
         this.entities.clear();
         log.debug("Moved entities");
         this.entities.addAll(newMap);
+        powerupsOnMap.forEach((key, value) -> entities.add(key, value));
     }
 
     private void solveEnemyCollisions() {
@@ -115,7 +120,28 @@ public class Game {
 
             log.debug("New entites: {}", newEntities);
             entities.addAll(newEntities);
+            if (powerupsOnMap.containsKey(location)) {
+                entities.add(powerupsOnMap.get(location));
+            }
             this.entities.put(location, entities);
+        }
+    }
+
+    private void pickupPowerup() {
+        Location location = playerLocation.get();
+        List<Entity> entitiesAtPlayer = new ArrayList<>(this.entities.get(location));
+        Optional<Entity> entity = entitiesAtPlayer.stream()
+                .filter(e -> !e.isMovable())
+                .findAny();
+
+        if(entity.isPresent()){
+            PickableEntity pickableEntity = powerupsOnMap.get(location);
+            playerEntity.addPowerup(pickableEntity.getGamePowerup());
+            powerupsOnMap.remove(location);
+
+            entitiesAtPlayer.remove(entity.get());
+            this.entities.remove(location);
+            this.entities.put(location, entitiesAtPlayer);
         }
     }
 
@@ -125,44 +151,6 @@ public class Game {
                 .flatMap(List::stream)
                 .filter(e -> e.getType() == EntityType.ENEMY)
                 .count();
-    }
-
-    private static class GameFactoryUtils {
-
-        private static MapResults fromGameProperties(GameProperties properties) {
-            final var mapProperties = properties.getMapProperties();
-
-            final var entities = new LinkedMultiValueMap<Location, Entity>();
-            while (entities.size() < properties.getEnemies()) {
-                Location location = Location.randomLocation(
-                        mapProperties.getWidth(),
-                        mapProperties.getHeight()
-                );
-                entities.addIfAbsent(
-                        location,
-                        new EnemyEntity(properties.getMapMoveStrategy(), location));
-            }
-
-            PlayerEntity player = PlayerEntity.fromProperties(properties.getPlayerProperties());
-            Location playerLocation;
-            do {
-                playerLocation = Location.randomLocation(mapProperties.getWidth(), mapProperties.getHeight());
-            } while (entities.containsKey(playerLocation));
-            player.setLocation(playerLocation);
-
-            entities.add(playerLocation, player);
-
-            return new MapResults(entities, player);
-        }
-
-        @RequiredArgsConstructor
-        private static class MapResults {
-
-            public final LinkedMultiValueMap<Location, Entity> entities;
-            public final PlayerEntity playerEntity;
-
-        }
-
     }
 
 }

@@ -2,6 +2,7 @@ package pl.edu.agh.ki.to.theoffice.domain.map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
 
 import static org.junit.jupiter.api.Assertions.*;
 

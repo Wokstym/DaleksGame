@@ -1,7 +1,7 @@
 package pl.edu.agh.ki.to.theoffice.domain.entity.movable;
 
 import lombok.ToString;
-import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
+import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 
@@ -35,11 +35,6 @@ public class EnemyEntity extends MovableEntity {
         return state == MovableEntityState.ALIVE ?
                 EntityType.ENEMY :
                 EntityType.ENEMY_SCRAP;
-    }
-
-    @Override
-    public int getMapPriority() {
-        return getType().getMapPriority();
     }
 
     @Override

@@ -2,6 +2,7 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 
 import java.util.Arrays;
 import java.util.Map;

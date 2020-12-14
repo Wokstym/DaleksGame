@@ -7,11 +7,13 @@ import javafx.collections.ObservableMap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import pl.edu.agh.ki.to.theoffice.domain.game.GamePowerup;
+import lombok.extern.slf4j.Slf4j;
+import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameProperties;
-import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
+import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
+@Slf4j
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor
@@ -21,7 +23,7 @@ public class PlayerEntity extends MovableEntity {
         final PlayerEntity playerEntity = new PlayerEntity();
 
         playerEntity.powerups = FXCollections.observableHashMap();
-        playerEntity.powerups.putAll(properties.getPowerups());
+        playerEntity.powerups.putAll(GamePowerup.toMap());
 
         playerEntity.lives = new SimpleIntegerProperty(properties.getLives());
 
@@ -32,6 +34,7 @@ public class PlayerEntity extends MovableEntity {
     private IntegerProperty lives;
 
     public void addPowerup(GamePowerup powerup) {
+        log.debug("Added powerup to player inventory: {}", powerup.name());
         this.powerups.compute(powerup, (k, v) -> v += 1);
     }
 
@@ -67,10 +70,5 @@ public class PlayerEntity extends MovableEntity {
         return state == MovableEntityState.ALIVE ?
                 EntityType.PLAYER :
                 EntityType.DEAD_PLAYER;
-    }
-
-    @Override
-    public int getMapPriority() {
-        return getType().getMapPriority();
     }
 }

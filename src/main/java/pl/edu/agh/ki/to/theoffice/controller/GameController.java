@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameInfoComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent;
+import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.game.*;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
@@ -30,12 +31,16 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        //todo fix builder
+        var gamePlayerProperties = GameProperties.GamePlayerProperties.builder()
+                .build();
+
+        gamePlayerProperties.addPowerup(GamePowerup.BOMB, 4);
+        gamePlayerProperties.addPowerup(GamePowerup.TELEPORT, 1);
+
         GameProperties properties = GameProperties.builder()
                 .enemies(1)
-                .playerProperties(GameProperties.GamePlayerProperties.builder()
-                        .powerup(GamePowerup.BOMB, 1)
-                        .powerup(GamePowerup.TELEPORT, 1)
-                        .build())
+                .playerProperties(gamePlayerProperties)
                 .build();
 
         game = GameFactory.fromProperties(properties);
@@ -59,6 +64,7 @@ public class GameController {
 
     private void setupListeners() {
         game.getEntities().addListener(map);
+        game.getPlayerEntity().getPowerups().addListener(info);
         controls.setArrowListeners(game::movePlayer);
 
         game.getGameState().addListener((val, oldState, newState) -> {

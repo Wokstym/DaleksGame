@@ -1,4 +1,4 @@
-package pl.edu.agh.ki.to.theoffice.domain.game;
+package pl.edu.agh.ki.to.theoffice.domain.entity;
 
 import java.util.Map;
 import java.util.stream.Collectors;

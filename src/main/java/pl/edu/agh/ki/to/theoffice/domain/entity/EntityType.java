@@ -1,4 +1,4 @@
-package pl.edu.agh.ki.to.theoffice.domain.map;
+package pl.edu.agh.ki.to.theoffice.domain.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,14 +10,18 @@ public enum EntityType {
     PLAYER(1),
     ENEMY(3),
     ENEMY_SCRAP(2),
-    DEAD_PLAYER(0);
+    DEAD_PLAYER(0),
+    BOMB(2),
+    TELEPORT(2);
 
     private final int mapPriority;
 
+    //todo delete
     public boolean isPlayerRelated() {
         return this == PLAYER || this == DEAD_PLAYER;
     }
 
+    //todo delete
     public boolean isEnemyRelated() {
         return this == ENEMY || this == ENEMY_SCRAP;
     }

@@ -35,6 +35,8 @@ public enum IconProvider {
             case ENEMY -> ENEMY;
             case DEAD_PLAYER -> DEAD_PLAYER;
             case ENEMY_SCRAP -> ENEMY_SCRAP;
+            case TELEPORT -> TELEPORT;
+            case BOMB -> BOMB;
         };
         return resultEnum.image;
     }

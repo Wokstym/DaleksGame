@@ -3,6 +3,7 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategyFactory;
@@ -60,10 +61,15 @@ public class GameProperties {
 
         private Location initLocation;
 
+        public void addPowerup(GamePowerup powerup, int amount){
+            this.powerups.put(powerup, amount);
+        }
+
         public static class GamePlayerPropertiesBuilder {
 
             private Map<GamePowerup, Integer> powerups = GamePowerup.toMap();
 
+            //fixme builder ignores powerup addition
             public GamePlayerPropertiesBuilder powerup(GamePowerup powerup, int amount) {
                 this.powerups.put(powerup, amount);
                 return this;
