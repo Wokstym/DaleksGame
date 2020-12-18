@@ -74,17 +74,13 @@ public class Game {
         final var newMap = new LinkedMultiValueMap<Location, Entity>();
 
         final Location newPlayerLocation = this.playerLocation.getValue();
-        this.entities.entrySet()
+        this.entities.values()
                 .stream()
-                .flatMap(e -> e.getValue()
-                        .stream()
-                        .map(entity -> new AbstractMap.SimpleEntry<>(e.getKey(), entity))
-                )
-                .filter(e -> e.getValue().isMovable())
-                .map(e -> {
-                    Location newLocation = ((MovableEntity) e.getValue()).move(newPlayerLocation);
-                    return new AbstractMap.SimpleEntry<>(newLocation, e.getValue());
-                })
+                .flatMap(Collection::stream)
+                .filter(MovableEntity.class::isInstance)
+                .map(MovableEntity.class::cast)
+                .peek(e -> e.move(newPlayerLocation))
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getLocation(), e))
                 .forEach(e -> newMap.add(e.getKey(), e.getValue()));
 
         this.entities.clear();
@@ -107,18 +103,10 @@ public class Game {
             long enemies = entitiesCount.getOrDefault(EntityType.ENEMY, 0L) +
                     entitiesCount.getOrDefault(EntityType.ENEMY_SCRAP, 0L);
 
-            var oldEntities = new ArrayList<>(entities);
-
-            entities.clear();
-            var newEntities = oldEntities
-                    .stream()
-                    .filter(Entity::isMovable)
-                    .map(e -> (MovableEntity) e)
-                    .peek(entity -> entity.handleCollision(enemies, players))
-                    .sorted(Comparator.comparing(Entity::getMapPriority))
-                    .collect(Collectors.toList());
+            var newEntities = handleCollisionsAndSort(players, enemies, entities);
 
             log.debug("New entites: {}", newEntities);
+            entities.clear();
             entities.addAll(newEntities);
             if (powerupsOnMap.containsKey(location)) {
                 entities.add(powerupsOnMap.get(location));
@@ -127,11 +115,21 @@ public class Game {
         }
     }
 
+    private List<MovableEntity> handleCollisionsAndSort(long players, long enemies, List<Entity> oldEntities) {
+        return oldEntities
+                .stream()
+                .filter(MovableEntity.class::isInstance)
+                .map(MovableEntity.class::cast)
+                .peek(entity -> entity.handleCollision(enemies, players))
+                .sorted(Comparator.comparing(Entity::getMapPriority))
+                .collect(Collectors.toList());
+    }
+
     private void pickupPowerup() {
         Location location = playerLocation.get();
-        List<Entity> entitiesAtPlayer = new ArrayList<>(this.entities.get(location));
+        List<Entity> entitiesAtPlayer = this.entities.get(location);
         Optional<Entity> entity = entitiesAtPlayer.stream()
-                .filter(e -> !e.isMovable())
+                .filter(PickableEntity.class::isInstance)
                 .findAny();
 
         if(entity.isPresent()){

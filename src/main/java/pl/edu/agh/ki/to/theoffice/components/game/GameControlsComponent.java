@@ -5,7 +5,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
@@ -19,7 +18,8 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction.*;
 @Slf4j
 public class GameControlsComponent extends TilePane implements FXMLComponent {
 
-    private static final int arrowSize = 45;
+    public static final String FXML_SOURCE = "/view/game/game-controls.fxml";
+    private static final int ARROW_SIZE = 45;
 
     private final List<ImageView> controlArrows;
 
@@ -30,18 +30,18 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
                 .map(Pane::getChildren)
                 .flatMap(Collection::stream)
                 .map(node -> (ImageView) node)
-                .peek(control -> setSquareSize(control, arrowSize))
+                .peek(control -> setSquareSize(control, ARROW_SIZE))
                 .collect(Collectors.toList());
     }
 
     @Override
     public String getFxmlResourceFile() {
-        return "/view/game/game-controls.fxml";
+        return FXML_SOURCE;
     }
 
     public void setArrowListeners(ArrowClicked lambda) {
         controlArrows.forEach(action -> action.setOnMouseClicked(mouseEvent -> {
-                    Direction direction = getAngleDependentOnDirection((int) action.getRotate());
+                    Direction direction = getDirectionByRotationAngle((int) action.getRotate());
                     log.debug("Direction: {}", direction);
                     lambda.arrowClicked(direction);
                 }));
@@ -51,7 +51,7 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
         controlArrows.forEach(action -> action.setOnMouseClicked(null));
     }
 
-    private Direction getAngleDependentOnDirection(int rotation) {
+    private Direction getDirectionByRotationAngle(int rotation) {
         return switch (rotation) {
             case 225 -> NORTH_WEST;
             case 270 -> NORTH;

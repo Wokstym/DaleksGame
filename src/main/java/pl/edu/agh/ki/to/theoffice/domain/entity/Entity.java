@@ -4,8 +4,6 @@ public interface Entity {
 
     EntityType getType();
 
-    boolean isMovable();
-
     default int getMapPriority() {
         return getType().getMapPriority();
     }

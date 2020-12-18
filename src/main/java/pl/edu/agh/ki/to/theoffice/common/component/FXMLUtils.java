@@ -5,8 +5,6 @@ import javafx.scene.Parent;
 import lombok.extern.slf4j.Slf4j;
 import pl.edu.agh.ki.to.theoffice.components.game.FXMLComponent;
 
-import java.io.IOException;
-
 @Slf4j
 public class FXMLUtils {
 

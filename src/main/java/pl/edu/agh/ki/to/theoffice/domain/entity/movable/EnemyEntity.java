@@ -14,12 +14,11 @@ public class EnemyEntity extends MovableEntity {
     }
 
     @Override
-    public Location move(Location playerLocation) {
+    public void move(Location playerLocation) {
         if (state == MovableEntityState.ALIVE) {
             Location.Direction direction = this.mapMoveStrategy.getDirectionToApproachTarget(this.location, playerLocation);
             this.location = this.mapMoveStrategy.move(this.location, direction);
         }
-        return this.location;
     }
 
     @Override

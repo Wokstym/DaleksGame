@@ -24,15 +24,20 @@ public class BoardPane extends TilePane implements MapChangeListener<Location, L
     private static final double MAP_SIZE = 750.0D;
 
     private final HashMap<Location, ImageView> images = new HashMap<>();
-    private int columnsNr;
-    private int rowsNr;
+    private int columns;
+    private int rows;
     private int elementSize;
 
-    public void setBoardSize(int columns, int rows) {
-        this.columnsNr = columns;
-        this.rowsNr = rows;
+    public void prepareBoard(int columns, int rows) {
+        this.columns = columns;
+        this.rows = rows;
         this.elementSize = (int) (MAP_SIZE / Math.max(columns, rows));
 
+        setBoardSize(columns, rows);
+        setBackground();
+    }
+
+    private void setBoardSize(int columns, int rows) {
         int pixelWidth = columns * this.elementSize;
         int pixelHeight = rows * this.elementSize;
 
@@ -40,7 +45,9 @@ public class BoardPane extends TilePane implements MapChangeListener<Location, L
         setMaxHeight(pixelHeight);
         setMinWidth(pixelWidth);
         setMinHeight(pixelHeight);
+    }
 
+    private void setBackground() {
         Image img = IconProvider.FRAME.getImage();
         BackgroundImage bgImg = new BackgroundImage(
                 img,
@@ -54,7 +61,7 @@ public class BoardPane extends TilePane implements MapChangeListener<Location, L
 
     public void populateBoard(ObservableLinkedMultiValueMap<Location, Entity> entities) {
 
-        for (Location location : Location.generateLocationsWithinBoundsWithRespectOfLeftBottomCorner(0, columnsNr, 0, rowsNr)) {
+        for (Location location : Location.generateLocationsWithinBoundsWithRespectOfLeftBottomCorner(0, columns, 0, rows)) {
             List<Entity> entityTypes = entities.get(location);
 
             Image image = CollectionUtils.isEmpty(entityTypes) ? IconProvider.EMPTY.getImage() : IconProvider.imageOf(entityTypes.get(0));

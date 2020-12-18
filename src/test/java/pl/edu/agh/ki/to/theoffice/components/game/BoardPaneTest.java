@@ -28,7 +28,7 @@ class BoardPaneTest {
         Location emptyLocation = new Location(1, 1);
 
         // when
-        boardPane.setBoardSize(10, 10);
+        boardPane.prepareBoard(10, 10);
         boardPane.populateBoard(new ObservableLinkedMultiValueMap(entities));
 
         // then

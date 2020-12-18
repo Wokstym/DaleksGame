@@ -54,7 +54,7 @@ public class GameProperties {
     public static class GamePlayerProperties {
 
         @Builder.Default
-        private Map<GamePowerup, Integer> powerups = GamePowerup.toMap();
+        private Map<GamePowerup, Integer> powerups = GamePowerup.toMapWithDefaultValues();
 
         @Builder.Default
         private int lives = 1;
@@ -67,7 +67,7 @@ public class GameProperties {
 
         public static class GamePlayerPropertiesBuilder {
 
-            private Map<GamePowerup, Integer> powerups = GamePowerup.toMap();
+            private Map<GamePowerup, Integer> powerups = GamePowerup.toMapWithDefaultValues();
 
             //fixme builder ignores powerup addition
             public GamePlayerPropertiesBuilder powerup(GamePowerup powerup, int amount) {

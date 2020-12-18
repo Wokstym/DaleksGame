@@ -17,7 +17,7 @@ class GamePowerupTest {
         // given
 
         // when
-        Map <GamePowerup, Integer> powerupIntegerMap = GamePowerup.toMap();
+        Map <GamePowerup, Integer> powerupIntegerMap = GamePowerup.toMapWithDefaultValues();
 
         // then
         Arrays.stream(GamePowerup.values()).forEach(gamePowerup -> {

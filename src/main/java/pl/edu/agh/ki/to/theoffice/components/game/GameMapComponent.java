@@ -14,6 +14,8 @@ import java.util.List;
 @Slf4j
 public class GameMapComponent extends VBox implements FXMLComponent, MapChangeListener<Location, List<Entity>> {
 
+    public static final String FXML_SOURCE = "/view/game/game-map.fxml";
+
     @FXML
     private BoardPane board;
 
@@ -24,11 +26,11 @@ public class GameMapComponent extends VBox implements FXMLComponent, MapChangeLi
 
     @Override
     public String getFxmlResourceFile() {
-        return "/view/game/game-map.fxml";
+        return FXML_SOURCE;
     }
 
     public void initMap(int width, int height, ObservableLinkedMultiValueMap<Location, Entity> entities) {
-        board.setBoardSize(width, height);
+        board.prepareBoard(width, height);
         board.populateBoard(entities);
     }
 

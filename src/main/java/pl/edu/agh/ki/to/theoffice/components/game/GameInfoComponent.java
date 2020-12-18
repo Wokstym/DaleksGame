@@ -11,6 +11,8 @@ import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 @Component
 public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeListener<GamePowerup, Integer> {
 
+    public static final String FXML_SOURCE = "/view/game/game-info.fxml";
+
     @FXML
     public Text bombCount;
 
@@ -23,7 +25,7 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
 
     @Override
     public String getFxmlResourceFile() {
-        return "/view/game/game-info.fxml";
+        return FXML_SOURCE;
     }
 
     @Override

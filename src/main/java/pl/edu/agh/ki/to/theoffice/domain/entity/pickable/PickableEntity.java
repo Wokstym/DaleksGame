@@ -9,11 +9,6 @@ public abstract class PickableEntity implements Entity {
 
     private Location location;
 
-    @Override
-    public boolean isMovable() {
-        return false;
-    }
-
     public abstract GamePowerup getGamePowerup();
 
 }

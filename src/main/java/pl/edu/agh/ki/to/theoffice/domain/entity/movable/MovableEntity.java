@@ -17,14 +17,9 @@ public abstract class MovableEntity implements Entity {
     protected Location location;
     protected MovableEntityState state = MovableEntityState.ALIVE;
 
-    public abstract Location move(Location location);
+    public abstract void move(Location location);
 
     public abstract void handleCollision(long enemiesCount, long playersCount);
-
-    @Override
-    public boolean isMovable() {
-        return true;
-    }
 
     public enum MovableEntityState {
         ALIVE,

@@ -19,7 +19,7 @@ class GamePropertiesTest {
 
         // then
         assertEquals(1, gamePlayerProperties.getLives());
-        assertEquals(GamePowerup.toMap(), gamePlayerProperties.getPowerups());
+        assertEquals(GamePowerup.toMapWithDefaultValues(), gamePlayerProperties.getPowerups());
     }
 
     @Test

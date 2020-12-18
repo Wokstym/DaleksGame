@@ -23,7 +23,7 @@ public class PlayerEntity extends MovableEntity {
         final PlayerEntity playerEntity = new PlayerEntity();
 
         playerEntity.powerups = FXCollections.observableHashMap();
-        playerEntity.powerups.putAll(GamePowerup.toMap());
+        playerEntity.powerups.putAll(GamePowerup.toMapWithDefaultValues());
 
         playerEntity.lives = new SimpleIntegerProperty(properties.getLives());
 
@@ -51,16 +51,14 @@ public class PlayerEntity extends MovableEntity {
     }
 
     @Override
-    public Location move(Location locationToMoveInto) {
+    public void move(Location locationToMoveInto) {
         this.location = locationToMoveInto;
-
-        return locationToMoveInto;
     }
 
     @Override
     public void handleCollision(long enemiesCount, long playersCount) {
-        boolean playerColliedWithEnemy = (enemiesCount > 0 && playersCount > 0);
-        if (playerColliedWithEnemy) {
+        boolean playerCollidedWithEnemy = (enemiesCount > 0 && playersCount > 0);
+        if (playerCollidedWithEnemy) {
             this.state = MovableEntityState.DEAD;
         }
     }
