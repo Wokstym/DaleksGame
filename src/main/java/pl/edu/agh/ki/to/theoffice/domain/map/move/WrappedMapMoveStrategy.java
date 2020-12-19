@@ -2,11 +2,14 @@ package pl.edu.agh.ki.to.theoffice.domain.map.move;
 
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
-// todo: implement it
-class WrappedMapMoveStrategy extends MapMoveStrategy {
+import java.lang.reflect.InaccessibleObjectException;
 
-    protected WrappedMapMoveStrategy(int mapWidth, int mapHeight) {
+// todo: implement it
+public class WrappedMapMoveStrategy extends MapMoveStrategy {
+
+    public WrappedMapMoveStrategy(int mapWidth, int mapHeight) {
         super(mapWidth, mapHeight);
+        throw new InaccessibleObjectException("Feature not implemented yet. Use BOUNDED strategy instead");
     }
 
     @Override

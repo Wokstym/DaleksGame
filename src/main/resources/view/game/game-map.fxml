@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import pl.edu.agh.ki.to.theoffice.components.game.BoardPane?>
+<fx:root type="javafx.scene.layout.VBox"
+         xmlns:fx="http://javafx.com/fxml"
+         fx:controller="pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent"
+         prefHeight="800.0" prefWidth="800.0">
+
+    <BoardPane fx:id="board"
+               style="-fx-border-color: #616161;-fx-border-width: 0 "/>
+
+</fx:root>

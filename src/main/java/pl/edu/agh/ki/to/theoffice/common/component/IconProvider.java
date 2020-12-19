@@ -1,8 +1,8 @@
-package pl.edu.agh.ki.to.theoffice.components;
+package pl.edu.agh.ki.to.theoffice.common.component;
 
 import javafx.scene.image.Image;
 import lombok.Getter;
-import pl.edu.agh.ki.to.theoffice.domain.map.EntityType;
+import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
 
 @Getter
 public enum IconProvider {
@@ -16,6 +16,7 @@ public enum IconProvider {
     TELEPORT("teleport.png"),
     DOT("dot.png"),
     ARROW("arrow.png"),
+    FRAME("frame.png"),
     EMPTY("empty.png");
 
     private static final String ICON_PATH = "/icons/";
@@ -28,12 +29,14 @@ public enum IconProvider {
         this.image = imageOfSource();
     }
 
-    public static Image imageOf(EntityType entityType) {
-        var resultEnum = switch (entityType) {
+    public static Image imageOf(Entity entity) {
+        var resultEnum = switch (entity.getType()) {
             case PLAYER -> PLAYER;
             case ENEMY -> ENEMY;
             case DEAD_PLAYER -> DEAD_PLAYER;
             case ENEMY_SCRAP -> ENEMY_SCRAP;
+            case TELEPORT -> TELEPORT;
+            case BOMB -> BOMB;
         };
         return resultEnum.image;
     }

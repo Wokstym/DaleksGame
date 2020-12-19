@@ -12,12 +12,4 @@ public abstract class MapMoveStrategy {
 
     public abstract Location move(Location location, Location.Direction direction);
     public abstract Location.Direction getDirectionToApproachTarget(Location source, Location target);
-
-    public enum Type {
-
-        BOUNDED,
-        WRAPPED;
-
-    }
-
 }

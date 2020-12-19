@@ -1,41 +1,48 @@
-package pl.edu.agh.ki.to.theoffice.components;
+package pl.edu.agh.ki.to.theoffice.components.game;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import lombok.extern.slf4j.Slf4j;
+import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static pl.edu.agh.ki.to.theoffice.components.ComponentsUtils.setSquareSize;
+import static pl.edu.agh.ki.to.theoffice.common.component.ImageUtils.setSquareSize;
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction.*;
 
+@Slf4j
+public class GameControlsComponent extends TilePane implements FXMLComponent {
 
-public class ControlsPane extends TilePane {
+    public static final String FXML_SOURCE = "/view/game/game-controls.fxml";
+    private static final int ARROW_SIZE = 45;
 
-    private static final int arrowSize = 20;
+    private final List<ImageView> controlArrows;
 
-    private List<ImageView> controlArrows;
-
-    public void initArrows() {
-
+    public GameControlsComponent() {
+        FXMLUtils.loadFXML(this);
         this.controlArrows = this.getChildren().stream()
                 .map(node -> (TilePane) node)
                 .map(Pane::getChildren)
                 .flatMap(Collection::stream)
                 .map(node -> (ImageView) node)
-                .peek(control -> setSquareSize(control, arrowSize))
+                .peek(control -> setSquareSize(control, ARROW_SIZE))
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public String getFxmlResourceFile() {
+        return FXML_SOURCE;
+    }
+
     public void setArrowListeners(ArrowClicked lambda) {
-        controlArrows.stream()
-                .filter(imageView -> imageView.getRotate() >= 0)
-                .forEach(action -> action.setOnMouseClicked(mouseEvent -> {
-                    Direction direction = getAngleDependentOnDirection((int) action.getRotate());
+        controlArrows.forEach(action -> action.setOnMouseClicked(mouseEvent -> {
+                    Direction direction = getDirectionByRotationAngle((int) action.getRotate());
+                    log.debug("Direction: {}", direction);
                     lambda.arrowClicked(direction);
                 }));
     }
@@ -44,7 +51,7 @@ public class ControlsPane extends TilePane {
         controlArrows.forEach(action -> action.setOnMouseClicked(null));
     }
 
-    private Direction getAngleDependentOnDirection(int rotation) {
+    private Direction getDirectionByRotationAngle(int rotation) {
         return switch (rotation) {
             case 225 -> NORTH_WEST;
             case 270 -> NORTH;
@@ -54,6 +61,7 @@ public class ControlsPane extends TilePane {
             case 135 -> SOUTH_WEST;
             case 90 -> SOUTH;
             case 45 -> SOUTH_EAST;
+            case -1 -> NONE;
             default -> throw new IllegalStateException("Unexpected value: " + rotation);
         };
     }

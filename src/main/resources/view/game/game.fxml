@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent?>
+<?import pl.edu.agh.ki.to.theoffice.components.game.GameInfoComponent?>
+<?import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent?>
+<GridPane maxHeight="-Infinity"
+          maxWidth="-Infinity"
+          minHeight="-Infinity"
+          minWidth="-Infinity"
+          prefHeight="800.0"
+          prefWidth="1000.0"
+          xmlns="http://javafx.com/javafx/11.0.1"
+          xmlns:fx="http://javafx.com/fxml/1"
+          onKeyPressed="#handleOnKeyPressed"
+          fx:controller="pl.edu.agh.ki.to.theoffice.controller.GameController">
+
+    <GameMapComponent fx:id="map"
+                      alignment="CENTER"
+                      GridPane.columnIndex="0"
+                      GridPane.rowIndex="0"
+                      GridPane.rowSpan="2"/>
+
+    <GameInfoComponent fx:id="info"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="0"/>
+
+    <GameControlsComponent fx:id="controls"
+                           alignment="CENTER"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="1"/>
+
+</GridPane>
