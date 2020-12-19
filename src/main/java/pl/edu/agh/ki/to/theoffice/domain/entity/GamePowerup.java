@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum GamePowerup {
-
     TELEPORT(0),
     BOMB(0);
 

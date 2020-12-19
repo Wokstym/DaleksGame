@@ -2,9 +2,9 @@ package pl.edu.agh.ki.to.theoffice.domain.map.move;
 
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
-class BoundedMapMoveStrategy extends MapMoveStrategy {
+public class BoundedMapMoveStrategy extends MapMoveStrategy {
 
-    BoundedMapMoveStrategy(int mapWidth, int mapHeight) {
+    public BoundedMapMoveStrategy(int mapWidth, int mapHeight) {
         super(mapWidth, mapHeight);
     }
 

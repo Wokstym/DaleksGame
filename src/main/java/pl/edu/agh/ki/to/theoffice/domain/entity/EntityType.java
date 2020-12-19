@@ -15,15 +15,4 @@ public enum EntityType {
     TELEPORT(2);
 
     private final int mapPriority;
-
-    //todo delete
-    public boolean isPlayerRelated() {
-        return this == PLAYER || this == DEAD_PLAYER;
-    }
-
-    //todo delete
-    public boolean isEnemyRelated() {
-        return this == ENEMY || this == ENEMY_SCRAP;
-    }
-
 }

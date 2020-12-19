@@ -4,12 +4,14 @@ import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameInfoComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent;
-import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
-import pl.edu.agh.ki.to.theoffice.domain.game.*;
+import pl.edu.agh.ki.to.theoffice.domain.game.Game;
+import pl.edu.agh.ki.to.theoffice.domain.game.GameState;
+import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameMapProperties;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
@@ -17,8 +19,6 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 @Component
 @FxmlView("/view/game/game.fxml")
 public class GameController {
-
-    private Game game;
 
     @FXML
     public GameInfoComponent info;
@@ -29,32 +29,26 @@ public class GameController {
     @FXML
     private GameMapComponent map;
 
+    private final GameMapProperties gameMapProperties;
+    private final Game game;
+
+    @Autowired
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") // podejżane, ale działa normalnie, todo zweryfikować
+    public GameController(GameMapProperties gameMapProperties, Game game) {
+        this.gameMapProperties = gameMapProperties;
+        this.game = game;
+    }
+
     @FXML
     public void initialize() {
-        //todo fix builder
-        var gamePlayerProperties = GameProperties.GamePlayerProperties.builder()
-                .build();
-
-        gamePlayerProperties.addPowerup(GamePowerup.BOMB, 4);
-        gamePlayerProperties.addPowerup(GamePowerup.TELEPORT, 1);
-
-        GameProperties properties = GameProperties.builder()
-                .enemies(1)
-                .playerProperties(gamePlayerProperties)
-                .build();
-
-        game = GameFactory.fromProperties(properties);
-
-        var mapProperties = game.getGameProperties().getMapProperties();
-        map.initMap(mapProperties.getWidth(), mapProperties.getHeight(), game.getEntities());
-
+        map.initMap(gameMapProperties.getWidth(), gameMapProperties.getHeight(), game.getEntities());
         setupListeners();
     }
 
     @FXML
     public void handleOnKeyPressed(KeyEvent keyEvent) {
         log.debug("Handled key: {}", keyEvent.getCode().name());
-        if(game.getGameState().getValue() != GameState.IN_PROGRESS) {
+        if (game.getGameState().getValue() != GameState.IN_PROGRESS) {
             return;
         }
 
@@ -68,7 +62,7 @@ public class GameController {
         controls.setArrowListeners(game::movePlayer);
 
         game.getGameState().addListener((val, oldState, newState) -> {
-            if(newState == GameState.LOST) {
+            if (newState == GameState.LOST) {
                 controls.removeArrowListeners();
             }
         });

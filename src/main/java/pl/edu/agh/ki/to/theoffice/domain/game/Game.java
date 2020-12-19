@@ -1,10 +1,9 @@
 package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,6 +12,7 @@ import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.MovableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntity;
+import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
@@ -23,24 +23,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@AllArgsConstructor
 public class Game {
-
-    public static Game fromProperties(GameProperties properties) {
-        Game game = new Game();
-        game.gameProperties = properties;
-        game.mapMoveStrategy = properties.getMapMoveStrategy();
-
-        game.gameState = new SimpleObjectProperty<>(GameState.IN_PROGRESS);
-
-        final var mapResults = GameFactoryUtils.fromGameProperties(properties);
-        game.entities = new ObservableLinkedMultiValueMap<>(mapResults.entities);
-        game.playerEntity = mapResults.playerEntity;
-        game.playerLocation = new SimpleObjectProperty<>(game.playerEntity.getLocation());
-        game.powerupsOnMap = mapResults.powerupsOnMap;
-
-        return game;
-    }
 
     private GameProperties gameProperties;
     private MapMoveStrategy mapMoveStrategy;

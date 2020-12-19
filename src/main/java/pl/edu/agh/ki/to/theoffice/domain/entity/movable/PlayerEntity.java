@@ -8,9 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
-import pl.edu.agh.ki.to.theoffice.domain.game.GameProperties;
 import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
+import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
+import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
 @Slf4j
