@@ -1,13 +1,10 @@
-package pl.edu.agh.ki.to.theoffice.domain.game;
+package pl.edu.agh.ki.to.theoffice.domain.game.properties;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
-import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 class GamePropertiesTest {
 
     @Test
@@ -18,20 +15,7 @@ class GamePropertiesTest {
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
 
         // then
-        assertEquals(1, gamePlayerProperties.getLives());
+        assertEquals(0, gamePlayerProperties.getLives());
         assertEquals(GamePowerup.toMapWithDefaultValues(), gamePlayerProperties.getPowerups());
-    }
-
-    @Test
-    public void testGameMapProperties(){
-        // given
-
-    /*    // when
-        GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(20, 20);
-
-        // then
-        assertEquals(20, gameMapProperties.getWidth());
-        assertEquals(20, gameMapProperties.getHeight());
-       // assertEquals(MapMoveStrategy.Type.BOUNDED, gameMapProperties.getMapMoveStrategy());*/
     }
 }

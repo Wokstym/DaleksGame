@@ -1,29 +1,32 @@
 package pl.edu.agh.ki.to.theoffice.components.game;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.common.component.IconProvider;
-import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
+import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
+import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
+import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
+import pl.edu.agh.ki.to.theoffice.domain.map.move.BoundedMapMoveStrategy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 class BoardPaneTest {
 
     @Test
     void testPopulateBoard() {
         // given
         BoardPane boardPane = new BoardPane();
-        LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<>();
+        LinkedMultiValueMap<Location, Entity> entities = new LinkedMultiValueMap<>();
 
         Location playerLocation = new Location(2, 2);
-        entities.add(playerLocation, EntityType.PLAYER);
+        PlayerEntity playerEntity = new PlayerEntity();
+        entities.add(playerLocation, playerEntity);
 
         Location enemyLocation = new Location(1, 2);
-        entities.add(enemyLocation, EntityType.ENEMY);
+        EnemyEntity enemyEntity = new EnemyEntity(new BoundedMapMoveStrategy(10,10), enemyLocation);
+        entities.add(enemyLocation, enemyEntity);
 
         Location emptyLocation = new Location(1, 1);
 
@@ -32,8 +35,8 @@ class BoardPaneTest {
         boardPane.populateBoard(new ObservableLinkedMultiValueMap(entities));
 
         // then
-       /* assertEquals(IconProvider.imageOf(EntityType.PLAYER), boardPane.getImages().get(playerLocation).getImage());
-        assertEquals(IconProvider.imageOf(EntityType.ENEMY), boardPane.getImages().get(enemyLocation).getImage());*/
+        assertEquals(IconProvider.imageOf(playerEntity), boardPane.getImages().get(playerLocation).getImage());
+        assertEquals(IconProvider.imageOf(enemyEntity), boardPane.getImages().get(enemyLocation).getImage());
         assertEquals(IconProvider.EMPTY.getImage(), boardPane.getImages().get(emptyLocation).getImage());
     }
 }

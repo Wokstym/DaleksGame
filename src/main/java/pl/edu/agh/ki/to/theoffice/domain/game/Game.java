@@ -46,6 +46,7 @@ public class Game {
         this.solveEnemyCollisions();
         this.pickupPowerup();
 
+        // TODO playerEntity state isn't update
         if (playerEntity.getState() == MovableEntity.MovableEntityState.DEAD) {
             gameState.setValue(GameState.LOST);
         }

@@ -1,6 +1,7 @@
 package pl.edu.agh.ki.to.theoffice.service;
 
 import javafx.beans.property.SimpleObjectProperty;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
+@Setter
 public class GameFromPropertiesService {
 
     @Autowired

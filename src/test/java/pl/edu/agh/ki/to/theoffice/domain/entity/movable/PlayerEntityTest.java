@@ -1,15 +1,12 @@
-package pl.edu.agh.ki.to.theoffice.domain.game;
+package pl.edu.agh.ki.to.theoffice.domain.entity.movable;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
-import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
 class PlayerEntityTest {
 
     @Test
@@ -64,7 +61,7 @@ class PlayerEntityTest {
         playerEntity.addLife();
 
         // then
-        assertEquals(2, playerEntity.getLives().get());
+        assertEquals(1, playerEntity.getLives().get());
     }
 
     @Test
@@ -72,6 +69,7 @@ class PlayerEntityTest {
         // given
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
         PlayerEntity playerEntity = PlayerEntity.fromProperties(gamePlayerProperties);
+        playerEntity.addLife();
 
         // when
         playerEntity.removeLife();

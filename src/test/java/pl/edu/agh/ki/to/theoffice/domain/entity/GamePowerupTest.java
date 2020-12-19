@@ -1,19 +1,16 @@
-package pl.edu.agh.ki.to.theoffice.domain.game;
+package pl.edu.agh.ki.to.theoffice.domain.entity;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 
 import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 class GamePowerupTest {
 
     @Test
-    void testToMap() {
+    void testToMapWithDefaultValues() {
         // given
 
         // when
