@@ -63,6 +63,7 @@ public class GameTest {
         entities.add(playerLocation, playerEntity);
         game.setEntities(new ObservableLinkedMultiValueMap(entities));
         game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
+        game.setPlayerEntity(playerEntity);
         Location.Direction direction = Location.Direction.SOUTH;
 
         // when
@@ -97,6 +98,7 @@ public class GameTest {
         entities.add(enemyLocation, new EnemyEntity(new BoundedMapMoveStrategy(5, 5), enemyLocation));
         game.setEntities(new ObservableLinkedMultiValueMap(entities));
         game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
+        game.setPlayerEntity(playerEntity);
         Location.Direction direction = Location.Direction.SOUTH;
 
         // when
@@ -133,6 +135,7 @@ public class GameTest {
         entities.add(enemyLocation2, new EnemyEntity(new BoundedMapMoveStrategy(5, 5), enemyLocation2));
         game.setEntities(new ObservableLinkedMultiValueMap(entities));
         game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
+        game.setPlayerEntity(playerEntity);
         Location.Direction direction = Location.Direction.NORTH;
 
         // when
