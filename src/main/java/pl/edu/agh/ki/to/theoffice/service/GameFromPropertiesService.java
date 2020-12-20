@@ -3,6 +3,7 @@ package pl.edu.agh.ki.to.theoffice.service;
 import javafx.beans.property.SimpleObjectProperty;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
@@ -24,7 +25,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
-@Setter
 public class GameFromPropertiesService {
 
     @Autowired
@@ -33,6 +33,12 @@ public class GameFromPropertiesService {
     @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") // todo check if solution is fine, strange warning
     private MapMoveStrategy mapMoveStrategy;
+
+    @Autowired // todo doesn't work without @Qualifier
+    public GameFromPropertiesService(GameMapProperties gameMapProperties, @Qualifier("boundedMapMoveStrategy") MapMoveStrategy mapMoveStrategy){
+        this.gameMapProperties = gameMapProperties;
+        this.mapMoveStrategy = mapMoveStrategy;
+    }
 
     public Game fromProperties(GameProperties properties) {
 

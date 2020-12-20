@@ -27,9 +27,11 @@ public class GameTest {
                 .playerProperties(gamePlayerProperties)
                 .build();
 
-        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService();
-        gameFromPropertiesService.setGameMapProperties(new GameMapProperties(10, 1));
-        gameFromPropertiesService.setMapMoveStrategy(new BoundedMapMoveStrategy(10, 1));
+        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService(
+                new GameMapProperties(10, 1),
+                new BoundedMapMoveStrategy(10, 1)
+        );
+
         Game game = gameFromPropertiesService.fromProperties(gameProperties);
         Location.Direction direction = Location.Direction.SOUTH;
         Location playerOldLocation = game.getPlayerLocation().getValue();
@@ -51,9 +53,11 @@ public class GameTest {
                 .playerProperties(gamePlayerProperties)
                 .build();
 
-        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService();
-        gameFromPropertiesService.setGameMapProperties(new GameMapProperties(5, 5));
-        gameFromPropertiesService.setMapMoveStrategy(new BoundedMapMoveStrategy(5, 5));
+        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService(
+                new GameMapProperties(5, 5),
+                new BoundedMapMoveStrategy(5, 5)
+        );
+
         Game game = gameFromPropertiesService.fromProperties(gameProperties);
 
         LinkedMultiValueMap<Location, Entity> entities = new LinkedMultiValueMap<>();
@@ -83,9 +87,11 @@ public class GameTest {
                 .playerProperties(gamePlayerProperties)
                 .build();
 
-        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService();
-        gameFromPropertiesService.setGameMapProperties(new GameMapProperties(5, 5));
-        gameFromPropertiesService.setMapMoveStrategy(new BoundedMapMoveStrategy(5, 5));
+        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService(
+                new GameMapProperties(5, 5),
+                new BoundedMapMoveStrategy(5, 5)
+        );
+
         Game game = gameFromPropertiesService.fromProperties(gameProperties);
 
         LinkedMultiValueMap<Location, Entity> entities = new LinkedMultiValueMap<>();
@@ -118,9 +124,11 @@ public class GameTest {
                 .playerProperties(gamePlayerProperties)
                 .build();
 
-        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService();
-        gameFromPropertiesService.setGameMapProperties(new GameMapProperties(5, 5));
-        gameFromPropertiesService.setMapMoveStrategy(new BoundedMapMoveStrategy(5, 5));
+        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService(
+                new GameMapProperties(5, 5),
+                new BoundedMapMoveStrategy(5, 5)
+        );
+
         Game game = gameFromPropertiesService.fromProperties(gameProperties);
 
         LinkedMultiValueMap<Location, Entity> entities = new LinkedMultiValueMap<>();

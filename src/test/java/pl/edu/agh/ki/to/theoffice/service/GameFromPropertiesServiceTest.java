@@ -26,9 +26,10 @@ class GameFromPropertiesServiceTest {
                 .playerProperties(gamePlayerProperties)
                 .build();
 
-        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService();
-        gameFromPropertiesService.setGameMapProperties(new GameMapProperties(20, 20));
-        gameFromPropertiesService.setMapMoveStrategy(new BoundedMapMoveStrategy(20, 20));
+        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService(
+                new GameMapProperties(20, 20),
+                new BoundedMapMoveStrategy(20, 20)
+        );
 
         // when
         Game game = gameFromPropertiesService.fromProperties(gameProperties);
