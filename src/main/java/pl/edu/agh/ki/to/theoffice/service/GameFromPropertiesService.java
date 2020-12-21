@@ -27,15 +27,12 @@ import java.util.stream.IntStream;
 @Service
 public class GameFromPropertiesService {
 
-    @Autowired
-    private GameMapProperties gameMapProperties;
+    private final GameMapProperties gameMapProperties;
 
-    @Autowired
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") // todo check if solution is fine, strange warning
-    private MapMoveStrategy mapMoveStrategy;
+    private final MapMoveStrategy mapMoveStrategy;
 
-    @Autowired // todo doesn't work without @Qualifier
-    public GameFromPropertiesService(GameMapProperties gameMapProperties, @Qualifier("boundedMapMoveStrategy") MapMoveStrategy mapMoveStrategy){
+    @Autowired // todo check if solution is fine, strange warning
+    public GameFromPropertiesService(GameMapProperties gameMapProperties, @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") MapMoveStrategy mapMoveStrategy){
         this.gameMapProperties = gameMapProperties;
         this.mapMoveStrategy = mapMoveStrategy;
     }

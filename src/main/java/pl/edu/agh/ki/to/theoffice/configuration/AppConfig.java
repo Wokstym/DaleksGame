@@ -30,13 +30,13 @@ public class AppConfig {
         return new GameMapProperties(mapWidth, mapHeight);
     }
 
-    @Bean(name="boundedMapMoveStrategy")
+    @Bean
     @ConditionalOnProperty(value = "map.strategy", havingValue = "bounded", matchIfMissing = true)
     public MapMoveStrategy boundedMapMoveStrategy() {
         return new BoundedMapMoveStrategy(mapWidth, mapHeight);
     }
 
-    @Bean(name="wrappedMapMoveStrategy")
+    @Bean
     @ConditionalOnProperty(value = "map.strategy", havingValue = "wrapped")
     public MapMoveStrategy wrappedMapMoveStrategy() {
         return new WrappedMapMoveStrategy(mapWidth, mapHeight);
