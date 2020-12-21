@@ -45,7 +45,7 @@ public class Game {
         this.moveEntities();
         this.solveEnemyCollisions();
         this.pickupPowerup();
-
+        
         if (playerEntity.getState() == MovableEntity.MovableEntityState.DEAD) {
             gameState.setValue(GameState.LOST);
         }

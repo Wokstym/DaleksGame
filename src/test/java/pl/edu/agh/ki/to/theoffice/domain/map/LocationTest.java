@@ -2,14 +2,12 @@ package pl.edu.agh.ki.to.theoffice.domain.map;
 
 import javafx.scene.input.KeyCode;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 public class LocationTest {
 
     @Test

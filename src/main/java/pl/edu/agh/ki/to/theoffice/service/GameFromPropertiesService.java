@@ -1,7 +1,9 @@
 package pl.edu.agh.ki.to.theoffice.service;
 
 import javafx.beans.property.SimpleObjectProperty;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
@@ -25,12 +27,15 @@ import java.util.stream.IntStream;
 @Service
 public class GameFromPropertiesService {
 
-    @Autowired
-    private GameMapProperties gameMapProperties;
+    private final GameMapProperties gameMapProperties;
 
-    @Autowired
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") // todo check if solution is fine, strange warning
-    private MapMoveStrategy mapMoveStrategy;
+    private final MapMoveStrategy mapMoveStrategy;
+
+    @Autowired // todo check if solution is fine, strange warning
+    public GameFromPropertiesService(GameMapProperties gameMapProperties, @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") MapMoveStrategy mapMoveStrategy){
+        this.gameMapProperties = gameMapProperties;
+        this.mapMoveStrategy = mapMoveStrategy;
+    }
 
     public Game fromProperties(GameProperties properties) {
 

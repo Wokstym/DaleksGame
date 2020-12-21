@@ -1,12 +1,10 @@
 package pl.edu.agh.ki.to.theoffice.domain.map.move;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 public class BoundedMapMoveStrategyTest {
 
     BoundedMapMoveStrategy boundedMapMoveStrategy = new BoundedMapMoveStrategy(10, 10);

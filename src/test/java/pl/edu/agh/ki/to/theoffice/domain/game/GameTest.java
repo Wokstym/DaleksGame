@@ -1,42 +1,38 @@
 package pl.edu.agh.ki.to.theoffice.domain.game;
 
+import javafx.beans.property.SimpleObjectProperty;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.LinkedMultiValueMap;
+import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
+import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
+import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
+import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameMapProperties;
+import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
+import pl.edu.agh.ki.to.theoffice.domain.map.Location;
+import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
+import pl.edu.agh.ki.to.theoffice.domain.map.move.BoundedMapMoveStrategy;
+import pl.edu.agh.ki.to.theoffice.service.GameFromPropertiesService;
 
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class GameTest {
 
     @Test
-    public void testFromProperties() {
-        // given
-       /* GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(20, 20, MapMoveStrategy.Type.BOUNDED);
-        GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties, MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 10);
-
-        // when
-        Game game = Game.fromProperties(gameProperties);
-
-        // then
-        assertEquals(10 + 1, game
-                .getEntities()
-                .size());
-
-        assertTrue(game
-                .getEntities()
-                .toSingleValueMap()
-                .containsValue(EntityType.PLAYER));
-
-        assertEquals(GameState.IN_PROGRESS, game.getGameState().getValue());*/
-
-    }
-
-    @Test
     public void testPlayerNotMoved() {
-/*        // given
-        GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(100, 1, MapMoveStrategy.Type.BOUNDED);
+        // given
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties,MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 0);
-        Game game = Game.fromProperties(gameProperties);
+
+        GameProperties gameProperties = GameProperties.builder()
+                .enemies(0)
+                .playerProperties(gamePlayerProperties)
+                .build();
+
+        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService(
+                new GameMapProperties(10, 1),
+                new BoundedMapMoveStrategy(10, 1)
+        );
+
+        Game game = gameFromPropertiesService.fromProperties(gameProperties);
         Location.Direction direction = Location.Direction.SOUTH;
         Location playerOldLocation = game.getPlayerLocation().getValue();
 
@@ -44,76 +40,117 @@ public class GameTest {
         game.movePlayer(direction);
 
         // then
-         assertEquals(playerOldLocation, game.getPlayerLocation().getValue());*/
+         assertEquals(playerOldLocation, game.getPlayerLocation().getValue());
     }
 
     @Test
     public void testPlayerMoved() {
-      /*  // given
-        GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
+        // given
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties,MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 0);
-        Game game = Game.fromProperties(gameProperties);
 
-        LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<Location, EntityType>();
+        GameProperties gameProperties = GameProperties.builder()
+                .enemies(0)
+                .playerProperties(gamePlayerProperties)
+                .build();
+
+        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService(
+                new GameMapProperties(5, 5),
+                new BoundedMapMoveStrategy(5, 5)
+        );
+
+        Game game = gameFromPropertiesService.fromProperties(gameProperties);
+
+        LinkedMultiValueMap<Location, Entity> entities = new LinkedMultiValueMap<>();
         Location playerLocation = new Location(2, 2);
-        entities.add(playerLocation, EntityType.PLAYER);
+        PlayerEntity playerEntity = PlayerEntity.fromProperties(gamePlayerProperties);
+        playerEntity.setLocation(playerLocation);
+        entities.add(playerLocation, playerEntity);
         game.setEntities(new ObservableLinkedMultiValueMap(entities));
         game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
+        game.setPlayerEntity(playerEntity);
         Location.Direction direction = Location.Direction.SOUTH;
 
         // when
         game.movePlayer(direction);
 
         // then
-        assertEquals(playerLocation.add(direction), game.getPlayerLocation().getValue());*/
+        assertEquals(playerLocation.add(direction), game.getPlayerLocation().getValue());
     }
 
     @Test
     public void testPlayerCollidedWithEnemiesAndLost() {
-      /*  // given
-        GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
+        // given
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties,MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 0);
-        Game game = Game.fromProperties(gameProperties);
 
-        LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<>();
+        GameProperties gameProperties = GameProperties.builder()
+                .enemies(0)
+                .playerProperties(gamePlayerProperties)
+                .build();
+
+        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService(
+                new GameMapProperties(5, 5),
+                new BoundedMapMoveStrategy(5, 5)
+        );
+
+        Game game = gameFromPropertiesService.fromProperties(gameProperties);
+
+        LinkedMultiValueMap<Location, Entity> entities = new LinkedMultiValueMap<>();
         Location playerLocation = new Location(2, 2);
-        entities.add(playerLocation, EntityType.PLAYER);
-        entities.add(new Location(1, 2), EntityType.ENEMY);
+        PlayerEntity playerEntity = PlayerEntity.fromProperties(gamePlayerProperties);
+        playerEntity.setLocation(playerLocation);
+        entities.add(playerLocation, playerEntity);
+
+        Location enemyLocation = new Location(2, 1);
+        entities.add(enemyLocation, new EnemyEntity(new BoundedMapMoveStrategy(5, 5), enemyLocation));
         game.setEntities(new ObservableLinkedMultiValueMap(entities));
         game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
-        Location.Direction direction = Location.Direction.NONE;
+        game.setPlayerEntity(playerEntity);
+        Location.Direction direction = Location.Direction.SOUTH;
 
         // when
         game.movePlayer(direction);
 
         // then
-        assertEquals(GameState.LOST, game.getGameState().getValue());*/
+        assertEquals(GameState.LOST, game.getGameState().getValue());
     }
 
     @Test
     public void testPlayerWon() {
-     /*   // given
-        GameProperties.GameMapProperties gameMapProperties = new GameProperties.GameMapProperties(5, 5, MapMoveStrategy.Type.BOUNDED);
+        // given
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
-        GameProperties gameProperties = new GameProperties(gameMapProperties,MapMoveStrategyFactory.fromProperties(gameMapProperties), gamePlayerProperties, 0);
-        Game game = Game.fromProperties(gameProperties);
 
-        LinkedMultiValueMap<Location, EntityType> entities = new LinkedMultiValueMap<>();
+        GameProperties gameProperties = GameProperties.builder()
+                .enemies(0)
+                .playerProperties(gamePlayerProperties)
+                .build();
+
+        GameFromPropertiesService gameFromPropertiesService = new GameFromPropertiesService(
+                new GameMapProperties(5, 5),
+                new BoundedMapMoveStrategy(5, 5)
+        );
+
+        Game game = gameFromPropertiesService.fromProperties(gameProperties);
+
+        LinkedMultiValueMap<Location, Entity> entities = new LinkedMultiValueMap<>();
         Location playerLocation = new Location(2, 2);
-        entities.add(playerLocation, EntityType.PLAYER);
-        entities.add(new Location(1, 3), EntityType.ENEMY);
-        entities.add(new Location(3, 3), EntityType.ENEMY);
+        PlayerEntity playerEntity = PlayerEntity.fromProperties(gamePlayerProperties);
+        playerEntity.setLocation(playerLocation);
+        entities.add(playerLocation, playerEntity);
+
+        Location enemyLocation = new Location(1, 3);
+        entities.add(enemyLocation, new EnemyEntity(new BoundedMapMoveStrategy(5, 5), enemyLocation));
+        Location enemyLocation2 = new Location(3, 3);
+        entities.add(enemyLocation2, new EnemyEntity(new BoundedMapMoveStrategy(5, 5), enemyLocation2));
         game.setEntities(new ObservableLinkedMultiValueMap(entities));
         game.setPlayerLocation(new SimpleObjectProperty<>(playerLocation));
+        game.setPlayerEntity(playerEntity);
         Location.Direction direction = Location.Direction.NORTH;
 
         // when
         game.movePlayer(direction);
 
         // then
-        assertEquals(GameState.WON, game.getGameState().getValue());*/
+        assertEquals(GameState.WON, game.getGameState().getValue());
     }
 
 }
