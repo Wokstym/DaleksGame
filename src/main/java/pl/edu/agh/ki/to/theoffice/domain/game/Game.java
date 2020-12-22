@@ -9,9 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
+import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.MovableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntity;
+import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntityFactory;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
@@ -52,6 +54,17 @@ public class Game {
 
         if (getEnemiesCount() == 0) {
             gameState.setValue(GameState.WON);
+        }
+    }
+
+    public void usePowerup(GamePowerup gamePowerup) {
+        if (playerEntity.canUsePowerup(gamePowerup)) {
+            playerEntity.removePowerup(gamePowerup);
+
+            PickableEntity pickableEntity = PickableEntityFactory.fromEntityType(gamePowerup);
+            pickableEntity.usePowerup(this.mapMoveStrategy, this.entities, this.playerLocation);
+
+            movePlayer(Location.Direction.NONE);
         }
     }
 

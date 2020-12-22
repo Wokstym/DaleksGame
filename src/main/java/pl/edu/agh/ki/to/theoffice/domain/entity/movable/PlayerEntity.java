@@ -42,6 +42,10 @@ public class PlayerEntity extends MovableEntity {
         this.powerups.compute(powerup, (k, v) -> v -= 1);
     }
 
+    public boolean canUsePowerup(GamePowerup powerup) {
+        return this.powerups.get(powerup) > 0;
+    }
+
     public void addLife() {
         this.lives.setValue(this.lives.get() + 1);
     }

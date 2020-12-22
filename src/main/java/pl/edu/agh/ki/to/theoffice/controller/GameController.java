@@ -60,6 +60,7 @@ public class GameController {
         game.getEntities().addListener(map);
         game.getPlayerEntity().getPowerups().addListener(info);
         controls.setArrowListeners(game::movePlayer);
+        info.setPowerupsListeners(game::usePowerup);
 
         game.getGameState().addListener((val, oldState, newState) -> {
             if (newState == GameState.LOST) {

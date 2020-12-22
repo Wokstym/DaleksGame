@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerEntityTest {
 
@@ -49,6 +48,28 @@ class PlayerEntityTest {
         // then
         assertTrue(playerEntity.getPowerups().containsKey(GamePowerup.BOMB));
         assertEquals(0, playerEntity.getPowerups().get(GamePowerup.BOMB).intValue());
+    }
+
+    @Test
+    void testCantUsePowerup(){
+        // given
+        GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
+        PlayerEntity playerEntity = PlayerEntity.fromProperties(gamePlayerProperties);
+
+        // when then
+        assertFalse(playerEntity.canUsePowerup(GamePowerup.BOMB));
+        assertFalse(playerEntity.canUsePowerup(GamePowerup.TELEPORT));
+    }
+
+    @Test
+    void testCanUsePowerup(){
+        // given
+        GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
+        PlayerEntity playerEntity = PlayerEntity.fromProperties(gamePlayerProperties);
+        playerEntity.addPowerup(GamePowerup.BOMB);
+
+        // when then
+        assertTrue(playerEntity.canUsePowerup(GamePowerup.BOMB));
     }
 
     @Test
