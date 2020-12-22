@@ -33,7 +33,7 @@ public class GameController {
     private final Game game;
 
     @Autowired
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") // podejżane, ale działa normalnie, todo zweryfikować
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") // podejrzane, ale działa normalnie, todo zweryfikować
     public GameController(GameMapProperties gameMapProperties, Game game) {
         this.gameMapProperties = gameMapProperties;
         this.game = game;
@@ -43,6 +43,8 @@ public class GameController {
     public void initialize() {
         map.initMap(gameMapProperties.getWidth(), gameMapProperties.getHeight(), game.getEntities());
         setupListeners();
+        controls.setEffects();
+        info.setEffects();
     }
 
     @FXML

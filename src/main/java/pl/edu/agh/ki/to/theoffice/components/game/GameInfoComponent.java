@@ -2,7 +2,11 @@ package pl.edu.agh.ki.to.theoffice.components.game;
 
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
@@ -18,6 +22,12 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
 
     @FXML
     public Text teleportCount;
+
+    @FXML
+    public TilePane bombButton;
+
+    @FXML
+    public TilePane teleportButton;
 
     public GameInfoComponent() {
         FXMLUtils.loadFXML(this);
@@ -40,17 +50,30 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
     }
 
     public void setPowerupsListeners(PowerupClicked lambda){
-        bombCount.setOnMouseClicked(mouseEvent -> {
-            lambda.powerupClicked(GamePowerup.BOMB);
-        });
+        bombButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.BOMB));
 
-        teleportCount.setOnMouseClicked(mouseEvent -> {
-            lambda.powerupClicked(GamePowerup.TELEPORT);
-        });
+        teleportButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.TELEPORT));
     }
 
     @FunctionalInterface
     public interface PowerupClicked {
         void powerupClicked(GamePowerup gamePowerup);
+    }
+
+    public void setEffects(){
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.GREY);
+
+        bombButton.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                e -> bombButton.setEffect(dropShadow));
+
+        bombButton.addEventHandler(MouseEvent.MOUSE_EXITED,
+                e -> bombButton.setEffect(null));
+
+        teleportButton.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                e -> teleportButton.setEffect(dropShadow));
+
+        teleportButton.addEventHandler(MouseEvent.MOUSE_EXITED,
+                e -> teleportButton.setEffect(null));
     }
 }

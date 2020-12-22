@@ -11,13 +11,13 @@
          prefHeight="600.0" prefWidth="200.0"
          style="-fx-padding: 25 0 0 0;">
 
-    <TilePane style="-fx-border-color: black;">
+    <TilePane fx:id="bombButton" style="-fx-border-color: black;">
         <ImageView fitHeight="60" fitWidth="60">
             <Image url="@/icons/bomb.png"/>
         </ImageView>
         <Text fx:id="bombCount" style="-fx-font: 24 arial; ">0</Text>
     </TilePane>
-    <TilePane style="-fx-border-color: black;">
+    <TilePane fx:id="teleportButton" style="-fx-border-color: black;">
         <ImageView fitHeight="60" fitWidth="60">
             <Image url="@/icons/teleport.png"/>
         </ImageView>

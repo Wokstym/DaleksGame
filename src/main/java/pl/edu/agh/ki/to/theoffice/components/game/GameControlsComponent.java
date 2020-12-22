@@ -1,9 +1,11 @@
 package pl.edu.agh.ki.to.theoffice.components.game;
 
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
@@ -75,5 +77,18 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
     public interface ControlClicked {
         void mouseClicked(MouseEvent event);
 
+    }
+
+    public void setEffects(){
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.BLACK);
+
+        controlArrows.forEach(controlArrows -> {
+            controlArrows.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                    e -> controlArrows.setEffect(dropShadow));
+
+            controlArrows.addEventHandler(MouseEvent.MOUSE_EXITED,
+                    e -> controlArrows.setEffect(null));
+        });
     }
 }
