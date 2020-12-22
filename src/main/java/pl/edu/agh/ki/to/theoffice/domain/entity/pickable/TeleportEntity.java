@@ -23,11 +23,11 @@ public class TeleportEntity extends PickableEntity {
     public void usePowerup(MapMoveStrategy mapMoveStrategy, ObservableLinkedMultiValueMap<Location, Entity> entities, ObjectProperty<Location> playerLocation) {
         int x = mapMoveStrategy.getMapWidth();
         int y = mapMoveStrategy.getMapHeight();
-        Location newPlayerLocation = Location.randomLocation(x, y);
+        Location newPlayerLocation;
 
-        while (locationIsNearToEnemy(entities, newPlayerLocation) || Location.neighbouringLocations(playerLocation.getValue(), newPlayerLocation)) {
+        do {
             newPlayerLocation = Location.randomLocation(x, y);
-        }
+        } while (locationIsNearToEnemy(entities, newPlayerLocation) || Location.neighbouringLocations(playerLocation.getValue(), newPlayerLocation));
 
         playerLocation.setValue(newPlayerLocation);
     }

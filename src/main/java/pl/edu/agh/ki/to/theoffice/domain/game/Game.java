@@ -61,8 +61,9 @@ public class Game {
         if (playerEntity.canUsePowerup(gamePowerup)) {
             playerEntity.removePowerup(gamePowerup);
 
-            PickableEntity pickableEntity = PickableEntityFactory.fromEntityType(gamePowerup);
-            pickableEntity.usePowerup(this.mapMoveStrategy, this.entities, this.playerLocation);
+            PickableEntityFactory
+                    .fromEntityType(gamePowerup)
+                    .usePowerup(this.mapMoveStrategy, this.entities, this.playerLocation);
 
             movePlayer(Location.Direction.NONE);
         }
