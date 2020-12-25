@@ -41,7 +41,7 @@ public class GameTest {
         game.movePlayer(direction);
 
         // then
-         assertEquals(playerOldLocation, game.getPlayerLocation().getValue());
+        assertEquals(playerOldLocation, game.getPlayerLocation().getValue());
     }
 
     @Test
@@ -155,7 +155,7 @@ public class GameTest {
     }
 
     @Test
-    public void testUsePowerupBomb(){
+    public void testUsePowerupBomb() {
         // given
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
 
@@ -191,13 +191,13 @@ public class GameTest {
         game.usePowerup(GamePowerup.BOMB);
 
         // then
-        assertEquals(1, game.getEntities().values().size());
+        assertEquals(3, game.getEntities().values().size());
         assertEquals(GameState.WON, game.getGameState().getValue());
         assertEquals(playerLocation, game.getPlayerLocation().getValue());
     }
 
     @Test
-    public void testUsePowerupTeleport(){
+    public void testUsePowerupTeleport() {
         // given
         GameProperties.GamePlayerProperties gamePlayerProperties = GameProperties.GamePlayerProperties.builder().build();
 
