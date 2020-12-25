@@ -2,14 +2,13 @@ package pl.edu.agh.ki.to.theoffice.components.game;
 
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
+import pl.edu.agh.ki.to.theoffice.common.component.ImageUtils;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 
 @Component
@@ -60,20 +59,8 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
         void powerupClicked(GamePowerup gamePowerup);
     }
 
-    public void setEffects(){
-        DropShadow dropShadow = new DropShadow();
-        dropShadow.setColor(Color.GREY);
-
-        bombButton.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                e -> bombButton.setEffect(dropShadow));
-
-        bombButton.addEventHandler(MouseEvent.MOUSE_EXITED,
-                e -> bombButton.setEffect(null));
-
-        teleportButton.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                e -> teleportButton.setEffect(dropShadow));
-
-        teleportButton.addEventHandler(MouseEvent.MOUSE_EXITED,
-                e -> teleportButton.setEffect(null));
+    public void setEffects() {
+        ImageUtils.setShadowEffect(bombButton, Color.GREY);
+        ImageUtils.setShadowEffect(teleportButton, Color.GREY);
     }
 }
