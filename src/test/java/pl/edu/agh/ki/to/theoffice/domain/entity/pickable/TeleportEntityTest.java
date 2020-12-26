@@ -45,4 +45,47 @@ class TeleportEntityTest {
         Location.generateNeighbouringLocations(enemy2Location)
                 .forEach(location -> assertNotEquals(location, playerLocation.getValue()));
     }
+
+    @Test
+    void testTeleportOnPowerup() {
+        // given
+        ObservableLinkedMultiValueMap<Location, Entity> entities = new ObservableLinkedMultiValueMap(new LinkedMultiValueMap<>());
+        BoundedMapMoveStrategy boundedMapMoveStrategy = new BoundedMapMoveStrategy(3, 1);
+
+        ObjectProperty<Location> playerLocation = new SimpleObjectProperty<>(new Location(0,0));
+        PlayerEntity playerEntity = new PlayerEntity();
+        entities.add(playerLocation.getValue(), playerEntity);
+
+        Location bombLocation = new Location(2, 0);
+        entities.add(bombLocation, new BombEntity());
+
+        // when
+        PickableEntityFactory.fromEntityType(GamePowerup.TELEPORT).usePowerup(boundedMapMoveStrategy, entities, playerLocation);
+
+        // then
+        assertEquals(bombLocation, playerLocation.getValue());
+    }
+
+    @Test
+    void testTeleportNotNearToEnemy(){
+        // given
+        ObservableLinkedMultiValueMap<Location, Entity> entities = new ObservableLinkedMultiValueMap(new LinkedMultiValueMap<>());
+        BoundedMapMoveStrategy boundedMapMoveStrategy = new BoundedMapMoveStrategy(5, 1);
+
+        ObjectProperty<Location> playerLocation = new SimpleObjectProperty<>(new Location(0,0));
+        PlayerEntity playerEntity = new PlayerEntity();
+        entities.add(playerLocation.getValue(), playerEntity);
+
+        Location enemyLocation = new Location(2, 0);
+        entities.add(enemyLocation, new EnemyEntity(boundedMapMoveStrategy, enemyLocation));
+
+        Location bombLocation = new Location(2, 0);
+        entities.add(bombLocation, new BombEntity());
+
+        // when
+        PickableEntityFactory.fromEntityType(GamePowerup.TELEPORT).usePowerup(boundedMapMoveStrategy, entities, playerLocation);
+
+        // then
+        assertEquals(new Location(4, 0), playerLocation.getValue());
+    }
 }
