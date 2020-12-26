@@ -80,6 +80,6 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
     }
 
     public void setEffects(){
-        controlArrows.forEach(controlArrows -> ImageUtils.setShadowEffect(controlArrows, Color.BLACK));
+        controlArrows.forEach(controlArrow -> ImageUtils.setShadowEffect(controlArrow, Color.BLACK));
     }
 }

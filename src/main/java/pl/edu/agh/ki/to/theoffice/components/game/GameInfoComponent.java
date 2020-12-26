@@ -50,7 +50,6 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
 
     public void setPowerupsListeners(PowerupClicked lambda){
         bombButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.BOMB));
-
         teleportButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.TELEPORT));
     }
 
