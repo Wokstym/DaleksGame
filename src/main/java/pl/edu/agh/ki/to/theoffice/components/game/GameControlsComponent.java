@@ -4,8 +4,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
+import pl.edu.agh.ki.to.theoffice.common.component.ImageUtils;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
 import java.util.Collection;
@@ -75,5 +77,9 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
     public interface ControlClicked {
         void mouseClicked(MouseEvent event);
 
+    }
+
+    public void setEffects(){
+        controlArrows.forEach(controlArrow -> ImageUtils.setShadowEffect(controlArrow, Color.BLACK));
     }
 }

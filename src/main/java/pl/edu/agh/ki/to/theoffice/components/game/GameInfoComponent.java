@@ -2,10 +2,13 @@ package pl.edu.agh.ki.to.theoffice.components.game;
 
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.common.component.FXMLUtils;
+import pl.edu.agh.ki.to.theoffice.common.component.ImageUtils;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 
 @Component
@@ -18,6 +21,12 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
 
     @FXML
     public Text teleportCount;
+
+    @FXML
+    public TilePane bombButton;
+
+    @FXML
+    public TilePane teleportButton;
 
     public GameInfoComponent() {
         FXMLUtils.loadFXML(this);
@@ -37,5 +46,20 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
         };
 
         whichToUpdate.setText(Integer.toString(change.getValueAdded()));
+    }
+
+    public void setPowerupsListeners(PowerupClicked lambda){
+        bombButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.BOMB));
+        teleportButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.TELEPORT));
+    }
+
+    @FunctionalInterface
+    public interface PowerupClicked {
+        void powerupClicked(GamePowerup gamePowerup);
+    }
+
+    public void setEffects() {
+        ImageUtils.setShadowEffect(bombButton, Color.GREY);
+        ImageUtils.setShadowEffect(teleportButton, Color.GREY);
     }
 }

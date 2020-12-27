@@ -3,6 +3,7 @@ package pl.edu.agh.ki.to.theoffice.domain.map;
 import javafx.scene.input.KeyCode;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -33,6 +34,18 @@ public class LocationTest {
 
         // then
         assertEquals(new Location(2, 6), resultLocation);
+    }
+
+    @Test
+    public void testSubtractTwoLocations() {
+        // given
+        Location location = new Location(6, 7);
+
+        // when
+        Location resultLocation = location.subtract(2, 1);
+
+        // then
+        assertEquals(new Location(4, 6), resultLocation);
     }
 
     @Test
@@ -339,6 +352,26 @@ public class LocationTest {
 
         // then
         assertEquals(Optional.empty(), direction);
+    }
+
+    @Test
+    public void testNeighbouringLocations(){
+        // given
+        Location location = new Location (4, 5);
+        List<Location> neighbouringLocations = Location.generateNeighbouringLocations(location);
+
+        // when then
+        neighbouringLocations.forEach(neighbouringLocation -> assertTrue(Location.neighbouringLocations(location, neighbouringLocation)));
+    }
+
+    @Test
+    public void testNotNeighbouringLocations(){
+        // given
+        Location location = new Location (4, 5);
+        Location notNeighbouringLocation = new Location (6, 8);
+
+        // when then
+        assertFalse(Location.neighbouringLocations(location, notNeighbouringLocation));
     }
 
 }

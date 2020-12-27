@@ -31,6 +31,10 @@ public class Location {
         return new Location(this.x + direction.dx, this.y + direction.dy);
     }
 
+    public Location subtract(int x, int y) {
+        return new Location(this.x - x, this.y - y);
+    }
+
     public static Location randomLocation(int maxX, int maxY) {
         return new Location(
                 r.nextInt(maxX),
@@ -52,6 +56,12 @@ public class Location {
                         .collect(Collectors.toList()))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+    }
+
+    public static boolean neighbouringLocations(Location firstLocation, Location secondLocation){
+        Location differenceLocation = firstLocation.subtract(secondLocation.x, secondLocation.y);
+        return Stream.of(Direction.values())
+                .anyMatch(d -> d.dx == differenceLocation.x && d.dy == differenceLocation.y);
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
