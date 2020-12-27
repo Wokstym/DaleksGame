@@ -45,6 +45,8 @@ public class GameController {
         setupListeners();
         controls.setEffects();
         info.setEffects();
+
+        log.debug("game: {}", game);
     }
 
     @FXML

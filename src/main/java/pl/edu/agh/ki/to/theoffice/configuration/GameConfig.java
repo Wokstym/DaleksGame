@@ -26,6 +26,7 @@ public class GameConfig {
         private GameFromDifficultyService gameFromDifficultyService;
 
         @Bean
+        @Primary
         @ConditionalOnProperty(value = "game.difficulty")
         public Game gameFromDifficulty() {
             return gameFromDifficultyService.fromDifficultyType(gameDifficulty);
@@ -50,7 +51,7 @@ public class GameConfig {
         private GameFromPropertiesService gameFromPropertiesService;
 
         @Bean
-        @Conditional(NoDifficultyDefinedCondition.class)
+//        @Conditional(NoDifficultyDefinedCondition.class)
         public Game gameFromProperties() {
             var gamePlayerProperties = GameProperties.GamePlayerProperties.builder()
                     .powerup(GamePowerup.BOMB, bomb)
