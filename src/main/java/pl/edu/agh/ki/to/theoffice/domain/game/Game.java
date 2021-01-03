@@ -1,5 +1,6 @@
 package pl.edu.agh.ki.to.theoffice.domain.game;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +39,10 @@ public class Game {
     private ObjectProperty<Location> playerLocation;
     private ObjectProperty<GameState> gameState;
     private PlayerEntity playerEntity;
+
+    private GameDifficulty difficulty;
+    private IntegerProperty level;
+    private IntegerProperty score;
 
     public void movePlayer(Location.Direction direction) {
         final Location oldLocation = this.playerLocation.getValue();

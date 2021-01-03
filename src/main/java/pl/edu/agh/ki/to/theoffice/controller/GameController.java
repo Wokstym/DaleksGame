@@ -1,7 +1,12 @@
 package pl.edu.agh.ki.to.theoffice.controller;
 
+import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.input.KeyEvent;
+import javafx.util.Callback;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -68,8 +73,47 @@ public class GameController {
         game.getGameState().addListener((val, oldState, newState) -> {
             if (newState == GameState.LOST) {
                 controls.removeArrowListeners();
+                log.info("Game over - lost");
+                showGameLostDialog();
+            }
+
+            if(newState == GameState.WON) {
+                log.info("Game over - won");
+                showGameWinDialog();
             }
         });
+    }
+
+    private void showGameLostDialog() {
+        Dialog<Boolean> dialog = new Dialog<>();
+
+        dialog.setTitle("Przegrana!");
+        dialog.getDialogPane().getButtonTypes().add(new ButtonType("Zagraj ponownie", ButtonBar.ButtonData.OK_DONE));
+
+        // todo: add checking result?
+        dialog.showAndWait();
+
+        this.game.getEntities().removeListener(map);
+        this.game.getPlayerEntity().getPowerups().removeListener(info);
+
+        this.game = this.gameManager.createNewGame(this.game.getDifficulty());
+        initialize();
+    }
+
+    private void showGameWinDialog() {
+        Dialog<Boolean> dialog = new Dialog<>();
+
+        dialog.setTitle("Wygrana!");
+        dialog.getDialogPane().getButtonTypes().add(new ButtonType("Kolejny poziom", ButtonBar.ButtonData.OK_DONE));
+
+        // todo: add checking result?
+        dialog.showAndWait();
+
+        this.game.getEntities().removeListener(map);
+        this.game.getPlayerEntity().getPowerups().removeListener(info);
+
+        this.game = this.gameManager.nextLevel();
+        initialize();
     }
 
 }

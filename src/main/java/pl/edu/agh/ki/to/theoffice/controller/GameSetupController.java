@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -36,6 +37,7 @@ public class GameSetupController {
         startGameButton.setOnAction(this::startGame);
     }
 
+    @SneakyThrows
     private void startGame(ActionEvent event) {
         if(difficulty.getValue() == null) {
             return;

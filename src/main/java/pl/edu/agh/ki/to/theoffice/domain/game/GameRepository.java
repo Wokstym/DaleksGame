@@ -1,5 +1,6 @@
 package pl.edu.agh.ki.to.theoffice.domain.game;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,10 +33,10 @@ public class GameRepository {
 
     private final GamePropertiesConfiguration gameConfigurations;
 
-    public Game fromDifficulty(GameDifficulty gameDifficulty) {
+    public Game createNewGame(GameDifficulty gameDifficulty) {
         final GameProperties gameProperties = gameConfigurations.getConfiguration(gameDifficulty);
 
-        var entities = generateEnemies(gameProperties);
+        var entities = generateEnemies(gameProperties, 1);
 
         var player = generatePlayer(entities, gameProperties);
         entities.add(player.getLocation(), player);
@@ -51,15 +52,46 @@ public class GameRepository {
                 .playerEntity(player)
                 .playerLocation(new SimpleObjectProperty<>(player.getLocation()))
                 .powerupsOnMap(powerupsOnMap)
+                .difficulty(gameDifficulty)
+                .level(new SimpleIntegerProperty(1))
+                .score(new SimpleIntegerProperty(0))
                 .build();
     }
 
-    private LinkedMultiValueMap<Location, Entity> generateEnemies(GameProperties gameProperties) {
+    public Game createNextLevel(Game game) {
+        final GameProperties gameProperties = gameConfigurations.getConfiguration(game.getDifficulty());
+
+        var entities = generateEnemies(gameProperties, game.getLevel().get());
+
+        var player = generatePlayer(entities, gameProperties);
+        player.setLives(game.getPlayerEntity().getLives());
+        player.setPowerups(game.getPlayerEntity().getPowerups());
+
+        entities.add(player.getLocation(), player);
+
+        var powerupsOnMap = generatePowerups(entities, gameProperties);
+        powerupsOnMap.forEach(entities::add);
+
+        return Game.builder()
+                .mapProperties(mapProperties)
+                .mapMoveStrategy(mapMoveStrategy)
+                .gameState(new SimpleObjectProperty<>(GameState.IN_PROGRESS))
+                .entities(new ObservableLinkedMultiValueMap<>(entities))
+                .playerEntity(player)
+                .playerLocation(new SimpleObjectProperty<>(player.getLocation()))
+                .powerupsOnMap(powerupsOnMap)
+                .difficulty(game.getDifficulty())
+                .level(new SimpleIntegerProperty(game.getLevel().get() + 1))
+                .score(new SimpleIntegerProperty(game.getScore().get()))
+                .build();
+    }
+
+    private LinkedMultiValueMap<Location, Entity> generateEnemies(GameProperties gameProperties, int level) {
         final int width = mapProperties.getWidth();
         final int height = mapProperties.getHeight();
 
         final var entities = new LinkedMultiValueMap<Location, Entity>();
-        while (entities.size() < gameProperties.getEnemies()) {
+        while (entities.size() < gameProperties.getEnemies() * level) {
             Location location = Location.randomLocation(width, height);
             entities.addIfAbsent(location, new EnemyEntity(mapMoveStrategy, location));
         }

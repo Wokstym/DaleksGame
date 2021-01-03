@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
@@ -15,6 +16,7 @@ import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
 @Slf4j
 @Getter
+@Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class PlayerEntity extends MovableEntity {

@@ -37,7 +37,7 @@ class GameFromPropertiesServiceTest {
         );
 
         // when
-        Game game = gameFromPropertiesService.fromDifficulty(GameDifficulty.EASY);
+        Game game = gameFromPropertiesService.createNewGame(GameDifficulty.EASY);
 
         // then
         assertEquals(4 + 2 + 1 + 1, game

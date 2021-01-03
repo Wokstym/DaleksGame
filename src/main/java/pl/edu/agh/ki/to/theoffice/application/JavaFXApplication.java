@@ -32,7 +32,7 @@ public class JavaFXApplication extends Application {
         Parent root = fxWeaver.loadView(GameSetupController.class);
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setResizable(false);
+//        stage.setResizable(false);
 
         root.requestFocus();
         stage.show();

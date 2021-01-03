@@ -2,7 +2,6 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.ki.to.theoffice.domain.game.properties.GamePropertiesConfiguration;
 
 import javax.validation.constraints.NotNull;
 
@@ -23,8 +22,14 @@ public class GameManager {
         return game;
     }
 
-    public void createNewGame(GameDifficulty gameDifficulty) {
-        this.game = this.gameRepository.fromDifficulty(gameDifficulty);
+    public Game createNewGame(GameDifficulty gameDifficulty) {
+        this.game = this.gameRepository.createNewGame(gameDifficulty);
+        return this.game;
+    }
+
+    public Game nextLevel() {
+        this.game = this.gameRepository.createNextLevel(this.game);
+        return this.game;
     }
 
 }
