@@ -1,34 +1,30 @@
 package pl.edu.agh.ki.to.theoffice.domain.game.properties;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 
 import java.util.Map;
 
-@Getter
+@Data
+@ToString
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GameProperties {
 
-    private final GamePlayerProperties playerProperties;
-    private final int enemies;
+    private Map<GamePowerup, Integer> powerups;
+    private int enemies;
+    private int lives;
 
-    @Getter
-    @Builder
-    public static class GamePlayerProperties {
+    public static class GamePropertiesBuilder {
 
-        private final Map<GamePowerup, Integer> powerups;
-        private final int lives;
+        private Map<GamePowerup, Integer> powerups = GamePowerup.toMapWithDefaultValues();
 
-        @SuppressWarnings({"FieldMayBeFinal", "unused" })
-        public static class GamePlayerPropertiesBuilder {
-
-            private Map<GamePowerup, Integer> powerups = GamePowerup.toMapWithDefaultValues();
-
-            public GamePlayerPropertiesBuilder powerup(GamePowerup powerup, int amount) {
-                this.powerups.put(powerup, amount);
-                return this;
-            }
+        public GamePropertiesBuilder powerup(GamePowerup powerup, int amount) {
+            this.powerups.put(powerup, amount);
+            return this;
         }
+
     }
+
 }

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 <?import java.lang.String?>
+<?import pl.edu.agh.ki.to.theoffice.domain.game.GameDifficulty?>
 <VBox maxHeight="-Infinity"
       maxWidth="-Infinity"
       minHeight="-Infinity"
@@ -28,12 +29,12 @@
         </VBox.margin>
     </Label>
 
-    <ComboBox value="Łatwy">
+    <ComboBox fx:id="difficulty">
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Łatwy"/>
-                <String fx:value="Średni"/>
-                <String fx:value="Trudny"/>
+                <GameDifficulty fx:value="EASY"/>
+                <GameDifficulty fx:value="NORMAL"/>
+                <GameDifficulty fx:value="HARD"/>
             </FXCollections>
         </items>
     </ComboBox>

@@ -1,20 +1,30 @@
 package pl.edu.agh.ki.to.theoffice.domain.game;
 
-import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.ki.to.theoffice.domain.game.properties.GamePropertiesConfiguration;
+
+import javax.validation.constraints.NotNull;
 
 @Service
+@RequiredArgsConstructor
 public class GameManager {
 
-    @Getter
-    @NonNull
+    private final GameRepository gameRepository;
+
     private Game game;
 
-    @Autowired
-    public GameManager() {
+    @NotNull
+    public Game getCurrentGame() {
+        if(game == null) {
+            throw new IllegalStateException("Game has not been started yet");
+        }
 
+        return game;
+    }
+
+    public void createNewGame(GameDifficulty gameDifficulty) {
+        this.game = this.gameRepository.fromDifficulty(gameDifficulty);
     }
 
 }

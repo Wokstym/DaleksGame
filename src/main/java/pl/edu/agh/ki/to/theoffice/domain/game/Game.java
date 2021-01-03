@@ -15,6 +15,7 @@ import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntityFactory;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
+import pl.edu.agh.ki.to.theoffice.domain.game.properties.MapProperties;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class Game {
 
-    private GameProperties gameProperties;
+    private MapProperties mapProperties;
     private MapMoveStrategy mapMoveStrategy;
 
     private ObservableLinkedMultiValueMap<Location, Entity> entities;

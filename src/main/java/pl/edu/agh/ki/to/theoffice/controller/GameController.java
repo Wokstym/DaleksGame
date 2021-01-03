@@ -2,6 +2,7 @@ package pl.edu.agh.ki.to.theoffice.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +11,16 @@ import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameInfoComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent;
 import pl.edu.agh.ki.to.theoffice.domain.game.Game;
+import pl.edu.agh.ki.to.theoffice.domain.game.GameManager;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameState;
-import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameMapProperties;
+import pl.edu.agh.ki.to.theoffice.domain.game.properties.MapProperties;
 
 import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 
 @Slf4j
 @Component
 @FxmlView("/view/game/game.fxml")
+@RequiredArgsConstructor
 public class GameController {
 
     @FXML
@@ -29,19 +32,15 @@ public class GameController {
     @FXML
     private GameMapComponent map;
 
-    private final GameMapProperties gameMapProperties;
-    private final Game game;
-
-    @Autowired
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") // podejrzane, ale działa normalnie, todo zweryfikować
-    public GameController(GameMapProperties gameMapProperties, Game game) {
-        this.gameMapProperties = gameMapProperties;
-        this.game = game;
-    }
+    private final GameManager gameManager;
+    private Game game;
 
     @FXML
     public void initialize() {
-        map.initMap(gameMapProperties.getWidth(), gameMapProperties.getHeight(), game.getEntities());
+        this.game = gameManager.getCurrentGame();
+        final MapProperties mapProperties = this.game.getMapProperties();
+
+        map.initMap(mapProperties.getWidth(), mapProperties.getHeight(), game.getEntities());
         setupListeners();
         controls.setEffects();
         info.setEffects();

@@ -19,7 +19,7 @@ import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 @NoArgsConstructor
 public class PlayerEntity extends MovableEntity {
 
-    public static PlayerEntity fromProperties(GameProperties.GamePlayerProperties properties) {
+    public static PlayerEntity fromProperties(GameProperties properties) {
         final PlayerEntity playerEntity = new PlayerEntity();
 
         playerEntity.powerups = FXCollections.observableHashMap();
