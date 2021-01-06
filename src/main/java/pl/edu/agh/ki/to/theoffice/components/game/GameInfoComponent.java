@@ -40,7 +40,7 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
     @Override
     public void onChanged(Change<? extends GamePowerup, ? extends Integer> change) {
 
-        Text whichToUpdate = switch ((GamePowerup)change.getKey()){
+        Text whichToUpdate = switch ((GamePowerup) change.getKey()) {
             case BOMB -> bombCount;
             case TELEPORT -> teleportCount;
         };
@@ -48,18 +48,18 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
         whichToUpdate.setText(Integer.toString(change.getValueAdded()));
     }
 
-    public void setPowerupsListeners(PowerupClicked lambda){
+    public void setPowerupsListeners(PowerupClicked lambda) {
         bombButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.BOMB));
         teleportButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.TELEPORT));
-    }
-
-    @FunctionalInterface
-    public interface PowerupClicked {
-        void powerupClicked(GamePowerup gamePowerup);
     }
 
     public void setEffects() {
         ImageUtils.setShadowEffect(bombButton, Color.GREY);
         ImageUtils.setShadowEffect(teleportButton, Color.GREY);
+    }
+
+    @FunctionalInterface
+    public interface PowerupClicked {
+        void powerupClicked(GamePowerup gamePowerup);
     }
 }

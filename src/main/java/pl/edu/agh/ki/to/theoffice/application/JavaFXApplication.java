@@ -18,7 +18,7 @@ public class JavaFXApplication extends Application {
 
     @Override
     public void init() {
-        log.info("Initializing JavaFX Application");
+        log.debug("Initializing JavaFX Application");
         final String[] args = getParameters().getRaw().toArray(new String[0]);
 
         this.context = new SpringApplicationBuilder()
@@ -32,7 +32,7 @@ public class JavaFXApplication extends Application {
         Parent root = fxWeaver.loadView(GameSetupController.class);
         Scene scene = new Scene(root);
         stage.setScene(scene);
-//        stage.setResizable(false);
+        stage.setResizable(false);
 
         root.requestFocus();
         stage.show();
@@ -40,6 +40,7 @@ public class JavaFXApplication extends Application {
 
     @Override
     public void stop() {
+        log.debug("Stopping JavaFX Application");
         this.context.close();
         Platform.exit();
     }

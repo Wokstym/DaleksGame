@@ -43,10 +43,10 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
 
     public void setArrowListeners(ArrowClicked lambda) {
         controlArrows.forEach(action -> action.setOnMouseClicked(mouseEvent -> {
-                    Direction direction = getDirectionByRotationAngle((int) action.getRotate());
-                    log.debug("Direction: {}", direction);
-                    lambda.arrowClicked(direction);
-                }));
+            Direction direction = getDirectionByRotationAngle((int) action.getRotate());
+            log.debug("Direction: {}", direction);
+            lambda.arrowClicked(direction);
+        }));
     }
 
     public void removeArrowListeners() {
@@ -68,6 +68,10 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
         };
     }
 
+    public void setEffects() {
+        controlArrows.forEach(controlArrow -> ImageUtils.setShadowEffect(controlArrow, Color.BLACK));
+    }
+
     @FunctionalInterface
     public interface ArrowClicked {
         void arrowClicked(Direction direction);
@@ -77,9 +81,5 @@ public class GameControlsComponent extends TilePane implements FXMLComponent {
     public interface ControlClicked {
         void mouseClicked(MouseEvent event);
 
-    }
-
-    public void setEffects(){
-        controlArrows.forEach(controlArrow -> ImageUtils.setShadowEffect(controlArrow, Color.BLACK));
     }
 }

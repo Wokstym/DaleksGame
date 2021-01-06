@@ -15,7 +15,6 @@ import pl.edu.agh.ki.to.theoffice.domain.entity.movable.MovableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntityFactory;
-import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.MapProperties;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
@@ -53,7 +52,7 @@ public class Game {
         this.moveEntities();
         this.solveEnemyCollisions();
         this.pickupPowerup();
-        
+
         if (playerEntity.getState() == MovableEntity.MovableEntityState.DEAD) {
             gameState.setValue(GameState.LOST);
         }
@@ -137,7 +136,7 @@ public class Game {
                 .filter(PickableEntity.class::isInstance)
                 .findAny();
 
-        if(entity.isPresent()){
+        if (entity.isPresent()) {
             PickableEntity pickableEntity = powerupsOnMap.get(location);
             playerEntity.addPowerup(pickableEntity.getGamePowerup());
             powerupsOnMap.remove(location);

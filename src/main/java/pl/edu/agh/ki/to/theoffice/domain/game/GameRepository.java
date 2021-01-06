@@ -10,8 +10,6 @@ import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntityFactory;
-import pl.edu.agh.ki.to.theoffice.domain.game.Game;
-import pl.edu.agh.ki.to.theoffice.domain.game.GameState;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.GamePropertiesConfiguration;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.MapProperties;

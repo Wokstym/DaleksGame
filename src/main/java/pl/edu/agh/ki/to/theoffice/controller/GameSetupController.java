@@ -39,7 +39,8 @@ public class GameSetupController {
 
     @SneakyThrows
     private void startGame(ActionEvent event) {
-        if(difficulty.getValue() == null) {
+        log.debug("Attempt to start game with difficulty: {}", difficulty.getValue());
+        if (difficulty.getValue() == null) {
             return;
         }
 

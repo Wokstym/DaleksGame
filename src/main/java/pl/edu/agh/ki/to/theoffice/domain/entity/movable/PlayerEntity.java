@@ -21,6 +21,9 @@ import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 @NoArgsConstructor
 public class PlayerEntity extends MovableEntity {
 
+    private ObservableMap<GamePowerup, Integer> powerups;
+    private IntegerProperty lives;
+
     public static PlayerEntity fromProperties(GameProperties properties) {
         final PlayerEntity playerEntity = new PlayerEntity();
 
@@ -31,9 +34,6 @@ public class PlayerEntity extends MovableEntity {
 
         return playerEntity;
     }
-
-    private ObservableMap<GamePowerup, Integer> powerups;
-    private IntegerProperty lives;
 
     public void addPowerup(GamePowerup powerup) {
         log.debug("Added powerup to player inventory: {}", powerup.name());
@@ -75,4 +75,5 @@ public class PlayerEntity extends MovableEntity {
                 EntityType.PLAYER :
                 EntityType.DEAD_PLAYER;
     }
+
 }

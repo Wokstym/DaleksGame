@@ -15,7 +15,7 @@ public class GameManager {
 
     @NotNull
     public Game getCurrentGame() {
-        if(game == null) {
+        if (game == null) {
             throw new IllegalStateException("Game has not been started yet");
         }
 

@@ -1,16 +1,13 @@
 package pl.edu.agh.ki.to.theoffice.controller;
 
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Callback;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameInfoComponent;
@@ -28,16 +25,13 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 @RequiredArgsConstructor
 public class GameController {
 
+    private final GameManager gameManager;
     @FXML
     public GameInfoComponent info;
-
     @FXML
     public GameControlsComponent controls;
-
     @FXML
     private GameMapComponent map;
-
-    private final GameManager gameManager;
     private Game game;
 
     @FXML
@@ -73,12 +67,12 @@ public class GameController {
         game.getGameState().addListener((val, oldState, newState) -> {
             if (newState == GameState.LOST) {
                 controls.removeArrowListeners();
-                log.info("Game over - lost");
+                log.debug("Game over - lost");
                 showGameLostDialog();
             }
 
-            if(newState == GameState.WON) {
-                log.info("Game over - won");
+            if (newState == GameState.WON) {
+                log.debug("Game over - won");
                 showGameWinDialog();
             }
         });

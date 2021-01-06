@@ -61,7 +61,7 @@ public class BoardPane extends TilePane implements MapChangeListener<Location, L
 
     public void populateBoard(ObservableLinkedMultiValueMap<Location, Entity> entities) {
         getChildren().clear();
-        
+
         for (Location location : Location.generateLocationsWithinBoundsWithRespectOfLeftBottomCorner(0, columns, 0, rows)) {
             List<Entity> entityTypes = entities.get(location);
 

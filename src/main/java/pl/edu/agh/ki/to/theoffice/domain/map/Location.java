@@ -23,18 +23,6 @@ public class Location {
     private final int x;
     private final int y;
 
-    public Location add(int x, int y) {
-        return new Location(this.x + x, this.y + y);
-    }
-
-    public Location add(Direction direction) {
-        return new Location(this.x + direction.dx, this.y + direction.dy);
-    }
-
-    public Location subtract(int x, int y) {
-        return new Location(this.x - x, this.y - y);
-    }
-
     public static Location randomLocation(int maxX, int maxY) {
         return new Location(
                 r.nextInt(maxX),
@@ -42,7 +30,7 @@ public class Location {
         );
     }
 
-    public static List<Location> generateNeighbouringLocations(Location location){
+    public static List<Location> generateNeighbouringLocations(Location location) {
         return Stream.of(Direction.values())
                 .map(location::add)
                 .collect(Collectors.toList());
@@ -58,10 +46,22 @@ public class Location {
                 .collect(Collectors.toList());
     }
 
-    public static boolean neighbouringLocations(Location firstLocation, Location secondLocation){
+    public static boolean neighbouringLocations(Location firstLocation, Location secondLocation) {
         Location differenceLocation = firstLocation.subtract(secondLocation.x, secondLocation.y);
         return Stream.of(Direction.values())
                 .anyMatch(d -> d.dx == differenceLocation.x && d.dy == differenceLocation.y);
+    }
+
+    public Location add(int x, int y) {
+        return new Location(this.x + x, this.y + y);
+    }
+
+    public Location add(Direction direction) {
+        return new Location(this.x + direction.dx, this.y + direction.dy);
+    }
+
+    public Location subtract(int x, int y) {
+        return new Location(this.x - x, this.y - y);
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
