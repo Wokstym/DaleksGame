@@ -16,6 +16,8 @@ public class JavaFXApplication extends Application {
 
     private ConfigurableApplicationContext context;
 
+    private JavaFXSceneLoader sceneLoader;
+
     @Override
     public void init() {
         log.debug("Initializing JavaFX Application");
@@ -24,18 +26,13 @@ public class JavaFXApplication extends Application {
         this.context = new SpringApplicationBuilder()
                 .sources(pl.edu.agh.ki.to.theoffice.Application.class)
                 .run(args);
+
+        this.sceneLoader = this.context.getBean(JavaFXSceneLoader.class);
     }
 
     @Override
     public void start(Stage stage) {
-        FxWeaver fxWeaver = context.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(GameSetupController.class);
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setResizable(false);
-
-        root.requestFocus();
-        stage.show();
+        sceneLoader.switchScene(stage, GameSetupController.class);
     }
 
     @Override

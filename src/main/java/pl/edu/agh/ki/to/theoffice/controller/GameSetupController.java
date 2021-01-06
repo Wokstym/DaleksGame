@@ -3,17 +3,15 @@ package pl.edu.agh.ki.to.theoffice.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
+import pl.edu.agh.ki.to.theoffice.application.JavaFXSceneLoader;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameDifficulty;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameManager;
 
@@ -23,7 +21,7 @@ import pl.edu.agh.ki.to.theoffice.domain.game.GameManager;
 @RequiredArgsConstructor
 public class GameSetupController {
 
-    private final FxWeaver fxWeaver;
+    private final JavaFXSceneLoader sceneLoader;
     private final GameManager gameManager;
 
     @FXML
@@ -35,6 +33,8 @@ public class GameSetupController {
     @FXML
     public void initialize() {
         startGameButton.setOnAction(this::startGame);
+
+        difficulty.setValue(GameDifficulty.EASY);
     }
 
     @SneakyThrows
@@ -47,15 +47,7 @@ public class GameSetupController {
         this.gameManager.createNewGame(difficulty.getValue());
 
         final Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
-        final Parent root = fxWeaver.loadView(GameController.class);
-        final Scene scene = new Scene(root);
-
-        stage.setScene(scene);
-        stage.sizeToScene();
-        stage.centerOnScreen();
-
-        root.requestFocus();
-        stage.show();
+        sceneLoader.switchScene(stage, GameController.class);
     }
 
 }
