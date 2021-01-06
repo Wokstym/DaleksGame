@@ -1,5 +1,6 @@
 package pl.edu.agh.ki.to.theoffice.controller;
 
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -26,23 +27,52 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 public class GameController {
 
     private final GameManager gameManager;
-    @FXML
-    public GameInfoComponent info;
-    @FXML
-    public GameControlsComponent controls;
-    @FXML
-    private GameMapComponent map;
     private Game game;
 
     @FXML
+    private GameInfoComponent info;
+
+    @FXML
+    private GameControlsComponent controls;
+
+    @FXML
+    private GameMapComponent map;
+
+    private final ChangeListener<? super Number> scoreListener = (obs, oldVal, newVal) -> {
+        log.debug("score changed: {} -> {}", oldVal, newVal);
+        this.info.setScore(newVal.intValue());
+    };
+    private final ChangeListener<? super Number> levelListener = (obs, oldVal, newVal) -> this.info.setLevel(newVal.intValue());
+
+    private final ChangeListener<GameState> gameStateListener = (obs, oldVal, newVal) -> {
+        log.debug("gameState changed: {}, {}, {}", obs, oldVal, newVal);
+        if (newVal == GameState.LOST) {
+            controls.removeArrowListeners();
+            log.debug("Game over - lost");
+            showGameLostDialog();
+        }
+
+        if (newVal == GameState.WON) {
+            log.debug("Game over - won");
+            showGameWinDialog();
+        }
+    };
+
+
+    @FXML
     public void initialize() {
+        log.debug("controller initialized");
         this.game = gameManager.getCurrentGame();
         final MapProperties mapProperties = this.game.getMapProperties();
 
-        map.initMap(mapProperties.getWidth(), mapProperties.getHeight(), game.getEntities());
+        this.map.initMap(mapProperties.getWidth(), mapProperties.getHeight(), game.getEntities());
+
+        this.info.setPowerups(this.game.getPlayerEntity().getPowerups());
+        this.info.setLevel(this.game.getLevel().get());
+        this.info.setScore(this.game.getScore().get());
+
+        setupEffects();
         setupListeners();
-        controls.setEffects();
-        info.setEffects();
 
         log.debug("game: {}", game);
     }
@@ -58,24 +88,34 @@ public class GameController {
                 .ifPresent(game::movePlayer);
     }
 
+    private void setupEffects() {
+        controls.setEffects();
+        info.setEffects();
+    }
+
+
     private void setupListeners() {
-        game.getEntities().addListener(map);
-        game.getPlayerEntity().getPowerups().addListener(info);
-        controls.setArrowListeners(game::movePlayer);
-        info.setPowerupsListeners(game::usePowerup);
+        this.game.getEntities().addListener(map);
+        this.game.getPlayerEntity().getPowerups().addListener(info);
 
-        game.getGameState().addListener((val, oldState, newState) -> {
-            if (newState == GameState.LOST) {
-                controls.removeArrowListeners();
-                log.debug("Game over - lost");
-                showGameLostDialog();
-            }
+        this.controls.setArrowListeners(game::movePlayer);
+        this.info.setPowerupsListeners(game::usePowerup);
 
-            if (newState == GameState.WON) {
-                log.debug("Game over - won");
-                showGameWinDialog();
-            }
-        });
+        this.game.getLevel().addListener(levelListener);
+        this.game.getScore().addListener(scoreListener);
+        this.game.getGameState().addListener(gameStateListener);
+    }
+
+    private void removeListeners() {
+        this.game.getEntities().removeListener(map);
+        this.game.getPlayerEntity().getPowerups().removeListener(info);
+
+        this.controls.removeArrowListeners();
+        this.info.removePowerupsListeners();
+
+        this.game.getLevel().removeListener(levelListener);
+        this.game.getScore().removeListener(scoreListener);
+        this.game.getGameState().removeListener(gameStateListener);
     }
 
     private void showGameLostDialog() {
@@ -87,8 +127,7 @@ public class GameController {
         // todo: add checking result?
         dialog.showAndWait();
 
-        this.game.getEntities().removeListener(map);
-        this.game.getPlayerEntity().getPowerups().removeListener(info);
+        removeListeners();
 
         this.game = this.gameManager.createNewGame(this.game.getDifficulty());
         initialize();
@@ -103,11 +142,11 @@ public class GameController {
         // todo: add checking result?
         dialog.showAndWait();
 
-        this.game.getEntities().removeListener(map);
-        this.game.getPlayerEntity().getPowerups().removeListener(info);
+        removeListeners();
 
         this.game = this.gameManager.nextLevel();
         initialize();
     }
+
 
 }

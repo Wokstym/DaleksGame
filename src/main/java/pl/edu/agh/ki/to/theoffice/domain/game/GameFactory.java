@@ -24,7 +24,7 @@ import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
-public class GameRepository {
+public class GameFactory {
 
     private final MapMoveStrategy mapMoveStrategy;
     private final MapProperties mapProperties;

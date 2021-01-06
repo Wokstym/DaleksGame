@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.game.Game;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameDifficulty;
-import pl.edu.agh.ki.to.theoffice.domain.game.GameRepository;
+import pl.edu.agh.ki.to.theoffice.domain.game.GameFactory;
 import pl.edu.agh.ki.to.theoffice.domain.game.GameState;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.GamePropertiesConfiguration;
@@ -30,7 +30,7 @@ class GameFromPropertiesServiceTest {
         GamePropertiesConfiguration configuration = mock(GamePropertiesConfiguration.class);
         when(configuration.getConfiguration(GameDifficulty.EASY)).thenReturn(gameProperties);
 
-        GameRepository gameFromPropertiesService = new GameRepository(
+        GameFactory gameFromPropertiesService = new GameFactory(
                 new BoundedMapMoveStrategy(20, 20),
                 new MapProperties(20, 20),
                 configuration
