@@ -5,3 +5,28 @@ spring:
   application:
     ui:
       title: Dalek Game
+
+game:
+  map:
+    strategy: BOUNDED
+    width: 20
+    height: 20
+  configurationsByDifficulty:
+    EASY:
+      enemies: 1
+      lives: 3
+      powerups:
+        TELEPORT: 4
+        BOMB: 1
+    NORMAL:
+      enemies: 3
+      lives: 3
+      powerups:
+        TELEPORT: 1
+        BOMB: 1
+    HARD:
+      enemies: 5
+      lives: 3
+      powerups:
+        TELEPORT: 1
+        BOMB: 1

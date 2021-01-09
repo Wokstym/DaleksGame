@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import java.lang.String?>
+<?import pl.edu.agh.ki.to.theoffice.domain.game.GameDifficulty?>
+<VBox maxHeight="-Infinity"
+      maxWidth="-Infinity"
+      minHeight="-Infinity"
+      minWidth="-Infinity"
+      prefHeight="200.0"
+      prefWidth="400.0"
+      alignment="TOP_CENTER"
+      xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="pl.edu.agh.ki.to.theoffice.controller.GameSetupController">
+
+    <Label
+            text="Wybierz poziom trudności">
+        <VBox.margin>
+            <Insets>
+                <top>50</top>
+                <bottom>10</bottom>
+            </Insets>
+        </VBox.margin>
+    </Label>
+
+    <ComboBox fx:id="difficulty">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <GameDifficulty fx:value="EASY"/>
+                <GameDifficulty fx:value="NORMAL"/>
+                <GameDifficulty fx:value="HARD"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <Button
+            fx:id="startGameButton"
+            text="Rozpocznij grę" >
+        <VBox.margin>
+            <Insets>
+                <top>40</top>
+            </Insets>
+        </VBox.margin>
+    </Button>
+
+</VBox>
