@@ -2,8 +2,6 @@ package pl.edu.agh.ki.to.theoffice.domain.map.move;
 
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 
-import java.lang.reflect.InaccessibleObjectException;
-
 public class WrappedMapMoveStrategy extends MapMoveStrategy {
 
     public WrappedMapMoveStrategy(int mapWidth, int mapHeight) {

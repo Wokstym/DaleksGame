@@ -10,7 +10,7 @@
         <Root level="info">
             <AppenderRef ref="Console"/>
         </Root>
-        <logger name="pl.edu.agh.ki.to.theoffice" level="INFO" additivity="false">
+        <logger name="pl.edu.agh.ki.to.theoffice" level="ALL" additivity="false">
             <AppenderRef ref="Console"/>
         </logger>
     </Loggers>

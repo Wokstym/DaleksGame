@@ -1,12 +1,14 @@
 package pl.edu.agh.ki.to.theoffice.domain.game.properties;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 
 import java.util.Map;
 
 @Data
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

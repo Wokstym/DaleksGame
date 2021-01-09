@@ -2,10 +2,7 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
@@ -15,7 +12,6 @@ import pl.edu.agh.ki.to.theoffice.domain.entity.movable.MovableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntityFactory;
-import pl.edu.agh.ki.to.theoffice.domain.game.properties.GameProperties;
 import pl.edu.agh.ki.to.theoffice.domain.game.properties.MapProperties;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
@@ -30,6 +26,10 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 public class Game {
+
+    private static final int GAME_WON_POINTS = 50;
+    private static final int POWERUP_USED_POINTS = 10;
+    private static final int ENEMY_DESTROYED_POINTS = 15;
 
     private MapProperties mapProperties;
     private MapMoveStrategy mapMoveStrategy;
@@ -53,19 +53,22 @@ public class Game {
         this.moveEntities();
         this.solveEnemyCollisions();
         this.pickupPowerup();
-        
+
         if (playerEntity.getState() == MovableEntity.MovableEntityState.DEAD) {
             gameState.setValue(GameState.LOST);
         }
 
         if (getEnemiesCount() == 0) {
+            score.set(score.get() + GAME_WON_POINTS);
             gameState.setValue(GameState.WON);
         }
+        log.debug("score: {}", score.getValue());
     }
 
     public void usePowerup(GamePowerup gamePowerup) {
         if (playerEntity.canUsePowerup(gamePowerup)) {
             playerEntity.removePowerup(gamePowerup);
+            score.set(score.get() + POWERUP_USED_POINTS);
 
             PickableEntityFactory
                     .fromEntityType(gamePowerup)
@@ -95,6 +98,8 @@ public class Game {
     }
 
     private void solveEnemyCollisions() {
+        final long enemiesBefore = getEnemiesCount();
+
         for (var entry : this.entities.entrySet()) {
             final var location = entry.getKey();
             final var entities = entry.getValue();
@@ -118,6 +123,11 @@ public class Game {
             }
             this.entities.put(location, entities);
         }
+
+        final long enemiesAfter = getEnemiesCount();
+
+        log.debug("points added: {}", (enemiesBefore - enemiesAfter) * ENEMY_DESTROYED_POINTS);
+        score.set(score.get() + (int) (enemiesBefore - enemiesAfter) * ENEMY_DESTROYED_POINTS);
     }
 
     private List<MovableEntity> handleCollisionsAndSort(long players, long enemies, List<Entity> oldEntities) {
@@ -137,7 +147,7 @@ public class Game {
                 .filter(PickableEntity.class::isInstance)
                 .findAny();
 
-        if(entity.isPresent()){
+        if (entity.isPresent()) {
             PickableEntity pickableEntity = powerupsOnMap.get(location);
             playerEntity.addPowerup(pickableEntity.getGamePowerup());
             powerupsOnMap.remove(location);

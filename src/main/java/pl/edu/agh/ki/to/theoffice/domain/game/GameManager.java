@@ -9,13 +9,13 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 public class GameManager {
 
-    private final GameRepository gameRepository;
+    private final GameFactory gameFactory;
 
     private Game game;
 
     @NotNull
     public Game getCurrentGame() {
-        if(game == null) {
+        if (game == null) {
             throw new IllegalStateException("Game has not been started yet");
         }
 
@@ -23,13 +23,14 @@ public class GameManager {
     }
 
     public Game createNewGame(GameDifficulty gameDifficulty) {
-        this.game = this.gameRepository.createNewGame(gameDifficulty);
+        this.game = this.gameFactory.createNewGame(gameDifficulty);
         return this.game;
     }
 
     public Game nextLevel() {
-        this.game = this.gameRepository.createNextLevel(this.game);
+        this.game = this.gameFactory.createNextLevel(this.game);
         return this.game;
     }
+
 
 }
