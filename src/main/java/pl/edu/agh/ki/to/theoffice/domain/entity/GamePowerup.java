@@ -11,7 +11,8 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum GamePowerup {
     TELEPORT(0),
-    BOMB(0);
+    BOMB(0),
+    REVERSE_TIME(0);
 
     private final int defaultCount;
 

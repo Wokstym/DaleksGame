@@ -5,14 +5,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
-import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.BoundedMapMoveStrategy;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TeleportEntityTest {
 
@@ -33,7 +33,7 @@ class TeleportEntityTest {
         entities.add(enemyLocation, new EnemyEntity(boundedMapMoveStrategy, enemy2Location));
 
         // when
-        PickableEntityFactory.fromEntityType(GamePowerup.TELEPORT).usePowerup(boundedMapMoveStrategy, entities, playerLocation);
+        // PickableEntityFactory.fromEntityType(GamePowerup.TELEPORT).usePowerup(boundedMapMoveStrategy, entities, playerLocation, null);
 
         // then
         Location.generateNeighbouringLocations(new Location(2, 2))
@@ -60,7 +60,7 @@ class TeleportEntityTest {
         entities.add(bombLocation, new BombEntity());
 
         // when
-        PickableEntityFactory.fromEntityType(GamePowerup.TELEPORT).usePowerup(boundedMapMoveStrategy, entities, playerLocation);
+        // PickableEntityFactory.fromEntityType(GamePowerup.TELEPORT).usePowerup(boundedMapMoveStrategy, entities, playerLocation, null);
 
         // then
         assertEquals(bombLocation, playerLocation.getValue());
@@ -83,7 +83,7 @@ class TeleportEntityTest {
         entities.add(bombLocation, new BombEntity());
 
         // when
-        PickableEntityFactory.fromEntityType(GamePowerup.TELEPORT).usePowerup(boundedMapMoveStrategy, entities, playerLocation);
+        // PickableEntityFactory.fromEntityType(GamePowerup.TELEPORT).usePowerup(boundedMapMoveStrategy, entities, playerLocation, null);
 
         // then
         assertEquals(new Location(4, 0), playerLocation.getValue());

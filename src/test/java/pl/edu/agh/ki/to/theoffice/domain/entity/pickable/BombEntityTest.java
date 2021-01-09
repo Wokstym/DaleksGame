@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
-import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.MovableEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
@@ -15,7 +14,8 @@ import pl.edu.agh.ki.to.theoffice.domain.map.move.BoundedMapMoveStrategy;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BombEntityTest {
 
@@ -37,9 +37,9 @@ class BombEntityTest {
         neighbouringLocations.forEach(location -> entities.add(location, new EnemyEntity(boundedMapMoveStrategy, location)));
 
         // when
-        PickableEntityFactory
+     /*   PickableEntityFactory
                 .fromEntityType(GamePowerup.BOMB)
-                .usePowerup(boundedMapMoveStrategy, entities, playerLocation);
+                .usePowerup(boundedMapMoveStrategy, entities, playerLocation,null);*/
 
         // then
         assertEquals(8 + 1 + 1, entities.values().size());

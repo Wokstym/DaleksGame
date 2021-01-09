@@ -2,9 +2,14 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
+import pl.edu.agh.ki.to.theoffice.common.command.Command;
+import pl.edu.agh.ki.to.theoffice.common.command.CommandExecutor;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
@@ -28,7 +33,7 @@ import java.util.stream.Collectors;
 public class Game {
 
     private static final int GAME_WON_POINTS = 50;
-    private static final int POWERUP_USED_POINTS = 10;
+    private static final int POWERUP_PICKED_POINTS = 10;
     private static final int ENEMY_DESTROYED_POINTS = 15;
 
     private MapProperties mapProperties;
@@ -43,6 +48,12 @@ public class Game {
     private GameDifficulty difficulty;
     private IntegerProperty level;
     private IntegerProperty score;
+
+    private CommandExecutor commandExecutor;
+
+    public void execute(Command command) {
+        commandExecutor.execute(command);
+    }
 
     public void movePlayer(Location.Direction direction) {
         final Location oldLocation = this.playerLocation.getValue();
@@ -67,14 +78,16 @@ public class Game {
 
     public void usePowerup(GamePowerup gamePowerup) {
         if (playerEntity.canUsePowerup(gamePowerup)) {
-            playerEntity.removePowerup(gamePowerup);
-            score.set(score.get() + POWERUP_USED_POINTS);
 
-            PickableEntityFactory
+            boolean success = PickableEntityFactory
                     .fromEntityType(gamePowerup)
-                    .usePowerup(this.mapMoveStrategy, this.entities, this.playerLocation);
+                    .usePowerup(this);
 
-            movePlayer(Location.Direction.NONE);
+            if (success) {
+                log.debug("Powerup was used successfully");
+                playerEntity.removePowerup(gamePowerup);
+                commandExecutor.clearPreviousCommands();
+            }
         }
     }
 
@@ -155,6 +168,7 @@ public class Game {
             entitiesAtPlayer.remove(entity.get());
             this.entities.remove(location);
             this.entities.put(location, entitiesAtPlayer);
+            score.set(score.get() + POWERUP_PICKED_POINTS);
         }
     }
 
@@ -165,5 +179,5 @@ public class Game {
                 .filter(e -> e.getType() == EntityType.ENEMY)
                 .count();
     }
-
 }
+

@@ -1,14 +1,16 @@
 package pl.edu.agh.ki.to.theoffice.domain.entity.pickable;
 
-import javafx.beans.property.ObjectProperty;
+import lombok.extern.slf4j.Slf4j;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.EntityType;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
+import pl.edu.agh.ki.to.theoffice.domain.game.Game;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 
+@Slf4j
 public class TeleportEntity extends PickableEntity {
     @Override
     public EntityType getType() {
@@ -21,7 +23,12 @@ public class TeleportEntity extends PickableEntity {
     }
 
     @Override
-    public void usePowerup(MapMoveStrategy mapMoveStrategy, ObservableLinkedMultiValueMap<Location, Entity> entities, ObjectProperty<Location> playerLocation) {
+    public boolean usePowerup(Game game) {
+        log.debug("used {} powerup", getType());
+        MapMoveStrategy mapMoveStrategy = game.getMapMoveStrategy();
+        var entities = game.getEntities();
+        var playerLocation = game.getPlayerLocation();
+
         int x = mapMoveStrategy.getMapWidth();
         int y = mapMoveStrategy.getMapHeight();
         Location newPlayerLocation;
@@ -35,6 +42,8 @@ public class TeleportEntity extends PickableEntity {
                 && maxNumberOfAttempts > 0);
 
         playerLocation.setValue(newPlayerLocation);
+        game.movePlayer(Location.Direction.NONE);
+        return true;
     }
 
     private boolean locationIsNearToEnemy(ObservableLinkedMultiValueMap<Location, Entity> entities, Location newPlayerLocation) {

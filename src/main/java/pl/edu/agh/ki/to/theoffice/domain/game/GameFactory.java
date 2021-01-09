@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
+import pl.edu.agh.ki.to.theoffice.common.command.CommandExecutor;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
@@ -17,9 +18,8 @@ import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 
-import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -51,6 +51,7 @@ public class GameFactory {
                 .playerLocation(new SimpleObjectProperty<>(player.getLocation()))
                 .powerupsOnMap(powerupsOnMap)
                 .difficulty(gameDifficulty)
+                .commandExecutor(new CommandExecutor())
                 .level(new SimpleIntegerProperty(1))
                 .score(new SimpleIntegerProperty(0))
                 .build();
@@ -79,6 +80,7 @@ public class GameFactory {
                 .playerLocation(new SimpleObjectProperty<>(player.getLocation()))
                 .powerupsOnMap(powerupsOnMap)
                 .difficulty(game.getDifficulty())
+                .commandExecutor(new CommandExecutor())
                 .level(new SimpleIntegerProperty(game.getLevel().get() + 1))
                 .score(new SimpleIntegerProperty(game.getScore().get()))
                 .build();
@@ -114,20 +116,29 @@ public class GameFactory {
         final int width = mapProperties.getWidth();
         final int height = mapProperties.getHeight();
 
-        return gameProperties
+        Map<Location, PickableEntity> collect = new HashMap<>();
+
+        gameProperties
                 .getPowerups()
                 .entrySet()
                 .stream()
                 .flatMap(e -> IntStream.range(0, e.getValue())
                         .mapToObj(nr -> e.getKey()))
-                .map(e -> {
-                    Location powerupLocation;
-                    do {
-                        powerupLocation = Location.randomLocation(width, height);
-                    } while (entities.containsKey(powerupLocation));
-                    return new AbstractMap.SimpleEntry<>(powerupLocation, PickableEntityFactory.fromEntityType(e));
-                })
-                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+                .forEach(e -> {
+                    var powerupLocation = generateEmptyLocation(width, height, entities, collect);
+                    PickableEntity pickableEntity = PickableEntityFactory.fromEntityType(e);
+                    pickableEntity.setLocation(powerupLocation);
+                    collect.put(powerupLocation, pickableEntity);
+                });
+        return collect;
+    }
+
+    private Location generateEmptyLocation(int width, int height, LinkedMultiValueMap<Location, Entity> entities, Map<Location, PickableEntity> collect) {
+        Location powerupLocation;
+        do {
+            powerupLocation = Location.randomLocation(width, height);
+        } while (entities.containsKey(powerupLocation) && collect.containsKey(powerupLocation));
+        return powerupLocation;
     }
 
 }

@@ -12,7 +12,8 @@ public enum EntityType {
     ENEMY_SCRAP(2),
     DEAD_PLAYER(0),
     BOMB(2),
-    TELEPORT(2);
+    TELEPORT(2),
+    REVERSE_TIME(2);
 
     private final int mapPriority;
 }
