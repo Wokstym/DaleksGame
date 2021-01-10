@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
+import pl.edu.agh.ki.to.theoffice.common.command.MovePlayerCommand;
 import pl.edu.agh.ki.to.theoffice.components.game.GameControlsComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameInfoComponent;
 import pl.edu.agh.ki.to.theoffice.components.game.GameMapComponent;
@@ -85,7 +86,7 @@ public class GameController {
         }
 
         Direction.fromKeyCode(keyEvent.getCode())
-                .ifPresent(game::movePlayer);
+                .ifPresent(this::movePLayer);
     }
 
     private void setupEffects() {
@@ -98,12 +99,17 @@ public class GameController {
         this.game.getEntities().addListener(map);
         this.game.getPlayerEntity().getPowerups().addListener(info);
 
-        this.controls.setArrowListeners(game::movePlayer);
+        this.controls.setArrowListeners(this::movePLayer);
         this.info.setPowerupsListeners(game::usePowerup);
 
         this.game.getLevel().addListener(levelListener);
         this.game.getScore().addListener(scoreListener);
         this.game.getGameState().addListener(gameStateListener);
+    }
+
+    private void movePLayer(Direction direction) {
+        MovePlayerCommand command = new MovePlayerCommand(game, direction);
+        game.execute(command);
     }
 
     private void removeListeners() {

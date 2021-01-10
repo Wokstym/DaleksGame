@@ -8,6 +8,7 @@ public class PickableEntityFactory {
         return switch (entityType) {
             case TELEPORT -> new TeleportEntity();
             case BOMB -> new BombEntity();
+            case REVERSE_TIME -> new ReverseTimeEntity();
         };
     }
 }

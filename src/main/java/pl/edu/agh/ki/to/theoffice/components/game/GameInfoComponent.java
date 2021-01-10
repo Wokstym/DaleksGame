@@ -20,10 +20,16 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
     public static final String FXML_SOURCE = "/view/game/game-info.fxml";
 
     @FXML
+    public Text reverseTimeCount;
+
+    @FXML
     private Text bombCount;
 
     @FXML
     private Text teleportCount;
+
+    @FXML
+    public TilePane reverseTimeButton;
 
     @FXML
     private TilePane bombButton;
@@ -47,11 +53,13 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
     }
 
     @Override
+    @SuppressWarnings("RedundantCast")
     public void onChanged(Change<? extends GamePowerup, ? extends Integer> change) {
 
         Text whichToUpdate = switch ((GamePowerup) change.getKey()) {
             case BOMB -> bombCount;
             case TELEPORT -> teleportCount;
+            case REVERSE_TIME -> reverseTimeCount;
         };
 
         whichToUpdate.setText(Integer.toString(change.getValueAdded()));
@@ -60,16 +68,19 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
     public void setPowerupsListeners(PowerupClicked lambda) {
         bombButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.BOMB));
         teleportButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.TELEPORT));
+        reverseTimeButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.REVERSE_TIME));
     }
 
     public void removePowerupsListeners() {
         bombButton.setOnMouseClicked(null);
         teleportButton.setOnMouseClicked(null);
+        reverseTimeButton.setOnMouseClicked(null);
     }
 
     public void setPowerups(Map<GamePowerup, Integer> powerups) {
         bombCount.setText(String.valueOf(powerups.getOrDefault(GamePowerup.BOMB, 0)));
         teleportCount.setText(String.valueOf(powerups.getOrDefault(GamePowerup.TELEPORT, 0)));
+        reverseTimeCount.setText(String.valueOf(powerups.getOrDefault(GamePowerup.REVERSE_TIME, 0)));
     }
 
     public void setLevel(int level) {
@@ -83,6 +94,7 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
     public void setEffects() {
         ImageUtils.setShadowEffect(bombButton, Color.GREY);
         ImageUtils.setShadowEffect(teleportButton, Color.GREY);
+        ImageUtils.setShadowEffect(reverseTimeButton, Color.GREY);
     }
 
     @FunctionalInterface

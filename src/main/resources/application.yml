@@ -18,15 +18,18 @@ game:
       powerups:
         TELEPORT: 4
         BOMB: 1
+        REVERSE_TIME: 3
     NORMAL:
       enemies: 3
       lives: 3
       powerups:
         TELEPORT: 1
         BOMB: 1
+        REVERSE_TIME: 2
     HARD:
       enemies: 5
       lives: 3
       powerups:
         TELEPORT: 1
         BOMB: 1
+        REVERSE_TIME: 1

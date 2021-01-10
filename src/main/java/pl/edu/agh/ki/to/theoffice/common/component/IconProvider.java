@@ -17,6 +17,7 @@ public enum IconProvider {
     DOT("dot.png"),
     ARROW("arrow.png"),
     FRAME("frame.png"),
+    REVERSE_TIME("timer.png"),
     EMPTY("empty.png");
 
     private static final String ICON_PATH = "/icons/";
@@ -37,6 +38,7 @@ public enum IconProvider {
             case ENEMY_SCRAP -> ENEMY_SCRAP;
             case TELEPORT -> TELEPORT;
             case BOMB -> BOMB;
+            case REVERSE_TIME -> REVERSE_TIME;
         };
         return resultEnum.image;
     }
