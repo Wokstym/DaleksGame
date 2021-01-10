@@ -58,8 +58,6 @@ public class TeleportEntity extends PickableEntity {
         return entities.containsKey(location) &&
                 entities.get(location)
                         .stream()
-                        .filter(EnemyEntity.class::isInstance)
-                        .map(EnemyEntity.class::cast)
-                        .count() > 0;
+                        .anyMatch(EnemyEntity.class::isInstance);
     }
 }
