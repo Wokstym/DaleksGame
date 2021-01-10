@@ -1,11 +1,13 @@
 package pl.edu.agh.ki.to.theoffice.common.command;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
 
 @Slf4j
+@Getter
 public class CommandExecutor {
 
     private final Stack<Command> commandStack = new Stack<>();

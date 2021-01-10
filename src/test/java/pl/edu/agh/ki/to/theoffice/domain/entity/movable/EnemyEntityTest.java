@@ -3,6 +3,7 @@ package pl.edu.agh.ki.to.theoffice.domain.entity.movable;
 import org.junit.jupiter.api.Test;
 import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.BoundedMapMoveStrategy;
+
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class EnemyEntityTest {

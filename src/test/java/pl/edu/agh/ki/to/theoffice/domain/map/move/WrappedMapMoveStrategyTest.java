@@ -204,7 +204,7 @@ public class WrappedMapMoveStrategyTest {
         Location.Direction direction = Location.Direction.WEST;
 
         // when then
-        assertEquals(new Location(9,2), wrappedMapMoveStrategy.move(location, direction));
+        assertEquals(new Location(9, 2), wrappedMapMoveStrategy.move(location, direction));
     }
 
     @Test
@@ -214,7 +214,7 @@ public class WrappedMapMoveStrategyTest {
         Location.Direction direction = Location.Direction.SOUTH_WEST;
 
         // when then
-        assertEquals(new Location(9,9), wrappedMapMoveStrategy.move(location, direction));
+        assertEquals(new Location(9, 9), wrappedMapMoveStrategy.move(location, direction));
     }
 
     @Test
@@ -224,7 +224,7 @@ public class WrappedMapMoveStrategyTest {
         Location.Direction direction = Location.Direction.SOUTH;
 
         // when then
-        assertEquals(new Location(2,9), wrappedMapMoveStrategy.move(location, direction));
+        assertEquals(new Location(2, 9), wrappedMapMoveStrategy.move(location, direction));
     }
 
     @Test
@@ -234,6 +234,6 @@ public class WrappedMapMoveStrategyTest {
         Location.Direction direction = Location.Direction.NORTH;
 
         // when then
-        assertEquals(new Location(9,0), wrappedMapMoveStrategy.move(location, direction));
+        assertEquals(new Location(9, 0), wrappedMapMoveStrategy.move(location, direction));
     }
 }

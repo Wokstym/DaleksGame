@@ -25,7 +25,7 @@ class BoardPaneTest {
         entities.add(playerLocation, playerEntity);
 
         Location enemyLocation = new Location(1, 2);
-        EnemyEntity enemyEntity = new EnemyEntity(new BoundedMapMoveStrategy(10,10), enemyLocation);
+        EnemyEntity enemyEntity = new EnemyEntity(new BoundedMapMoveStrategy(10, 10), enemyLocation);
         entities.add(enemyLocation, enemyEntity);
 
         Location emptyLocation = new Location(1, 1);
