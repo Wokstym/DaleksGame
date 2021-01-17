@@ -7,10 +7,11 @@ import pl.edu.agh.ki.to.theoffice.common.formatter.UnityFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static pl.edu.agh.ki.to.theoffice.domain.utils.RandomProvider.randomNextInt;
 
 @Getter
 @ToString
@@ -18,15 +19,13 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class Location {
 
-    private static final Random r = new Random();
-
     private final int x;
     private final int y;
 
     public static Location randomLocation(int maxX, int maxY) {
         return new Location(
-                r.nextInt(maxX),
-                r.nextInt(maxY)
+                randomNextInt(maxX),
+                randomNextInt(maxY)
         );
     }
 

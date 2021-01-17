@@ -2,14 +2,11 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.common.command.CommandExecutor;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
-import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntity;
@@ -23,7 +20,6 @@ import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Service
@@ -64,7 +60,7 @@ public class GameFactory {
     public Game createNextLevel(Game game) {
         final GameProperties gameProperties = gameConfigurations.getConfiguration(game.getDifficulty());
 
-        var entities = generateEnemies(gameProperties, game.getLevel().get());
+        var entities = generateEnemies(gameProperties, game.getLevel().get() + 1);
 
         var player = generatePlayer(entities, gameProperties);
         player.setLives(game.getPlayerEntity().getLives());

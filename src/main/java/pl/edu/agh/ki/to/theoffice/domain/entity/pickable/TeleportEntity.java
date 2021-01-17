@@ -10,6 +10,11 @@ import pl.edu.agh.ki.to.theoffice.domain.map.Location;
 import pl.edu.agh.ki.to.theoffice.domain.map.ObservableLinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static pl.edu.agh.ki.to.theoffice.domain.utils.RandomProvider.randomNextInt;
+
 @Slf4j
 public class TeleportEntity extends PickableEntity {
     @Override
@@ -33,17 +38,27 @@ public class TeleportEntity extends PickableEntity {
         int y = mapMoveStrategy.getMapHeight();
         Location newPlayerLocation;
 
-        int maxNumberOfAttempts = 100; // because loop could be infinite due to the small number of free places
+        List<Location> locationCandidates = Location.generateLocationsWithinBoundsWithRespectOfLeftBottomCorner(0, x, 0, y)
+                .stream()
+                .filter(location -> isValidLocation(entities, playerLocation, location))
+                .collect(Collectors.toList());
 
-        do {
-            newPlayerLocation = Location.randomLocation(x, y);
-            maxNumberOfAttempts--;
-        } while ((locationIsNearToEnemy(entities, newPlayerLocation) || Location.neighbouringLocations(playerLocation.getValue(), newPlayerLocation))
-                && maxNumberOfAttempts > 0);
+        if (locationCandidates.isEmpty()) {
+            return false;
+        }
 
+        newPlayerLocation = getRandomLocationFrom(locationCandidates);
         playerLocation.setValue(newPlayerLocation);
         game.movePlayer(Location.Direction.NONE);
         return true;
+    }
+
+    private boolean isValidLocation(ObservableLinkedMultiValueMap<Location, Entity> entities, javafx.beans.property.ObjectProperty<Location> playerLocation, Location location) {
+        return !locationIsNearToEnemy(entities, location) && !Location.neighbouringLocations(playerLocation.getValue(), location);
+    }
+
+    private Location getRandomLocationFrom(List<Location> locationCandidates) {
+        return locationCandidates.get(randomNextInt(locationCandidates.size()));
     }
 
     private boolean locationIsNearToEnemy(ObservableLinkedMultiValueMap<Location, Entity> entities, Location newPlayerLocation) {

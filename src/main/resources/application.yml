@@ -13,22 +13,22 @@ game:
     height: 20
   configurationsByDifficulty:
     EASY:
-      enemies: 1
-      lives: 3
+      enemies: 3
+      lives: 1
       powerups:
         TELEPORT: 4
         BOMB: 1
         REVERSE_TIME: 3
     NORMAL:
-      enemies: 3
-      lives: 3
+      enemies: 5
+      lives: 1
       powerups:
         TELEPORT: 1
         BOMB: 1
         REVERSE_TIME: 2
     HARD:
-      enemies: 5
-      lives: 3
+      enemies: 7
+      lives: 1
       powerups:
         TELEPORT: 1
         BOMB: 1
