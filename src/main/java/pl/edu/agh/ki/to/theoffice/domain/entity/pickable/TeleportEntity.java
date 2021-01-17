@@ -47,9 +47,12 @@ public class TeleportEntity extends PickableEntity {
     }
 
     private boolean locationIsNearToEnemy(ObservableLinkedMultiValueMap<Location, Entity> entities, Location newPlayerLocation) {
-        for (Location location : Location.generateNeighbouringLocations(newPlayerLocation))
-            if (enemyIsAtLocation(entities, location))
+        for (Location location : Location.generateNeighbouringLocations(newPlayerLocation)) {
+            if (enemyIsAtLocation(entities, location)) {
                 return true;
+            }
+        }
+
 
         return false;
     }
