@@ -38,15 +38,9 @@ class MovePlayerCommandTest {
 
         MovePlayerCommand movePlayerCommand = new MovePlayerCommand(game, Location.Direction.NORTH);
 
-        Location playerLocation = game.getPlayerLocation().getValue();
-        Integer score = game.getScore().getValue();
-        EnemyEntity enemyEntity = game.getEntities().values()
-                .stream()
-                .flatMap(Collection::stream)
-                .filter(EnemyEntity.class::isInstance)
-                .map(EnemyEntity.class::cast)
-                .findFirst()
-                .orElseThrow();
+        final Location expectedPlayerLocation = game.getPlayerLocation().getValue();
+        final Integer expectedScore = game.getScore().getValue();
+        final EnemyEntity expectedEnemyEntity = getEnemyEntity(game);
 
         movePlayerCommand.execute();
 
@@ -54,14 +48,23 @@ class MovePlayerCommandTest {
         movePlayerCommand.undo();
 
         // then
-        assertEquals(playerLocation, game.getPlayerLocation().getValue());
-        assertEquals(score, game.getScore().get());
-        assertEquals(enemyEntity, game.getEntities().values()
+        final Location actualPlayerLocation = game.getPlayerLocation().getValue();
+        final Integer actualScore = game.getScore().get();
+        final EnemyEntity actualEnemyEntity = getEnemyEntity(game);
+
+        assertEquals(expectedPlayerLocation, actualPlayerLocation);
+        assertEquals(expectedScore, actualScore);
+        assertEquals(expectedEnemyEntity, actualEnemyEntity);
+    }
+
+    private static EnemyEntity getEnemyEntity(Game game) {
+        return game.getEntities().values()
                 .stream()
                 .flatMap(Collection::stream)
                 .filter(EnemyEntity.class::isInstance)
                 .map(EnemyEntity.class::cast)
                 .findFirst()
-                .orElseThrow());
+                .orElseThrow();
     }
+
 }

@@ -2,11 +2,14 @@ package pl.edu.agh.ki.to.theoffice.domain.game;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.edu.agh.ki.to.theoffice.common.command.CommandExecutor;
 import pl.edu.agh.ki.to.theoffice.domain.entity.Entity;
+import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.EnemyEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.movable.PlayerEntity;
 import pl.edu.agh.ki.to.theoffice.domain.entity.pickable.PickableEntity;
@@ -21,6 +24,7 @@ import pl.edu.agh.ki.to.theoffice.domain.map.move.MapMoveStrategy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -122,8 +126,7 @@ public class GameFactory {
                 .getPowerups()
                 .entrySet()
                 .stream()
-                .flatMap(e -> IntStream.range(0, e.getValue())
-                        .mapToObj(nr -> e.getKey()))
+                .flatMap(powerupData -> Stream.generate(powerupData::getKey).limit(powerupData.getValue()))
                 .forEach(e -> {
                     var powerupLocation = generateEmptyLocation(width, height, entities, collect);
                     PickableEntity pickableEntity = PickableEntityFactory.fromEntityType(e);
