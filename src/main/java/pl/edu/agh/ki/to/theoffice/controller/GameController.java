@@ -27,6 +27,11 @@ import static pl.edu.agh.ki.to.theoffice.domain.map.Location.Direction;
 @RequiredArgsConstructor
 public class GameController {
 
+    private static final String LOST_MESSAGE = "Przegrana!";
+    private static final String PLAY_AGAIN_CAPTION = "Zagraj ponownie";
+    private static final String WON_MESSAGE = "Wygrana!";
+    private static final String NEXT_STAGE_CAPTION = "Kolejny poziom";
+
     private final GameManager gameManager;
     private Game game;
 
@@ -47,17 +52,23 @@ public class GameController {
 
     private final ChangeListener<GameState> gameStateListener = (obs, oldVal, newVal) -> {
         log.debug("gameState changed: {}, {}, {}", obs, oldVal, newVal);
-        if (newVal == GameState.LOST) {
-            controls.removeArrowListeners();
-            log.debug("Game over - lost");
-            showGameLostDialog();
-        }
 
-        if (newVal == GameState.WON) {
-            log.debug("Game over - won");
-            showGameWinDialog();
+        switch (newVal) {
+            case LOST -> handleGameLost();
+            case WON -> handleGameWon();
         }
     };
+
+    private void handleGameWon() {
+        log.debug("Game over - won");
+        showGameWinDialog();
+    }
+
+    private void handleGameLost() {
+        controls.removeArrowListeners();
+        log.debug("Game over - lost");
+        showGameLostDialog();
+    }
 
 
     @FXML
@@ -127,8 +138,9 @@ public class GameController {
     private void showGameLostDialog() {
         Dialog<Boolean> dialog = new Dialog<>();
 
-        dialog.setTitle("Przegrana!");
-        dialog.getDialogPane().getButtonTypes().add(new ButtonType("Zagraj ponownie", ButtonBar.ButtonData.OK_DONE));
+
+        dialog.setTitle(LOST_MESSAGE);
+        dialog.getDialogPane().getButtonTypes().add(new ButtonType(PLAY_AGAIN_CAPTION, ButtonBar.ButtonData.OK_DONE));
 
         // todo: add checking result?
         dialog.showAndWait();
@@ -142,8 +154,8 @@ public class GameController {
     private void showGameWinDialog() {
         Dialog<Boolean> dialog = new Dialog<>();
 
-        dialog.setTitle("Wygrana!");
-        dialog.getDialogPane().getButtonTypes().add(new ButtonType("Kolejny poziom", ButtonBar.ButtonData.OK_DONE));
+        dialog.setTitle(WON_MESSAGE);
+        dialog.getDialogPane().getButtonTypes().add(new ButtonType(NEXT_STAGE_CAPTION, ButtonBar.ButtonData.OK_DONE));
 
         // todo: add checking result?
         dialog.showAndWait();

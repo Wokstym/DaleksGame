@@ -13,6 +13,7 @@ import pl.edu.agh.ki.to.theoffice.common.component.ImageUtils;
 import pl.edu.agh.ki.to.theoffice.domain.entity.GamePowerup;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 @Component
 public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeListener<GamePowerup, Integer> {
@@ -65,10 +66,10 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
         whichToUpdate.setText(Integer.toString(change.getValueAdded()));
     }
 
-    public void setPowerupsListeners(PowerupClicked lambda) {
-        bombButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.BOMB));
-        teleportButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.TELEPORT));
-        reverseTimeButton.setOnMouseClicked(mouseEvent -> lambda.powerupClicked(GamePowerup.REVERSE_TIME));
+    public void setPowerupsListeners(Consumer<GamePowerup> lambda) {
+        bombButton.setOnMouseClicked(mouseEvent -> lambda.accept(GamePowerup.BOMB));
+        teleportButton.setOnMouseClicked(mouseEvent -> lambda.accept(GamePowerup.TELEPORT));
+        reverseTimeButton.setOnMouseClicked(mouseEvent -> lambda.accept(GamePowerup.REVERSE_TIME));
     }
 
     public void removePowerupsListeners() {
@@ -95,10 +96,5 @@ public class GameInfoComponent extends VBox implements FXMLComponent, MapChangeL
         ImageUtils.setShadowEffect(bombButton, Color.GREY);
         ImageUtils.setShadowEffect(teleportButton, Color.GREY);
         ImageUtils.setShadowEffect(reverseTimeButton, Color.GREY);
-    }
-
-    @FunctionalInterface
-    public interface PowerupClicked {
-        void powerupClicked(GamePowerup gamePowerup);
     }
 }
