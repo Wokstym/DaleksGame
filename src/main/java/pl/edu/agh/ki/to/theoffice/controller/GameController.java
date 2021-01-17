@@ -142,7 +142,6 @@ public class GameController {
         dialog.setTitle(LOST_MESSAGE);
         dialog.getDialogPane().getButtonTypes().add(new ButtonType(PLAY_AGAIN_CAPTION, ButtonBar.ButtonData.OK_DONE));
 
-        // todo: add checking result?
         dialog.showAndWait();
 
         removeListeners();
@@ -157,7 +156,6 @@ public class GameController {
         dialog.setTitle(WON_MESSAGE);
         dialog.getDialogPane().getButtonTypes().add(new ButtonType(NEXT_STAGE_CAPTION, ButtonBar.ButtonData.OK_DONE));
 
-        // todo: add checking result?
         dialog.showAndWait();
 
         removeListeners();
