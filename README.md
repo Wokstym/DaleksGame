@@ -1,16 +1,13 @@
-<p align="center">
+<h1 align="center">Daleks game</h1>
 
-# Daleks game
-
-</p>
 
 <p align="center">
 
-![](https://img.shields.io/badge/Spring_boot-1.4.8-green)
-![](https://img.shields.io/badge/Javafx-15.0.1-blue)
-![](https://img.shields.io/badge/Javafx_weaver_spring_boot_starter-1.3.0-red)
-![](https://img.shields.io/badge/Lombok-1.18.6-yellow)
-![](https://img.shields.io/badge/Guava-30.0-brown)
+<img src="https://img.shields.io/badge/Spring_boot-1.4.8-green)" />
+<img src="https://img.shields.io/badge/Javafx-15.0.1-blue)" />
+<img src="https://img.shields.io/badge/Javafx_weaver_spring_boot_starter-1.3.0-red)" />
+<img src="https://img.shields.io/badge/Lombok-1.18.6-yellow)" />
+<img src="https://img.shields.io/badge/Guava-30.0-brown)" />
 
 </p>
 
