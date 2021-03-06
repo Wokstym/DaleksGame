@@ -4,15 +4,23 @@
 
 - team name: *The Office*
 - class: Monday 14:40-16:10
+
 + team members:
     - Aleksandra Mazur
     - Maria Polak
     - Grzegorz Poręba
     - Marcin Zielonka
-    
+
+<p align="center">
+
+![Alt text](res/presentation.gif | width=100)
+
+</p>
+
 ## Build app
 
 To build app as a standalone JAR file run command from terminal in project root directory:
+
 ```text
 mvn clean package
 ```
@@ -35,7 +43,7 @@ Changelog can be found [here](https://docs.google.com/document/d/1rmfYHm8JFct24N
 
 ## Class diagram:
 
-![Alt text](diagrams/ClassDiagram.png?raw=true)
+![Alt text](res/ClassDiagram.png?raw=true)
 
     
     
