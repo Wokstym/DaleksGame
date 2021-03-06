@@ -13,7 +13,7 @@
 
 <p align="center">
 
-![Alt text](res/presentation.gif | width=100)
+<img src="res/presentation.gif" alt="" data-canonical-src="res/presentation.gif" width="50%" height="50%" />
 
 </p>
 
