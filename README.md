@@ -9,6 +9,10 @@
 <img src="https://img.shields.io/badge/Lombok-1.18.6-yellow" />
 <img src="https://img.shields.io/badge/Guava-30.0-brown" />
 
+
+Java implementation of popular game from Doctor Who show. Destroy the Daleks by making them run into each other, forming
+piles. Running into Daleks or piles will kill you. Daleks will move toward you every time you take any action.
+
 </p>
 
 
@@ -17,12 +21,7 @@
 <img src="res/presentation.gif" alt="" data-canonical-src="res/presentation.gif" width="75%" height="75%" />
 </p>
 
-## Overview
-
-Java implementation of popular game from Doctor Who show. Destroy the Daleks by making them run into each other, forming
-piles. Running into Daleks or piles will kill you. Daleks will move toward you every time you take any action.
-
-## Build app
+## Build
 
 To build app as a standalone JAR file run command from terminal in project root directory:
 
