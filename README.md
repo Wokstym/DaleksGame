@@ -3,11 +3,11 @@
 
 <p align="center">
 
-<img src="https://img.shields.io/badge/Spring_boot-1.4.8-green)" />
-<img src="https://img.shields.io/badge/Javafx-15.0.1-blue)" />
-<img src="https://img.shields.io/badge/Javafx_weaver_spring_boot_starter-1.3.0-red)" />
-<img src="https://img.shields.io/badge/Lombok-1.18.6-yellow)" />
-<img src="https://img.shields.io/badge/Guava-30.0-brown)" />
+<img src="https://img.shields.io/badge/Spring_boot-1.4.8-green" />
+<img src="https://img.shields.io/badge/Javafx-15.0.1-blue" />
+<img src="https://img.shields.io/badge/Javafx_weaver_spring_boot_starter-1.3.0-red" />
+<img src="https://img.shields.io/badge/Lombok-1.18.6-yellow" />
+<img src="https://img.shields.io/badge/Guava-30.0-brown" />
 
 </p>
 
